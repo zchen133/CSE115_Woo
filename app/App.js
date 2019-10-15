@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import * as firebase from "firebase";
 import { StyleSheet, Text, View, Button } from 'react-native';
-import Signup from './src/Signup';
 
 
 var config = {
@@ -13,17 +12,10 @@ var config = {
     messagingSenderId: "579750847600",
     appId: "1:579750847600:web:ee340682ff4f9c9e2d80b5",
     measurementId: "G-ZKGHZERYG4"
-};
+  };
 
 firebase.initializeApp(config);
 
-export default class Woo extends Component {
-    render() {
-        return (
-            <Signup />
-        );
-    }
-}
 
 const styles = StyleSheet.create({
     container: {
