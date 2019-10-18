@@ -22,7 +22,7 @@ export default class Recovery extends Component {
     }
 
     BackLoginPage = ()=>{
-        this.props.navigation.navigate('LoginSignup')
+        this.props.navigation.navigate('Login')
     }
 
    render() {

@@ -7,7 +7,7 @@ export default class Home extends Component {
         firebase
             .auth()
             .signOut()
-            .then(this.props.navigation.navigate('LoginSignup'));
+            .then(this.props.navigation.navigate('Login'));
     }
     render() {
         return (

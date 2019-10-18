@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 
 import Loading from './src/Loading';
-import LoginSignup from './src/LoginSignup';
+import Login from './src/Login';
 import Signup from './src/Signup';
 import Home from './src/Home';
 import Recovery from './src/PasswordRecovery';
@@ -33,7 +33,7 @@ firebase.initializeApp(config);
 
 const AppNavigator = createSwitchNavigator({
     Loading,
-    LoginSignup,
+    Login,
     Signup,
     Home,
     Recovery,

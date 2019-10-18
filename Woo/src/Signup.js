@@ -1,29 +1,45 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput ,Image, TouchableOpacity, Animated,Dimensions} from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, Image, TouchableOpacity, Animated, Dimensions} from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import * as firebase from "firebase";
+import "firebase/firestore";
 
 const{width,height} = Dimensions.get('window')
 export default class Signup extends Component {
-    state = { email: '', password: '', confirmPass: '', err: null }
+    state = { firstName: '', lastName: '', email: '', password: '', accountType: '', confirmPass: '', err: null }
 
     handleSignUp = () => {
-        // TODO: Check if password is at least 6 chars
+
+        // TODO: Show errors on screen
         if(this.state.password != this.state.confirmPass) {
-            // TODO: Show user that passwords don't match on screen
             console.log('Passwords don\'t match');
             return;
         }
 
-        console.log("Attempt to SignUp");
+        if(this.state.password.length < 6) {
+            console.log('Password must be longer than 6 characters.');
+            return;
+        }
+
+        console.log("Attempt to Signup");
         firebase
             .auth()
             .createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(this.props.navigation.navigate('Home'))
+            .then((res) => {
+                userRef = firebase.firestore().collection('users')
+                userRef.doc(this.state.email).set({
+                    first: this.state.firstName,
+                    last: this.state.lastName,
+                    email: this.state.email,
+                    accountType: this.state.accountType,
+                })
+            })
             .catch(error => this.setState({err: error.message}));
         console.log(this.state.err);
     }
+
     BackLoginPage = ()=>{
-        this.props.navigation.navigate('LoginSignup')
+        this.props.navigation.navigate('Login')
     }
 
     render() {
@@ -36,6 +52,38 @@ export default class Signup extends Component {
                     blurRadius = {5}
                     />
                  </View>
+                <TextInput 
+                    placeholder='First Name'
+                    autoCapitalize="none"
+                    style={styles.input} 
+                    onChangeText={firstName => this.setState({firstName})}
+                    value={this.state.firstName}
+               />
+                <TextInput 
+                    placeholder='Last Name'
+                    autoCapitalize="none"
+                    style={styles.input} 
+                    onChangeText={lastName => this.setState({lastName})}
+                    value={this.state.lastName}
+               />
+                <RNPickerSelect
+                    style={styles.picker}
+                    style={{
+                    ...pickerSelectStyles,
+                    placeholder: {
+                        color: 'gray',
+                        fontSize: 12,
+                    },
+                    }}
+                    onValueChange={accountType => this.setState({accountType})}
+                    items={[
+                        { label: 'Patient', value: '1' },
+                        { label: 'Receptionist', value: '2' },
+                        { label: 'Nurse', value: '3' },
+                        { label: 'Doctor', value: '4' },
+                    ]}
+                    value={this.state.accountType}
+                />
                 <TextInput 
                     placeholder='Email'
                     autoCapitalize="none"
@@ -59,10 +107,6 @@ export default class Signup extends Component {
                     onChangeText={confirmPass => this.setState({confirmPass})}
                     value={this.state.confirmPass}
                />
-                {/* <Button title='Sign Up' 
-                    onPress={this.handleSignUp}
-                    style={styles.button}
-                 /> */}
                     <TouchableOpacity onPress = {this.handleSignUp}>
                     <Animated.View style={styles.button}> 
                         <Text style = {{fontSize:20,fontWeight:'bold'}}>SIGN UP</Text> 
@@ -135,5 +179,38 @@ const styles = StyleSheet.create({
         paddingLeft:10,
         marginVertical:5,
         borderColor:'rgba(0,0,0,0.2)',
+    },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        fontSize: 16,
+        marginBottom: 20,
+        marginLeft:50,
+        marginRight:50,
+        height:35,
+        borderRadius:25,
+        borderWidth:0.5,
+        marginHorizontal:20,
+        paddingLeft:10,
+        marginVertical:5,
+        borderColor:'rgba(0,0,0,0.2)',
+        backgroundColor: 'white',
+        color: 'black',
+    },
+    inputAndroid: {
+        fontSize: 16,
+        marginBottom: 20,
+        marginLeft:50,
+        marginRight:50,
+        height:35,
+        borderRadius:25,
+        borderWidth:0.5,
+        marginHorizontal:20,
+        paddingLeft:10,
+        marginVertical:5,
+        borderColor:'rgba(0,0,0,0.2)',
+        backgroundColor: 'white',
+        color: 'black',
     },
 });
