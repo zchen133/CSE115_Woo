@@ -28,20 +28,17 @@ export default class Loading extends Component {
                 initialEmail = user.email
                 this.readUserData()
                     .then((result) => {
-                        console.log('Sign In Attempt', result);
-                        newtest = result;
-                        console.log("newtest:" + newtest);
-                        if (newtest == 1) {
+                        if (result == 1) {
                             this.props.navigation.navigate('PatientHomepage')
                         }
-                        else if (newtest == 5) {
+                        else if (result == 5) {
                             this.props.navigation.navigate('AdminHomepage')
                         }
-                        else if (newtest == 2 || newtest == 3 || newtest == 4) {
+                        else if (result == 2 || result == 3 || result == 4) {
                             this.props.navigation.navigate('MedicalHomepage')
                         }
                     })
-                console.log("test after import:" + test + 'newtest' + newtest + 'email' + user.email);
+                // console.log("test after import:" + test + 'newtest' + newtest + 'email' + user.email);
 
 
             }

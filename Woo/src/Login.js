@@ -108,7 +108,6 @@ class WooApp extends Component {
     }
 
     readUserData = () => {
-        console.log('current email' + initialEmail)
         var docRef = firebase.firestore().collection("users").doc(initialEmail);
 
         return docRef.get().then(function (doc) {
@@ -133,36 +132,12 @@ class WooApp extends Component {
             .then((result) => {
                 console.log('Sign In Attempt', result);
                 test = result;
-                console.log("test:" + test);
 
-                if (test === '5') {
-                    firebase
-                        .auth()
-                        .signInWithEmailAndPassword(this.state.email, this.state.password)
-                        .then(
-                            console.log('this.state.email' + this.state.email + 'this.state.password' + this.state.password))
-                        .catch(error => this.setState({ err: error.message }))
-                    console.log(this.state.err)
-                }
-                else if (test === '1') {
-                    firebase
-                        .auth()
-                        .signInWithEmailAndPassword(this.state.email, this.state.password)
-                        .then(
-                            console.log('this.state.email' + this.state.email + 'this.state.password' + this.state.password))
-                        .catch(error => this.setState({ err: error.message }))
-                    console.log(this.state.err)
-                }
-                else if (test === '4' || test === '3' || test === "2") {
-                    firebase
-                        .auth()
-                        .signInWithEmailAndPassword(this.state.email, this.state.password)
-                        .then(
-                            console.log('this.state.email' + this.state.email + 'this.state.password' + this.state.password)
-                        )
-                        .catch(error => this.setState({ err: error.message }))
-                    console.log(this.state.err)
-                }
+                firebase
+                    .auth()
+                    .signInWithEmailAndPassword(this.state.email, this.state.password)
+                    .catch(error => this.setState({ err: error.message }))
+                console.log(this.state.err);
             })
     }
 
