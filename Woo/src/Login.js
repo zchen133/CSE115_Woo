@@ -199,7 +199,7 @@ class WooApp extends Component {
                             </Animated.View>
 
                         </TapGestureHandler>
-                        <TapGestureHandler onHandlerStateChange={this.onStateChange}>
+                        
                             <TouchableOpacity onPress={this.onPressSignUp}>
                                 <Animated.View style={{
                                     ...styles.button, opacity: this.buttonOpacity,
@@ -208,7 +208,7 @@ class WooApp extends Component {
                                     <Text style={{ fontSize: 20, fontWeight: 'bold' }}>SIGN UP</Text>
                                 </Animated.View>
                             </TouchableOpacity>
-                        </TapGestureHandler>
+                        
                         <Animated.View style={{
                             zIndex: this.textInputZindex,
                             opacity: this.textInputOpacity,
