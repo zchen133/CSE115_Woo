@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
         shadowOpacity:0.2
     },
     closeButton:{
-        marginBottom:200,
+        marginBottom:100,
         height:40,
         width:40,
         backgroundColor:'white',

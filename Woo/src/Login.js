@@ -12,6 +12,8 @@ import {
 import Animated, {Easing} from 'react-native-reanimated';
 import {TapGestureHandler, State, TouchableOpacity} from 'react-native-gesture-handler';
 import * as firebase from "firebase";
+//import { resolve } from "dns";
+
 
 const{width,height} = Dimensions.get('window')
 const{Value, event,block,cond,eq,set,Clock,startClock,stopClock,debug,timing,clockRunning,interpolate,Extrapolate,concat} = Animated
@@ -101,14 +103,56 @@ class WooApp extends Component {
             extrapolate:Extrapolate.CLAMP
     })
 }
+
+readUserData = ()=>{
+    var docRef = firebase.firestore().collection("users").doc(this.state.email);
+    return docRef.get().then(function(doc){
+       if(doc.exists){
+            return doc.get('accountType');
+       }else{
+           console.log("No such document");
+       }  
+   }).catch(function(error){
+        console.log("Error getting document:", error);
+   });
+    
+}
+
+
 onPressSignIn = ()=>{
-    console.log('Sign In Attempt')
+   var test;
+    this.readUserData()
+        .then((result) => {
+            console.log('Sign In Attempt', result); 
+            test = result;
+   if(test === '5'){
     firebase
         .auth()
         .signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then(() => this.props.navigation.navigate('Home'))
+        .then(this.
+        props.navigation.navigate('AdminHomepage'))
         .catch(error => this.setState({err: error.message}))
     console.log(this.state.err)
+   }
+   else if(test === '1'){
+    firebase
+        .auth()
+        .signInWithEmailAndPassword(this.state.email, this.state.password)
+        .then(this.
+        props.navigation.navigate('PatientHomepage'))
+        .catch(error => this.setState({err: error.message}))
+    console.log(this.state.err)
+   }
+   else{
+    firebase
+        .auth()
+        .signInWithEmailAndPassword(this.state.email, this.state.password)
+        .then(this.
+        props.navigation.navigate('MedicalHomepage'))
+        .catch(error => this.setState({err: error.message}))
+    console.log(this.state.err)
+   }
+    })
 }
 
 onPressSignUp = ()=>{

@@ -5,22 +5,47 @@ const{width,height} = Dimensions.get('window')
 export default class AdminHomepage extends Component {
     state = {email: '', err: null}
 
-
     BackLoginPage = ()=>{
         this.props.navigation.navigate('Login')
     }
     addDoctor = ()=>{
-    //code here
+        var docRef = firebase.firestore().collection('users').doc(this.state.email);
+        docRef.update({
+            accountType: '4',
+    
+        }).catch(error => this.setState({err: error.message}));
+        console.log(this.state.err);
     }
+    
+            
+       
     addNurse = ()=>{
-     //code here
+        var docRef = firebase.firestore().collection('users').doc(this.state.email);
+        docRef.update({
+            accountType: '3',
+    
+        }).catch(error => this.setState({err: error.message}));
+        console.log(this.state.err);
     }
+
     addReceptionist  = ()=>{
-     //code here
+        var docRef = firebase.firestore().collection('users').doc(this.state.email);
+        docRef.update({
+            accountType: '2',
+    
+        }).catch(error => this.setState({err: error.message}));
+        console.log(this.state.err);
     }
+
     resetPermission  = ()=>{
-    //code here
+        var docRef = firebase.firestore().collection('users').doc(this.state.email);
+        docRef.update({
+            accountType: '1',
+    
+        }).catch(error => this.setState({err: error.message}));
+        console.log(this.state.err);
     }
+
    render() {
        return (
         <View style={styles.container}>
