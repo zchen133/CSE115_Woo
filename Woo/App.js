@@ -14,8 +14,8 @@ import MedicalHomepage from './src/MedicalHomepage';
 import PatientHomepage from './src/PatientHomepage';
 
 
-import {Asset} from 'expo-asset'
-import {AppLoading} from 'expo'
+import { Asset } from 'expo-asset'
+import { AppLoading } from 'expo'
 
 
 var config = {
@@ -41,7 +41,8 @@ const AppNavigator = createSwitchNavigator({
     MedicalHomepage,
     PatientHomepage
 }, {
-    initialRouteName: 'Loading'
+    initialRouteName: 'Loading',
+    backgroundColor: '#111111'
 })
 
 export default createAppContainer(AppNavigator)
@@ -49,7 +50,7 @@ export default createAppContainer(AppNavigator)
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: 'transparent',
         alignItems: 'center',
         justifyContent: 'center',
     },

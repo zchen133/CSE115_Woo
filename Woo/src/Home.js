@@ -13,9 +13,9 @@ export default class Home extends Component {
         console.log("in home")
         return (
             <View style={styles.container}>
-                <Button 
-                    title='Sign Out' 
-                    onPress={this.handleSignOut }  />
+                <Button
+                    title='Sign Out'
+                    onPress={this.handleSignOut} />
             </View>
         );
     }

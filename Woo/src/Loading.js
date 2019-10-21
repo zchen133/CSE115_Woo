@@ -1,27 +1,61 @@
 import React, { Component } from 'react';
 import * as firebase from "firebase";
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
-import { test } from './Login.js'
-
+import { test, loginEmail } from './Login.js'
+var newtest;
+var initialEmail = 'initialEmail';
 export default class Loading extends Component {
+    readUserData = () => {
+        var docRef = firebase.firestore().collection("users").doc(initialEmail);
+        return docRef.get().then(function (doc) {
+            if (doc.exists) {
+                return doc.get('accountType');
+            } else {
+                console.log("No such document");
+            }
+        }).catch(function (error) {
+            console.log("Error getting document:", error);
+        });
+
+    }
 
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
-            console.log("test after import:" + test);
-           this.props.navigation.navigate(user ? 'Home' : 'Login')
-           if(test === '5'){
-               this.props.navigation.navigate('AdminHomepage')
- 
-           }
-           else if(test === '1'){
-               this.props.navigation.navigate('PatientHomepage')
+            console.log("newtest after import:" + newtest);
+            
+            if (user) {
 
-           }
-           else if(test === '4'||test === '3'||test ==="2"){
-            this.props.navigation.navigate('MedicalHomepage')
+                initialEmail = user.email
+                this.readUserData()
+                    .then((result) => {
+                        console.log('Sign In Attempt', result);
+                        newtest = result;
+                        console.log("newtest:" + newtest);
+                        if (newtest == 1) {
+                            this.props.navigation.navigate('PatientHomepage')
+                        }
+                        else if (newtest == 5) {
+                            this.props.navigation.navigate('AdminHomepage')
+                        }
+                        else if (newtest == 2 || newtest == 3 || newtest == 4) {
+                            this.props.navigation.navigate('MedicalHomepage')
+                        }
+                    })
+                console.log("test after import:" + test + 'newtest' + newtest + 'email' + user.email);
 
-           }
-           //this.props.navigation.navigate('Login')
+
+            }
+            else {
+                console.log('loginemail' + loginEmail)
+                if (test > 0) {
+                    console.log('user.email = null and user exists')
+                }
+                else {
+                    console.log('inside user false' + user + 'user.email' + initialEmail)
+                    this.props.navigation.navigate('Login')
+                }
+            }
+
         })
     }
 
@@ -29,7 +63,7 @@ export default class Loading extends Component {
         return (
             <View style={styles.container}>
                 <Text>Loading...</Text>
-                <ActivityIndicator size='large'/>
+                <ActivityIndicator size='large' />
             </View>
         );
     }
