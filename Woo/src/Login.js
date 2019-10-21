@@ -20,6 +20,7 @@ const { Value, event, block, cond, eq, set, Clock, startClock, stopClock, debug,
 var initialEmail = 'initialEmail';
 var test, loginEmail;
 export { test, loginEmail };
+
 function runTiming(clock, value, dest) {
     const state = {
         finished: new Value(0),
@@ -110,13 +111,13 @@ class WooApp extends Component {
     readUserData = () => {
         var docRef = firebase.firestore().collection("users").doc(initialEmail);
 
-        return docRef.get().then(function (doc) {
+        return docRef.get().then(function(doc) {
             if (doc.exists) {
                 return doc.get('accountType');
             } else {
                 console.log("No such document");
             }
-        }).catch(function (error) {
+        }).catch(function(error) {
             console.log("Error getting document:", error);
         });
 

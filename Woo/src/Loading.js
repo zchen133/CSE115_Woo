@@ -7,13 +7,13 @@ var initialEmail = 'initialEmail';
 export default class Loading extends Component {
     readUserData = () => {
         var docRef = firebase.firestore().collection("users").doc(initialEmail);
-        return docRef.get().then(function (doc) {
+        return docRef.get().then(function(doc) {
             if (doc.exists) {
                 return doc.get('accountType');
             } else {
                 console.log("No such document");
             }
-        }).catch(function (error) {
+        }).catch(function(error) {
             console.log("Error getting document:", error);
         });
 
@@ -22,7 +22,7 @@ export default class Loading extends Component {
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
             console.log("newtest after import:" + newtest);
-            
+
             if (user) {
 
                 initialEmail = user.email
@@ -30,24 +30,20 @@ export default class Loading extends Component {
                     .then((result) => {
                         if (result == 1) {
                             this.props.navigation.navigate('PatientHomepage')
-                        }
-                        else if (result == 5) {
+                        } else if (result == 5) {
                             this.props.navigation.navigate('AdminHomepage')
-                        }
-                        else if (result == 2 || result == 3 || result == 4) {
+                        } else if (result == 2 || result == 3 || result == 4) {
                             this.props.navigation.navigate('MedicalHomepage')
                         }
                     })
                 // console.log("test after import:" + test + 'newtest' + newtest + 'email' + user.email);
 
 
-            }
-            else {
+            } else {
                 console.log('loginemail' + loginEmail)
                 if (test > 0) {
                     console.log('user.email = null and user exists')
-                }
-                else {
+                } else {
                     console.log('inside user false' + user + 'user.email' + initialEmail)
                     this.props.navigation.navigate('Login')
                 }
