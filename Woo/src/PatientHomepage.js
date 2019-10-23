@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
+
 import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
-import Login from './Login.js'
-import Block from './components.js'
 import { SafeAreaView } from 'react-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
 //var appointment
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
+
+import Login from './Login.js'
+import Block from './components.js'
+
+import ProfileScreen from './Profile.js'
+import AppointmentScreen from './Appointment.js'
+import CheckinScreen from './Checkin.js'
+import PrescriptionScreen from './Prescription.js'
 
 class PatientHomepage extends Component {
     constructor() {
@@ -73,54 +80,7 @@ class PatientHomepage extends Component {
         );
     }
 }
-class ProfileScreen extends Component {
 
-    render() {
-        return (
-            <View style={styles.container}>
-             <Text> ProfileScreen Homepage</Text>
-         </View>
-        );
-    }
-}
-class AppointmentScreen extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
-             <Text> AppointmentScreen Homepage</Text>
-         </View>
-        );
-    }
-}
-class CheckinScreen extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
-             <Text> Check-in Screen Homepage</Text>
-         </View>
-        );
-    }
-}
-class PrescriptionScreen extends Component {
-    handleSignOut = () => {
-        firebase
-            .auth()
-            .signOut()
-            .then(
-                //test = 0,
-                this.props.navigation.navigate('Login'));
-    }
-    render() {
-        return (
-            <View style={styles.container}>
-             <Text> Prescription Screen Homepage</Text>
-             <Button
-                    title='Sign Out'
-                    onPress={this.handleSignOut} />
-         </View>
-        );
-    }
-}
 
 export default createMaterialBottomTabNavigator({
 
