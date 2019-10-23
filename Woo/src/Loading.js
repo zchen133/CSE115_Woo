@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import * as firebase from "firebase";
-import { StyleSheet, Text, View, ActivityIndicator,YellowBox } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, YellowBox } from 'react-native';
 import { test, loginEmail } from './Login.js'
 import { AppLoading } from 'expo';
 var newtest;
 var initialEmail = 'initialEmail';
 export default class Loading extends Component {
-    
-    constructor(){
+
+    constructor() {
         super();
-        this.state = {isReady:false};
+        this.state = { isReady: false };
         YellowBox.ignoreWarnings(['Setting a timer']);
     }
-    
+
     readUserData = () => {
         var docRef = firebase.firestore().collection("users").doc(initialEmail);
         return docRef.get().then(function(doc) {
@@ -62,12 +62,12 @@ export default class Loading extends Component {
 
     render() {
         return (
-        <View style={styles.container}>
+            <View style={styles.container}>
             <Text>Loading...</Text>
             <ActivityIndicator size='large' />
         </View>
-    );
-}
+        );
+    }
 
 }
 
