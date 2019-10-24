@@ -12,10 +12,11 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import Login from './Login.js'
 import Block from './components.js'
 
-import ProfileScreen from './Profile.js'
-import AppointmentScreen from './Appointment.js'
-import CheckinScreen from './Checkin.js'
-import PrescriptionScreen from './Prescription.js'
+import Patient_ProfileScreen from './Patient_Profile.js'
+import Patient_AppointmentScreen from './Patient_Appointment.js'
+import Patient_CheckinScreen from './Patient_Checkin.js'
+import Patient_PrescriptionScreen from './Patient_Prescription.js'
+import { initialEmail } from './Loading.js';
 
 class PatientHomepage extends Component {
     constructor() {
@@ -23,6 +24,9 @@ class PatientHomepage extends Component {
         YellowBox.ignoreWarnings(['Setting a timer']);
     }
 
+    onPressTest(){
+        console.log("get email"+initialEmail)
+    }
     renderTop() {
         return (
             <Block flex = {0.4} column style = {{paddingHorizontal:20}}>
@@ -37,7 +41,10 @@ class PatientHomepage extends Component {
                     <Block row style = {{paddingHorizontal:30}}>
                     <Text>Profile Part</Text>
                     
-                    </Block>
+                    {/* <Button
+                    title='Just For Test'
+                    onPress={this.onPressTest} />*/}
+                    </Block> 
                     
                 </Block>
                 
@@ -94,7 +101,7 @@ export default createMaterialBottomTabNavigator({
         }
     },
     Profile: {
-        screen: ProfileScreen,
+        screen: Patient_ProfileScreen,
         navigationOptions: {
             tabBarLabel: 'Profile',
             tabBarIcon: ({ tintColor }) => (
@@ -103,7 +110,7 @@ export default createMaterialBottomTabNavigator({
         }
     },
     Appointment: {
-        screen: AppointmentScreen,
+        screen: Patient_AppointmentScreen,
         navigationOptions: {
             tabBarLabel: 'Appointment',
             tabBarIcon: ({ tintColor }) => (
@@ -112,7 +119,7 @@ export default createMaterialBottomTabNavigator({
         }
     },
     Checkin: {
-        screen: CheckinScreen,
+        screen: Patient_CheckinScreen,
         navigationOptions: {
             tabBarLabel: 'Check-In',
             tabBarIcon: ({ tintColor }) => (
@@ -121,7 +128,7 @@ export default createMaterialBottomTabNavigator({
         }
     },
     Prescription: {
-        screen: PrescriptionScreen,
+        screen: Patient_PrescriptionScreen,
         navigationOptions: {
             tabBarLabel: 'Prescription',
             tabBarIcon: ({ tintColor }) => (
