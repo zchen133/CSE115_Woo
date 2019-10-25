@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": "https://ib-bqi.anonymous.woo.exp.direct",
-  "packagerNgrokUrl": "https://packager.ib-bqi.anonymous.woo.exp.direct",
-  "ngrokPid": 5039,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 27644,
+  "expoServerNgrokUrl": "https://z5-j9v.anonymous.woo.exp.direct",
+  "packagerNgrokUrl": "https://packager.z5-j9v.anonymous.woo.exp.direct",
+  "ngrokPid": 30012,
   "webpackServerPort": null
 }
