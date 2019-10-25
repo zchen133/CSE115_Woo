@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 
-export default class PrescriptionScreen extends Component {
+export default class Patient_PrescriptionScreen extends Component {
     handleSignOut = () => {
         firebase
             .auth()

@@ -7,7 +7,7 @@ import * as firebase from "firebase";
 ////var appointment
 //import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 
-export default class ProfileScreen extends Component {
+export default class Patient_ProfileScreen extends Component {
 
     render() {
         return (

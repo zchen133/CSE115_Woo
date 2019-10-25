@@ -1,26 +1,31 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions } from 'react-native';
 import * as firebase from "firebase";
+import Toast from "react-native-tiny-toast"
+
 const { width, height } = Dimensions.get('window')
+
 export default class Recovery extends Component {
     state = { email: '', err: null }
 
     sendEmail = () => {
-        if (this.state.email == null) {
-            console.log('No email selected');
+        if (this.state.email == '') {
+            console.log('No email selected');  
+             Toast.show('Please enter your email');
             return;
         }
 
-        console.log('Sending email...');
+        console.log('Sending email...'+this.state.email);
 
         firebase
             .auth()
             .sendPasswordResetEmail(this.state.email)
-            .then(this.props.navigation.navigate('Login'))
-            .catch(error => this.setState({ err: error.message }));
+            .catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
+        
+        
     }
-
+    
     BackLoginPage = () => {
         this.props.navigation.navigate('Login')
     }

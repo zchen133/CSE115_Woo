@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions } from 'react-native';
 import * as firebase from "firebase";
 import { YellowBox } from 'react-native';
-var initialEmail = 'initialEmail'
-const { width, height } = Dimensions.get('window')
+import Toast from 'react-native-tiny-toast';
+var initialEmail = 'initialEmail';
+const { width, height } = Dimensions.get('window');
 export default class AdminHomepage extends Component {
     constructor() {
         super();
@@ -11,18 +12,27 @@ export default class AdminHomepage extends Component {
     }
     state = { email: '', err: null }
 
-    BackLoginPage = () => {
-        this.props.navigation.navigate('Login')
+    
+    handleSignOut = () => {
+        firebase
+            .auth()
+            .signOut()
+            .then(this.props.navigation.navigate('Login'));
     }
+
     addDoctor = () => {
         if (this.state.email !== '') {
             initialEmail = this.state.email;
+        }
+        else{ 
+            Toast.show('Please enter the email');
+            return;  
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '4',
 
-        }).catch(error => this.setState({ err: error.message }));
+        }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
     }
 
@@ -32,11 +42,15 @@ export default class AdminHomepage extends Component {
         if (this.state.email !== '') {
             initialEmail = this.state.email;
         }
+        else{ 
+            Toast.show('Please enter the email');
+            return;  
+        }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '3',
 
-        }).catch(error => this.setState({ err: error.message }));
+        }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
     }
 
@@ -44,11 +58,15 @@ export default class AdminHomepage extends Component {
         if (this.state.email !== '') {
             initialEmail = this.state.email;
         }
+        else{ 
+            Toast.show('Please enter the email');
+            return;  
+        }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '2',
 
-        }).catch(error => this.setState({ err: error.message }));
+        }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
     }
 
@@ -56,11 +74,15 @@ export default class AdminHomepage extends Component {
         if (this.state.email !== '') {
             initialEmail = this.state.email;
         }
+        else{ 
+            Toast.show('Please enter the email');
+            return;  
+        }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '1',
 
-        }).catch(error => this.setState({ err: error.message }));
+        }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
     }
 
@@ -101,7 +123,7 @@ export default class AdminHomepage extends Component {
                         <Text style={{ fontSize: 20 }}>Reset Permission</Text>
                     </Animated.View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this.BackLoginPage}>
+                <TouchableOpacity onPress={this.handleSignOut}>
                     <Animated.View style={styles.closeButton}>
                         <Text style={{ fontSize: 15 }}>X</Text>
                     </Animated.View>

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import * as firebase from "firebase";
-import { StyleSheet, Text, View, ActivityIndicator, YellowBox } from 'react-native';
-import { test, loginEmail } from './Login.js'
+import { StyleSheet, Text, View, ActivityIndicator, YellowBox,ImageBackground,sleep } from 'react-native';
+import { test, loginEmail } from './Login.js';
 import { AppLoading } from 'expo';
 var newtest;
 var initialEmail = 'initialEmail';
 export {initialEmail};
+
 export default class Loading extends Component {
 
     constructor() {
@@ -29,20 +30,27 @@ export default class Loading extends Component {
     }
 
     componentDidMount() {
+        
         firebase.auth().onAuthStateChanged(user => {
             console.log("newtest after import:" + newtest);
+            
 
             if (user) {
 
                 initialEmail = user.email
                 this.readUserData()
                     .then((result) => {
+                        
                         if (result == 1) {
-                            this.props.navigation.navigate('PatientHomepage')
+                            let that = this;
+                            setTimeout(function(){that.props.navigation.navigate('PatientHomepage')}, 3000);
+
                         } else if (result == 5) {
-                            this.props.navigation.navigate('AdminHomepage')
+                            let that = this;
+                            setTimeout(function(){that.props.navigation.navigate('AdminHomepage')}, 3000);
                         } else if (result == 2 || result == 3 || result == 4) {
-                            this.props.navigation.navigate('MedicalHomepage')
+                            let that = this;
+                            setTimeout(function(){that.props.navigation.navigate('MedicalHomepage')}, 3000);
                         }
                     })
                 // console.log("test after import:" + test + 'newtest' + newtest + 'email' + user.email);
@@ -52,6 +60,7 @@ export default class Loading extends Component {
                 console.log('loginemail' + loginEmail)
                 if (test > 0) {
                     console.log('user.email = null and user exists')
+                    //this.props.navigation.navigate('Login')
                 } else {
                     console.log('inside user false' + user + 'user.email' + initialEmail)
                     this.props.navigation.navigate('Login')
@@ -62,11 +71,14 @@ export default class Loading extends Component {
     }
 
     render() {
+        
         return (
-            <View style={styles.container}>
-            <Text>Loading...</Text>
-            <ActivityIndicator size='large' />
-        </View>
+            <ImageBackground
+                source={require('../assets/loadingPage.gif')}
+                style={styles.container}
+                        >
+            
+        </ImageBackground>
         );
     }
 
@@ -75,8 +87,10 @@ export default class Loading extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#73BFF1',
-        alignItems: 'center',
-        justifyContent: 'center',
+        //backgroundColor: '#f5f5f5',
+        //alignItems: 'center',
+        //justifyContent: 'center',
+        width:null,
+        height:null,
     },
 });

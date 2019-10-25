@@ -7,13 +7,15 @@ import {
     Image,
     Dimensions,
     TextInput,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    ImageBackground
 } from "react-native";
 import { YellowBox } from 'react-native';
 //import Svg,{Image,Circle,ClipPath} from 'react-native-svg';
 import Animated, { Easing } from 'react-native-reanimated';
 import { TapGestureHandler, State, TouchableOpacity } from 'react-native-gesture-handler';
 import * as firebase from "firebase";
+import Toast from 'react-native-tiny-toast';
 
 const { width, height } = Dimensions.get('window')
 const { Value, event, block, cond, eq, set, Clock, startClock, stopClock, debug, timing, clockRunning, interpolate, Extrapolate, concat } = Animated
@@ -116,6 +118,7 @@ class WooApp extends Component {
                 return doc.get('accountType');
             } else {
                 console.log("No such document");
+                
             }
         }).catch(function(error) {
             console.log("Error getting document:", error);
@@ -128,6 +131,11 @@ class WooApp extends Component {
         if (this.state.email !== "") {
             initialEmail = this.state.email;
         }
+        else{
+            console.log('No email selected');  
+             Toast.show('Please enter your email');
+            return;
+        }
 
         this.readUserData()
             .then((result) => {
@@ -137,8 +145,10 @@ class WooApp extends Component {
                 firebase
                     .auth()
                     .signInWithEmailAndPassword(this.state.email, this.state.password)
-                    .catch(error => this.setState({ err: error.message }))
+                    .then(()=>this.props.navigation.navigate('Loading'))
+                    .catch(error => {this.setState({ err: error.message }),Toast.show(error.message);})
                 console.log(this.state.err);
+                
             })
     }
 
@@ -157,7 +167,7 @@ class WooApp extends Component {
             <View style={{ flex: 1, backgroundColor: '#ffffff', justifyContent: 'flex-end' }}>
                 <KeyboardAvoidingView style={{ flex: 1, backgroundColor: '#ffffff', justifyContent: 'flex-end', }} behavior='padding' enabled>
                     <Animated.View style={{ ...StyleSheet.absoluteFill, transform: [{ translateY: this.bgY }] }}>
-                        <Image
+                        <ImageBackground
                             source={require('../assets/test.gif')}
                             style={{ flex: 1, height: null, width: null }}
                         />

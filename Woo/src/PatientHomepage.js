@@ -34,12 +34,12 @@ class PatientHomepage extends Component {
                 </Block>
                 <Block flex = {false} row style = {{paddingHorizontal:15,paddingVertical:5}}>
                 <Block center>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Patient Homepage</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold',color:'#e4f9f5' }}>Patient Homepage</Text>
                 </Block>
                 </Block>
                 <Block  card shadow color = "#f6f5f5" style = {styles.pageTop}>
                     <Block row style = {{paddingHorizontal:30}}>
-                    <Text>Profile Part</Text>
+                    <Text style={{fontSize: 20, fontWeight: 'bold',color:'#40514e',paddingLeft:(width/2)-110 }}>Profile Part</Text>
                     
                     {/* <Button
                     title='Just For Test'
@@ -53,7 +53,7 @@ class PatientHomepage extends Component {
     }
     renderList(appointment) {
         return (
-            <Block row card shadow color = "#e5e6eb" style={styles.items}>
+            <Block row card shadow color = "#ffffff" style={styles.items}>
                 <Text>{appointment.time}</Text>
                 
             </Block>
@@ -64,7 +64,7 @@ class PatientHomepage extends Component {
         return (
             <Block flex = {0.8} colomn color = "#e7eff6" style = {styles.pageBottom}>
                
-                    <Text style={{fontSize: 20, fontWeight: 'bold' }}>Upcoming Appointment </Text>
+                    <Text style={{fontSize: 20, fontWeight: 'bold',color:'#40514e',paddingLeft:(width/2)-110 }}>Upcoming Appointment </Text>
                     
                     <ScrollView showsVerticalScrollIndicator = {true}>
                     {appointment.map(appointment => (
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     },
     safe: {
         flex: 1,
-        backgroundColor: '#72C3C9'
+        backgroundColor: '#11999e'
 
     },
     pageTop: {

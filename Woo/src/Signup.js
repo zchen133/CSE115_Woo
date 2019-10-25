@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import * as firebase from "firebase";
+import Toast from 'react-native-tiny-toast'
 import "firebase/firestore";
 
 const { width, height } = Dimensions.get('window')
@@ -11,15 +12,42 @@ export default class Signup extends Component {
     handleSignUp = () => {
 
         // TODO: Show errors on screen
-        if (this.state.password != this.state.confirmPass) {
-            console.log('Passwords don\'t match');
+        if (this.state.firstName == '') {
+            console.log('No firstname selected');  
+             Toast.show('Please enter your first name');
+            return;
+        }
+        if (this.state.lastName == '') {
+            console.log('No lastname selected');  
+             Toast.show('Please enter your last name');
+            return;
+        }
+
+        if (this.state.email == '') {
+            console.log('No email selected');  
+             Toast.show('Please enter your email');
+            return;
+        }
+
+        if (this.state.password == '') {
+            console.log('No email selected');  
+             Toast.show('Please enter your password');
             return;
         }
 
         if (this.state.password.length < 6) {
             console.log('Password must be longer than 6 characters.');
+            Toast.show('Password must be longer than 6 characters.');
             return;
         }
+
+        if (this.state.password != this.state.confirmPass) {
+            console.log('Passwords don\'t match');
+            Toast.show('Passwords don\'t match')
+            return;
+        }
+
+       
 
         console.log("Attempt to Signup");
         firebase
@@ -33,9 +61,12 @@ export default class Signup extends Component {
                     email: this.state.email,
                     accountType: this.state.accountType,
                 })
+
             })
-            .catch(error => this.setState({ err: error.message }));
-        console.log(this.state.err);
+            .then(()=>this.props.navigation.navigate('Loading'))
+            .catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
+       
+        
     }
 
     BackLoginPage = () => {
