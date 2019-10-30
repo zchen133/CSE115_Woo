@@ -24,9 +24,39 @@ class PatientHomepage extends Component {
         YellowBox.ignoreWarnings(['Setting a timer']);
     }
 
-    onPressTest(){
-        console.log("get email"+initialEmail)
+    async onPressTest() {
+        console.log("get email "+initialEmail)
+        
+        const docId = firebase.firestore.collection("users").doc(initialEmail).get()
+            .then((snapshot) => {
+                snapshot.docs(doc =>{
+                    console.log(doc.id)
+                })
+            }) 
+        const docRef = firebase.firestore().collection("users").doc(initialEmail).collection("events").doc("hiM90mTFaJLHRUQdWHlc");
+        return docRef.get().then(function(doc) {
+            if (doc.exists) {
+               
+                console.log(doc.get('date '))
+               return doc.get('date ');
+                
+            } else {
+                console.log("No such document");
+            }
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
+        
     }
+    
+/*
+    createEvent(){
+        this.onPressTest()
+            .then((result) => {
+              console.log(result)  
+            })
+    }
+*/
     renderTop() {
         return (
             <Block flex = {0.4} column style = {{paddingHorizontal:20}}>
@@ -41,9 +71,9 @@ class PatientHomepage extends Component {
                     <Block row style = {{paddingHorizontal:30}}>
                     <Text style={{fontSize: 20, fontWeight: 'bold',color:'#40514e',paddingLeft:(width/2)-110 }}>Profile Part</Text>
                     
-                    {/* <Button
+                    {<Button
                     title='Just For Test'
-                    onPress={this.onPressTest} />*/}
+                    onPress={this.onPressTest} />}
                     </Block> 
                     
                 </Block>
