@@ -9,35 +9,58 @@ import * as firebase from "firebase";
 
 export default class ProfileScreen extends Component {
 
+    state = { dataSource: null }
     user = firebase.auth().currentUser
     docRef = firebase.firestore().collection("users").doc(this.user.email);
-    getUserData = () => {
-        return this.docRef.get().then((doc) => {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            inputField: '',
+            data: null,
+        };
+    }
+
+    componentDidMount() {
+        this.getUserData()
+    }
+
+    getUserData() {
+        this.docRef.get().then((doc) => {
             if (doc.exists) {
-                return doc.data().first
+                let data = doc.data()
+                this.setState({ data: data })
+            } else {
+                this.setState({ data: null })
+                console.log('No such document')
             }
+        }).catch((err) => {
+            this.setState({ data: null })
+            console.log('Error: ', err)
         })
     }
 
-    fname
-
     render() {
-        console.log('Logging here')
-        this.getUserData().then(res => {
-            this.fname = res
-            console.log(this.fname)
-        })
-        return (
-            <View style={styles.container}>
-                <View style={styles.header}></View>
-                <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
-                <View style={styles.body}>
-                    <Text style={styles.name}>John Doe</Text>
-                    <View style={styles.bodyContent}>
+        if (this.state.data) {
+            return (
+                <View style={styles.container}>
+                    <View style={styles.header}></View>
+                    <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
+                    <View style={styles.body}>
+                        <Text style={styles.name}>{this.state.data.first + ' ' + this.state.data.last}</Text>
+                        <Button onPress={console.log('Pressed')} title='Edit Name'/>
+                        <View style={styles.bodyContent}>
+                        </View>
                     </View>
                 </View>
-            </View>
-        );
+            );
+        } else {
+            return (
+                <View>
+                    <Text>Loading...</Text>
+                </View>
+            );
+        }
     }
 }
 
@@ -64,7 +87,6 @@ const styles = StyleSheet.create({
     // },
     body: {
         marginTop: 40,
-        backgroundColor: 'blue',
     },
     bodyContent: {
         flex: 1,
@@ -73,7 +95,6 @@ const styles = StyleSheet.create({
     },
     name: {
         padding: 30,
-        backgroundColor: 'red',
         alignItems: 'center',
         fontSize: 28,
         color: "#696969",
