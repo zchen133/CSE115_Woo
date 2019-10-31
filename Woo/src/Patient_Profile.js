@@ -9,19 +9,33 @@ import * as firebase from "firebase";
 
 export default class ProfileScreen extends Component {
 
-    state = { dataSource: null }
-    user = firebase.auth().currentUser
-    docRef = firebase.firestore().collection("users").doc(this.user.email);
-
     constructor(props) {
         super(props);
+        this.user = firebase.auth().currentUser
+        this.docRef = firebase.firestore().collection("users").doc(this.user.email);
         this.state = {
-            inputField: '',
             data: null,
         };
+        this.changeName = this.changeName.bind(this)
+        this.makeid = this.makeid.bind(this)
     }
 
     componentDidMount() {
+        this.getUserData()
+    }
+
+    makeid(length) {
+        var result = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    changeName() {
+        this.docRef.set({ first: this.makeid(10) }, { merge: true });
         this.getUserData()
     }
 
@@ -48,7 +62,7 @@ export default class ProfileScreen extends Component {
                     <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
                     <View style={styles.body}>
                         <Text style={styles.name}>{this.state.data.first + ' ' + this.state.data.last}</Text>
-                        <Button onPress={console.log('Pressed')} title='Edit Name'/>
+                        <Button onPress={this.changeName} title='Edit Name'/>
                         <View style={styles.bodyContent}>
                         </View>
                     </View>
