@@ -12,11 +12,14 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import Login from './Login.js'
 import Block from './components.js'
 
+
 import Patient_ProfileScreen from './Patient_Profile.js'
 import Patient_AppointmentScreen from './Patient_Appointment.js'
 import Patient_CheckinScreen from './Patient_Checkin.js'
 import Patient_PrescriptionScreen from './Patient_Prescription.js'
 import { initialEmail } from './Loading.js';
+//import { FAB } from 'react-native-paper';
+import FAB from 'react-native-fab'
 
 class PatientHomepage extends Component {
     constructor() {
@@ -25,8 +28,14 @@ class PatientHomepage extends Component {
     }
 
     async onPressTest() {
+
         console.log("get email "+initialEmail)
-        
+
+        const eventRef = firebase.firestore().collection("users").doc(initialEmail).collection("events");
+        eventRef.doc("test").set({
+            date: "this date"
+        })
+        /*
         const docId = firebase.firestore.collection("users").doc(initialEmail).get()
             .then((snapshot) => {
                 snapshot.docs(doc =>{
@@ -46,8 +55,10 @@ class PatientHomepage extends Component {
         }).catch(function(error) {
             console.log("Error getting document:", error);
         });
+        */
         
     }
+    
     
 /*
     createEvent(){
@@ -103,7 +114,13 @@ class PatientHomepage extends Component {
               {this.renderList(appointment)}
             </TouchableOpacity>
           ))}
+          
                         </ScrollView>
+                        <FAB 
+                        buttonColor="#72C3C9" 
+                        iconTextColor="#FFFFFF" 
+                        onClickAction={() => {this.props.navigation.navigate('Patient_Appointment')}} 
+                        visible={true} iconTextComponent={<Icon name="ios-add"/>} />
                 </Block>
         );
     }
@@ -223,5 +240,12 @@ const styles = StyleSheet.create({
     items: {
         padding: 20,
         marginBottom: 15
-    }
-});
+    },
+    fab: {
+        position: 'absolute',
+        margin: 30,
+        right: 20,
+        bottom: 0,
+        
+      },
+}); 
