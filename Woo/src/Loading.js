@@ -5,6 +5,7 @@ import { test, loginEmail } from './Login.js'
 import { AppLoading } from 'expo';
 var newtest;
 var initialEmail = 'initialEmail';
+export {initialEmail};
 export default class Loading extends Component {
 
     constructor() {

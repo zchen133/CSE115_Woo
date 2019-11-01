@@ -2,15 +2,37 @@ import React, { Component, ReactNode}  from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox, ScrollView } from 'react-native';
 import * as firebase from "firebase";
 import {Calendar, Agenda} from 'react-native-calendars';
+import { initialEmail } from './Loading.js';
+import DocumentSnapshot from "firebase";
+
 
 export default class Schedule extends Component {
+
 
   constructor(props) {
     super(props);
     this.state = {
+      data: null,
       items: {}
     };
   }
+  
+  getAppointments(date){
+    var docRef = firebase.firestore().collection("users").doc(initialEmail).collection("events").doc("appointment").collection("date").doc(date);
+
+    return docRef.get().then(function(doc) {
+        if (doc.exists) {
+            this.setState({data:doc.get('name')})
+            //return doc.get('name');
+        } else {
+            console.log("No such document");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+
+}
+
 
   render() {
     return (
@@ -40,22 +62,29 @@ export default class Schedule extends Component {
 
   loadItems(day) {
     setTimeout(() => {
+      console.log('intitial email ' + initialEmail)
       for (let i = -15; i < 85; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
+        //console.log(strTime)
         if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
           const numItems = Math.floor(Math.random() * 5); //Items in collection for that data
-          for (let j = 0; j < numItems; j++) {
-            this.state.items[strTime].push({
-              //firebase.firestore().collection('users').get('events')
-              name: 'Appointment at ' + strTime, // + Put the actual time of the event here
-              height: 50 //Math.max(50, Math.floor(Math.random() * 150))
-            });
-          }
+          //appointment = this.getAppointments(strTime)
+          //const appointment = firebase.firestore().collection("users").doc(initialEmail).collection("events").doc('appointment').collection("date").doc(strTime);
+          //console.log(appointment)
+          //if (appointment != null || appointment !== undefined ) {
+            for (let j = 0; j < numItems; j++) {
+              this.state.items[strTime].push({
+                //firebase.firestore().collection('users').get('events')
+                name: 'Appointment at ' + this.state.data, //+ appointment.getString("time") + ' for ' + appointment.getString("name"), // + Put the actual time of the event here
+                height: 50 //Math.max(50, Math.floor(Math.random() * 150))
+              });
+            }
+          //}
         }
       }
-      console.log(this.state.items);
+      //console.log(this.state.items);
       const newItems = {};
       Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
 
