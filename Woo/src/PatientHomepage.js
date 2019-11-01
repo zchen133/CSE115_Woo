@@ -3,23 +3,22 @@ import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOp
 
 import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView, ThemeColors } from 'react-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
 //var appointment
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
+//import add from  'assets\add-circle-512.png'
 
 import Login from './Login.js'
 import Block from './components.js'
-
 
 import Patient_ProfileScreen from './Patient_Profile.js'
 import Patient_AppointmentScreen from './Patient_Appointment.js'
 import Patient_CheckinScreen from './Patient_Checkin.js'
 import Patient_PrescriptionScreen from './Patient_Prescription.js'
 import { initialEmail } from './Loading.js';
-//import { FAB } from 'react-native-paper';
-import FAB from 'react-native-fab'
+import { FAB } from 'react-native-paper';
 
 class PatientHomepage extends Component {
     constructor() {
@@ -28,13 +27,7 @@ class PatientHomepage extends Component {
     }
 
     async onPressTest() {
-
         console.log("get email "+initialEmail)
-
-        const eventRef = firebase.firestore().collection("users").doc(initialEmail).collection("events");
-        eventRef.doc("test").set({
-            date: "this date"
-        })
         /*
         const docId = firebase.firestore.collection("users").doc(initialEmail).get()
             .then((snapshot) => {
@@ -42,6 +35,13 @@ class PatientHomepage extends Component {
                     console.log(doc.id)
                 })
             }) 
+            */
+        const eventref = firebase.firestore().collection("users").doc(initialEmail).collection("events");
+        eventref.doc("test").set({
+            date: "this date",
+        })
+           
+            /*
         const docRef = firebase.firestore().collection("users").doc(initialEmail).collection("events").doc("hiM90mTFaJLHRUQdWHlc");
         return docRef.get().then(function(doc) {
             if (doc.exists) {
@@ -58,7 +58,6 @@ class PatientHomepage extends Component {
         */
         
     }
-    
     
 /*
     createEvent(){
@@ -83,7 +82,7 @@ class PatientHomepage extends Component {
                     <Text style={{fontSize: 20, fontWeight: 'bold',color:'#40514e',paddingLeft:(width/2)-110 }}>Profile Part</Text>
                     
                     {<Button
-                    title='Just For Test'
+                    title='Just For Testtt'
                     onPress={this.onPressTest} />}
                     </Block> 
                     
@@ -114,13 +113,9 @@ class PatientHomepage extends Component {
               {this.renderList(appointment)}
             </TouchableOpacity>
           ))}
-          
+
+
                         </ScrollView>
-                        <FAB 
-                        buttonColor="#72C3C9" 
-                        iconTextColor="#FFFFFF" 
-                        onClickAction={() => {this.props.navigation.navigate('Patient_Appointment')}} 
-                        visible={true} iconTextComponent={<Icon name="ios-add"/>} />
                 </Block>
         );
     }
@@ -241,11 +236,5 @@ const styles = StyleSheet.create({
         padding: 20,
         marginBottom: 15
     },
-    fab: {
-        position: 'absolute',
-        margin: 30,
-        right: 20,
-        bottom: 0,
-        
-      },
-}); 
+    
+});

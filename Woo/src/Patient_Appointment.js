@@ -2,11 +2,46 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
+import { initialEmail } from './Loading.js';
 
 export default class Patient_AppointmentScreen extends Component {
-    
+    state = { title: '', date: '', time: '', hospital: '', doctor: '', description: '', err: null }
     sendToHome = () => {
         this.props.navigation.navigate('PatientHomepage')
+    }
+    handleAppointment = () => {
+        const eventrefPatient = firebase.firestore().collection("users").doc(initialEmail).collection("events");
+         eventrefPatient.doc(this.state.title).set({
+             date: this.state.date,
+             time: this.state.time,
+             hospital: this.state.hospital,
+             doctor: this.state.doctor,
+             description: this.state.description,
+
+         })
+         // if receptionist says yes to request
+         
+         const eventrefHospital= firebase.firestore().collection("hospital").doc(this.state.hospital).collection("events");
+         eventrefHospital.doc(this.state.title).set({
+             date: this.state.date,
+             time: this.state.time,
+             hospital: this.state.hospital,
+             doctor: this.state.doctor,
+             description: this.state.description,
+
+         })
+         
+        //if receptionist says no 
+        /*
+        const eventref = firebase.firestore().collection("users").doc(initialEmail).collection("events");
+         eventref.doc(this.state.title).delete().then(function() {
+             console.log("document deleted");
+         }).catch(function(error)){
+             console.log("Error removing document ", error);
+         });
+         }
+         */
+
     }
     render() {
         return (
@@ -19,45 +54,51 @@ export default class Patient_AppointmentScreen extends Component {
                     />
                 </View>
                 <TextInput
-                    placeholder='First Name'
+                    placeholder='Event Title'
                     autoCapitalize="none"
                     style={styles.input}
-                   // onChangeText={firstName => this.setState({ firstName })}
-                    //value={this.state.firstName}
+                    onChangeText={title => this.setState({ title })}
+                    value={this.state.title}
                 />
                 <TextInput
-                    placeholder='Last Name'
+                    placeholder='YYYY/MM/DD'
                     autoCapitalize="none"
                     style={styles.input}
-                   // onChangeText={lastName => this.setState({ lastName })}
-                   // value={this.state.lastName}
+                    onChangeText={date => this.setState({ date })}
+                    value={this.state.date}
                 />
                 <TextInput
-                    placeholder='Email'
+                    placeholder='Time'
                     autoCapitalize="none"
                     style={styles.input}
-                   // onChangeText={email => this.setState({ email })}
-                   // value={this.state.email}
+                    onChangeText={time => this.setState({ time })}
+                    value={this.state.time}
                 />
                 <TextInput
-                    secureTextEntry
-                    placeholder='Password'
+                    placeholder='Hospital'
                     autoCapitalize="none"
                     style={styles.input}
-                  //  onChangeText={password => this.setState({ password })}
-                   // value={this.state.password}
+                    onChangeText={hospital => this.setState({ hospital })}
+                    value={this.state.hospital}
                 />
                 <TextInput
-                    secureTextEntry
-                    placeholder='Confirm Password'
+                    placeholder='Requested Doctor (Optional)'
                     autoCapitalize="none"
                     style={styles.input}
-                  //  onChangeText={confirmPass => this.setState({ confirmPass })}
-                  //  value={this.state.confirmPass}
+                    onChangeText={doctor => this.setState({ doctor })}
+                    value={this.state.doctor}
                 />
-                <TouchableOpacity onPress={this.handleSignUp}>
+                <TextInput
+                    placeholder='(Description)'
+                    autoCapitalize="none"
+                    style={styles.bottom}
+                    multiline={true}
+                    onChangeText={description => this.setState({ description })}
+                    value={this.state.description}
+                />
+                <TouchableOpacity onPress={this.handleAppointment}>
                     <Animated.View style={styles.button}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>SIGN UP</Text>
+                        <Text style={{ fontSize: 20 }}>Request Appointment</Text>
                     </Animated.View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this.sendToHome}>
@@ -87,13 +128,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginVertical: 5,
-        marginBottom: 40,
+        marginBottom: 10,
         shadowOffset: { width: 2, height: 2 },
         shadowColor: 'black',
-        shadowOpacity: 0.2
+        shadowOpacity: 0.2,
     },
     closeButton: {
-        marginBottom: 150,
+        marginBottom: 10,
         height: 40,
         width: 40,
         backgroundColor: 'white',
@@ -101,25 +142,17 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
-        // position:'absolute',
-        // top:-20,
         left: width / 2 - 20,
         shadowOffset: { width: 2, height: 2 },
         shadowColor: 'black',
         shadowOpacity: 0.2
     },
     input: {
-        // height: 40,
-        // alignItems: 'stretch',
         backgroundColor: 'white',
-        // width: '95%',
-        // borderColor: 'black',
-        // borderBottomWidth: 2.5,
+        width: '75%',
         marginBottom: 20,
         marginLeft: 50,
         marginRight: 50,
-        //paddingVertical:10,
-        // paddingHorizontal: 10,
         height: 35,
         borderRadius: 25,
         borderWidth: 0.5,
@@ -128,6 +161,20 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         borderColor: 'rgba(0,0,0,0.2)',
     },
+    bottom: {
+        backgroundColor: 'white',
+        marginBottom: 20,
+        marginLeft: 50,
+        marginRight: 50,
+        height: 100,
+        borderRadius: 25,
+        borderWidth: 0.5,
+        marginHorizontal: 20,
+        paddingLeft: 10,
+        marginVertical: 5,
+        borderColor: 'rgba(0,0,0,0.2)',
+    },
+   
 });
 
 const pickerSelectStyles = StyleSheet.create({
