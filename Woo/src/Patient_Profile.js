@@ -27,7 +27,7 @@ export default class ProfileScreen extends Component {
     }
 
     updateAddress() {
-        this.docRef.set({ address: 'male' }, { merge: true });
+        this.docRef.set({ address: '800 Test St' }, { merge: true });
         this.getUserData()
     }
 
@@ -70,18 +70,20 @@ export default class ProfileScreen extends Component {
                     <View style={styles.body}>
                         <Text style={styles.name}>{this.state.data.first + ' ' + this.state.data.last}</Text>
                     </View>
-                    <ScrollView style={styles.scroll}>
-                        <Button onPress={this.updateName} title='Edit Name'/>
-                        <Text style={styles.name}>{'Age: ' + this.state.data.age}</Text>
-                        <Button onPress={this.updateAge} title='Edit Age'/>
-                        <Text style={styles.name}>{'Gender: ' + this.state.data.gender}</Text>
-                        <Button onPress={this.updateGender} title='Edit Gender'/>
-                        <Text style={styles.name}>{'Email: ' + this.user.email}</Text>
-                        <Text style={styles.name}>{'Address: ' + this.state.data.address}</Text>
-                        <Button onPress={this.updateAddress} title='Edit Address'/>
-                        <View style={styles.bodyContent}>
-                        </View>
-                    </ScrollView>
+                    <View style={styles.userData}>
+                        <ScrollView style={styles.scroll}>
+                            <Button onPress={this.updateName} title='Edit Name'/>
+                            <Text style={styles.name}>{'Age: ' + this.state.data.age}</Text>
+                            <Button onPress={this.updateAge} title='Edit Age'/>
+                            <Text style={styles.name}>{'Gender: ' + this.state.data.gender}</Text>
+                            <Button onPress={this.updateGender} title='Edit Gender'/>
+                            <Text style={styles.name}>{'Email: ' + this.user.email}</Text>
+                            <Text style={styles.name}>{'Address: ' + this.state.data.address}</Text>
+                            <Button onPress={this.updateAddress} title='Edit Address'/>
+                            <View style={styles.bodyContent}>
+                            </View>
+                        </ScrollView>
+                    </View>
                 </View>
             );
         } else {
@@ -99,7 +101,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#72C3C9',
         height: 200,
     },
-    scroll: {
+    userData: {
+        height: '60%',
     },
     avatar: {
         width: 130,
