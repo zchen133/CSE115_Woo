@@ -20,6 +20,7 @@ export default class ProfileScreen extends Component {
         this.updateName = this.updateName.bind(this)
         this.updateAge = this.updateAge.bind(this)
         this.updateGender = this.updateGender.bind(this)
+        this.updateAddress = this.updateAddress.bind(this)
     }
 
     componentDidMount() {
