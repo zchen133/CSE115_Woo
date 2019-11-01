@@ -18,7 +18,7 @@ export default class Patient_AppointmentScreen extends Component {
              doctor: this.state.doctor,
              description: this.state.description,
 
-         })
+         }) 
          // if receptionist says yes to request
          
          const eventrefHospital= firebase.firestore().collection("hospital").doc(this.state.hospital).collection("events");
