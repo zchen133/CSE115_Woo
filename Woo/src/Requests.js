@@ -3,10 +3,20 @@ import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOp
 import * as firebase from "firebase";
 
 export default class Requests extends Component {
+
+    onPressRequests = () => {
+
+        this.props.navigation.navigate('PatientHomepage')
+    
+      }
+
     render() {
         return (
             <View style={styles.container}>
              <Text>Requests Screen Homepage</Text>
+             <Button 
+                title = 'Go back'
+                onPress={this.onPressRequests} />
          </View>
         );
     }

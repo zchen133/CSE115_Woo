@@ -27,7 +27,8 @@ export default class AppointmentScreen extends Component {
         </View>
         <View>
           <Button
-            title='requests'  
+            title='requests' 
+            style = {styles.requests} 
             onPress={this.onPressRequests}/>
         </View>
       </View>
@@ -37,23 +38,22 @@ export default class AppointmentScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+    textAlign:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft:40,
+    paddingRight:40,
+    marginTop:10,
+    height:40
   },
   requests: {
-    alignItems: 'center',
-    backgroundColor: 'blue',
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 12,
-    color: 'white',
-    fontSize: 24,
-    fontWeight: 'bold',
-    overflow: 'hidden',
-    padding: 12,
     textAlign:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft:40,
+    paddingRight:40,
+    marginTop:10,
+    height:40
   },
 });
 
