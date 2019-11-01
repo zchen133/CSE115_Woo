@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 
 // import { SafeAreaView } from 'react-navigation';
@@ -16,26 +16,33 @@ export default class ProfileScreen extends Component {
         this.state = {
             data: null,
         };
-        this.changeName = this.changeName.bind(this)
-        this.makeid = this.makeid.bind(this)
+
+        this.updateName = this.updateName.bind(this)
+        this.updateAge = this.updateAge.bind(this)
+        this.updateGender = this.updateGender.bind(this)
     }
 
     componentDidMount() {
         this.getUserData()
     }
 
-    makeid(length) {
-        var result = '';
-        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var charactersLength = characters.length;
-        for (var i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
+    updateAddress() {
+        this.docRef.set({ address: 'male' }, { merge: true });
+        this.getUserData()
     }
 
-    changeName() {
-        this.docRef.set({ first: this.makeid(10) }, { merge: true });
+    updateGender() {
+        this.docRef.set({ gender: 'male' }, { merge: true });
+        this.getUserData()
+    }
+
+    updateAge() {
+        this.docRef.set({ age: 29 }, { merge: true });
+        this.getUserData()
+    }
+
+    updateName() {
+        this.docRef.set({ first: 'Bob' }, { merge: true });
         this.getUserData()
     }
 
@@ -62,10 +69,19 @@ export default class ProfileScreen extends Component {
                     <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
                     <View style={styles.body}>
                         <Text style={styles.name}>{this.state.data.first + ' ' + this.state.data.last}</Text>
-                        <Button onPress={this.changeName} title='Edit Name'/>
+                    </View>
+                    <ScrollView style={styles.scroll}>
+                        <Button onPress={this.updateName} title='Edit Name'/>
+                        <Text style={styles.name}>{'Age: ' + this.state.data.age}</Text>
+                        <Button onPress={this.updateAge} title='Edit Age'/>
+                        <Text style={styles.name}>{'Gender: ' + this.state.data.gender}</Text>
+                        <Button onPress={this.updateGender} title='Edit Gender'/>
+                        <Text style={styles.name}>{'Email: ' + this.user.email}</Text>
+                        <Text style={styles.name}>{'Address: ' + this.state.data.address}</Text>
+                        <Button onPress={this.updateAddress} title='Edit Address'/>
                         <View style={styles.bodyContent}>
                         </View>
-                    </View>
+                    </ScrollView>
                 </View>
             );
         } else {
@@ -83,6 +99,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#72C3C9',
         height: 200,
     },
+    scroll: {
+    },
     avatar: {
         width: 130,
         height: 130,
@@ -94,11 +112,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         marginTop: 130
     },
-    // name: {
-    //     fontSize: 22,
-    //     color: "#FFFFFF",
-    //     fontWeight: '600',
-    // },
     body: {
         marginTop: 40,
     },
@@ -108,6 +121,7 @@ const styles = StyleSheet.create({
         padding: 30,
     },
     name: {
+        textAlign: 'center',
         padding: 30,
         alignItems: 'center',
         fontSize: 28,
