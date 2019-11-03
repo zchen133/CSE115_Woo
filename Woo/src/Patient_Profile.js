@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
-
+import EditableText from './EditableTextComponent.js';
+import DatePicker from 'react-native-datepicker'
 // import { SafeAreaView } from 'react-navigation';
 // import { ScrollView } from 'react-native-gesture-handler';
 // var appointment
@@ -15,35 +16,51 @@ export default class ProfileScreen extends Component {
         this.docRef = firebase.firestore().collection("users").doc(this.user.email);
         this.state = {
             data: null,
+            //name:"Name",
+
         };
 
-        this.updateName = this.updateName.bind(this)
+
+        this.updateFirstName = this.updateFirstName.bind(this)
+        this.updateLastName = this.updateLastName.bind(this)
         this.updateAge = this.updateAge.bind(this)
         this.updateGender = this.updateGender.bind(this)
         this.updateAddress = this.updateAddress.bind(this)
+        this.updateBirthday = this.updateBirthday.bind(this)
     }
 
     componentDidMount() {
         this.getUserData()
+        //this.docRef.set({ birthday: '1-1-2019' }, { merge: true });
     }
 
-    updateAddress() {
-        this.docRef.set({ address: '800 Test St' }, { merge: true });
+    updateAddress(input) {
+        this.docRef.set({ address: input }, { merge: true });
         this.getUserData()
     }
 
-    updateGender() {
-        this.docRef.set({ gender: 'male' }, { merge: true });
+    updateGender(input) {
+        this.docRef.set({ gender: input }, { merge: true });
         this.getUserData()
     }
 
-    updateAge() {
-        this.docRef.set({ age: 29 }, { merge: true });
+    updateAge(input) {
+        this.docRef.set({ age: input }, { merge: true });
         this.getUserData()
     }
 
-    updateName() {
-        this.docRef.set({ first: 'Bob' }, { merge: true });
+    updateFirstName(input) {
+        this.docRef.set({ first: input }, { merge: true });
+        this.getUserData()
+    }
+    updateLastName(input) {
+
+        this.docRef.set({ last: input }, { merge: true });
+        this.getUserData()
+    }
+    updateBirthday(input) {
+        this.docRef.set({ birthday: input }, { merge: true });
+        //this.docRef.set({ birthday: input }, { merge: true });
         this.getUserData()
     }
 
@@ -67,20 +84,96 @@ export default class ProfileScreen extends Component {
             return (
                 <View style={styles.container}>
                     <View style={styles.header}></View>
-                    <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
+                    <Image style={styles.avatar} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }} />
                     <View style={styles.body}>
                         <Text style={styles.name}>{this.state.data.first + ' ' + this.state.data.last}</Text>
                     </View>
                     <View style={styles.userData}>
                         <ScrollView style={styles.scroll}>
-                            <Button onPress={this.updateName} title='Edit Name'/>
+                            {/* <Button onPress={this.updateName} title='Edit Name'/>
                             <Text style={styles.name}>{'Age: ' + this.state.data.age}</Text>
                             <Button onPress={this.updateAge} title='Edit Age'/>
                             <Text style={styles.name}>{'Gender: ' + this.state.data.gender}</Text>
                             <Button onPress={this.updateGender} title='Edit Gender'/>
                             <Text style={styles.name}>{'Email: ' + this.user.email}</Text>
                             <Text style={styles.name}>{'Address: ' + this.state.data.address}</Text>
-                            <Button onPress={this.updateAddress} title='Edit Address'/>
+                            <Button onPress={this.updateAddress} title='Edit Address'/> */}
+                            <View style={styles.editableTextBorder}>
+                                <Text style={styles.text}>{'First Name: '}</Text>
+                                <EditableText text={this.state.data.first}
+                                    sendText={(firstName) => this.updateFirstName(firstName)}
+                                    textProps={(styles.editableText)}
+                                    textInputProps={(styles.editableText)}
+                                />
+                            </View>
+                            <View style={styles.editableTextBorder}>
+                                <Text style={styles.text}>{'Last Name: '}</Text>
+                                <EditableText style={styles.name}
+                                    text={this.state.data.last}
+                                    sendText={(lastName) => this.updateLastName(lastName)}
+                                    textProps={(styles.editableText)}
+                                    textInputProps={(styles.editableText)}
+                                />
+                            </View>
+                            <View style={styles.editableTextBorder}>
+                                <Text style={styles.text}>{'Gender: '}</Text>
+                                <EditableText
+                                    text={this.state.data.gender}
+                                    sendText={(gender) => this.updateGender(gender)}
+                                    textInputProps={(styles.editableText)}
+                                    textProps={(styles.editableText)}
+                                />
+                            </View>
+                            <View style={styles.editableTextBorder}>
+                                <Text style={styles.text}>{'Age: '}</Text>
+                                <EditableText text={this.state.data.age}
+                                    textProps={(styles.editableText)}
+                                    textInputProps={(styles.editableText)}
+                                    sendText={(age) => this.updateAge(age)}
+                                />
+                            </View>
+                            <View style={styles.editableTextBorder}>
+                                <Text style={styles.text}>{'Birthday: '}</Text>
+                                {/* <EditableText text={this.state.data.birthday}
+                                    sendText={(birthday) => this.updateBirthday(birthday)}
+                                    textProps={(styles.editableText)}
+                                    textInputProps={(styles.editableText)}
+                                /> */}
+                                <DatePicker //Doesn't support IOS darkmode yet
+                                    style={{ width: 200 }}
+                                    date={this.state.data.birthday}
+                                    mode="date"
+                                    placeholder="select date"
+                                    format="MM-DD-YYYY"
+                                    minDate="01-01-1900"
+                                    maxDate="01-01-2020"
+                                    confirmBtnText="Confirm"
+                                    cancelBtnText="Cancel"
+                                    showIcon={false}
+                                    customStyles={{
+                                        dateIcon: {
+                                            position: 'absolute',
+                                            left: 0,
+                                            top: 4,
+                                            marginLeft: 0
+                                        },
+                                        dateInput: {
+                                            //borderColor: "#00BFFF",
+                                            marginLeft: 36
+                                        }
+                                       
+                                    }}
+                                    onDateChange={(birthday) => this.updateBirthday(birthday)}
+                                />
+                            </View>
+                            <View style={styles.editableTextBorder}>
+                                <Text style={styles.text}>{'Address: '}</Text>
+                                <EditableText text={this.state.data.address}
+                                    sendText={(address) => this.updateAddress(address)}
+                                    textProps={(styles.editableText)}
+                                    textInputProps={(styles.editableText)}
+                                />
+                            </View>
                             <View style={styles.bodyContent}>
                             </View>
                         </ScrollView>
@@ -154,4 +247,25 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         backgroundColor: "#00BFFF",
     },
+    scroll: {
+        marginLeft: 15,
+        marginRight: 15
+
+    }, text: {
+        fontSize: 20,
+        flex: 1
+
+    }, editableText: {
+        fontSize: 20,
+        textAlign: 'right',
+        flex: 1
+
+    },
+    editableTextBorder: {
+        flexDirection: 'row',
+        paddingBottom: 20,
+        borderStyle: 'solid',
+        borderColor: '#e2e2e2',
+        borderTopWidth: 1
+    }
 });
