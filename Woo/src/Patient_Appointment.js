@@ -3,13 +3,50 @@ import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOp
 import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
 import { initialEmail } from './Loading.js';
-
+import Toast from 'react-native-tiny-toast';
+import { hospitalStaff } from './AdminHomepage.js';
+import DatePicker from 'react-native-datepicker';
+import { Platform } from '@unimodules/core';
+var appointments = [];
+var accepted = true;
 export default class Patient_AppointmentScreen extends Component {
-    state = { title: '', date: '', time: '', hospital: '', doctor: '', description: '', err: null }
-    sendToHome = () => {
-        this.props.navigation.navigate('PatientHomepage')
+
+    state = { title: '', date: '', time: '', hospital: '', doctor: '', description: '', hospitalStaff: '',appointments: '',  err: null }
+
+    clearfields = () => {
+        this.setState({title:''})
+        this.setState({date:''})
+        this.setState({time:''})
+        this.setState({hospital:''})
+        this.setState({doctor:''})
+        this.setState({description:''})
     }
-    handleAppointment = () => {
+    handleAppointmentRequest = () => {
+        
+        if (this.state.title == '') {
+            console.log('No title given');  
+             Toast.show('Please enter title');
+            return;
+        }
+        if (this.state.date == '') {
+            console.log('No date given');  
+             Toast.show('Please enter appointment date');
+            return;
+        }
+
+        if (this.state.time == '') {
+            console.log('No time selected');  
+             Toast.show('Please enter appointment time');
+            return;
+        }
+
+        if (this.state.hospital == '') {
+            console.log('No hospital given');  
+             Toast.show('Please enter hospital');
+            return;
+        }
+        console.log(accepted)
+
         const eventrefPatient = firebase.firestore().collection("users").doc(initialEmail).collection("events");
          eventrefPatient.doc(this.state.title).set({
              date: this.state.date,
@@ -19,31 +56,63 @@ export default class Patient_AppointmentScreen extends Component {
              description: this.state.description,
 
          }) 
-         // if receptionist says yes to request
          
-         const eventrefHospital= firebase.firestore().collection("hospital").doc(this.state.hospital).collection("events");
-         eventrefHospital.doc(this.state.title).set({
-             date: this.state.date,
-             time: this.state.time,
-             hospital: this.state.hospital,
-             doctor: this.state.doctor,
-             description: this.state.description,
 
-         })
+         const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("events");
+         const hospitalQuery = userRef.where("date", "==", this.state.date)
+                                      .where("time", "==", this.state.time)
+            .get()
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+            
+                if(doc.id != ''){
+                   accepted = false;
+                   console.log(doc.id)
+                }
+                
+            });
+        })
+        .catch(function(error){
+            console.log("Error getting documents: ", error);
+        });
          
-        //if receptionist says no 
-        /*
+      if(accepted){
+        Toast.show('Request sent');
+        const eventrefHospital= firebase.firestore().collection("hospital").doc(this.state.hospital).collection("events");
+        eventrefHospital.doc(this.state.title).set({
+            date: this.state.date,
+            time: this.state.time,
+           hospitalStaff: this.state.hospitalStaff,
+           doctor: this.state.doctor,
+            description: this.state.description,
+
+        })
+      }
+
+      if(!(accepted)){
+        accepted = true;
+        Toast.show('Request Denied');
         const eventref = firebase.firestore().collection("users").doc(initialEmail).collection("events");
          eventref.doc(this.state.title).delete().then(function() {
              console.log("document deleted");
-         }).catch(function(error)){
+         }).catch(function(error){
              console.log("Error removing document ", error);
          });
-         }
-         */
-
+         
+        
+      }
+        //Update appointments and export to homepage view
+       
     }
+
+   
+    
+    
+
+
+
     render() {
+       
         return (
             <View style={{ flex: 1, backgroundColor: '#ffffff', justifyContent: 'flex-end' }}>
                 <View style={{ ...StyleSheet.absoluteFill }}>
@@ -60,20 +129,43 @@ export default class Patient_AppointmentScreen extends Component {
                     onChangeText={title => this.setState({ title })}
                     value={this.state.title}
                 />
-                <TextInput
-                    placeholder='YYYY/MM/DD'
-                    autoCapitalize="none"
-                    style={styles.input}
-                    onChangeText={date => this.setState({ date })}
-                    value={this.state.date}
-                />
-                <TextInput
-                    placeholder='Time'
-                    autoCapitalize="none"
-                    style={styles.input}
-                    onChangeText={time => this.setState({ time })}
-                    value={this.state.time}
-                />
+                <DatePicker
+        style={{width: 200}}
+        date={this.state.date}
+        mode="date"
+        placeholder="select date"
+        format="YYYY-MM-DD"
+        minDate="2019-11-03"
+        maxDate="2030-12-31"
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        customStyles={{
+          dateIcon: {
+            position: 'absolute',
+            left: 0,
+            top: 4,
+            marginLeft: 0
+          },
+          dateInput: {
+            marginLeft: 36
+          }
+          // ... You can check the source to find the other keys.
+        }}
+        onDateChange={(date) => {this.setState({date: date})}}
+      />
+      <DatePicker
+        style={{width: 200}}
+        date={this.state.time}
+        mode="time"
+        format="HH:mm"
+        placeholder="select time"
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        minuteInterval={30}
+        is24Hour={true}
+        onDateChange={(time) => {this.setState({time: time})}}
+      />
+                
                 <TextInput
                     placeholder='Hospital'
                     autoCapitalize="none"
@@ -96,14 +188,14 @@ export default class Patient_AppointmentScreen extends Component {
                     onChangeText={description => this.setState({ description })}
                     value={this.state.description}
                 />
-                <TouchableOpacity onPress={this.handleAppointment}>
+                <TouchableOpacity onPress={this.handleAppointmentRequest}>
                     <Animated.View style={styles.button}>
                         <Text style={{ fontSize: 20 }}>Request Appointment</Text>
                     </Animated.View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this.sendToHome}>
+                <TouchableOpacity onPress={this.clearfields}>
                     <Animated.View style={styles.closeButton}>
-                        <Text style={{ fontSize: 15 }}>X</Text>
+                        <Text style={{ fontSize: 15 }}>Clear</Text>
                     </Animated.View>
                 </TouchableOpacity>
             </View>

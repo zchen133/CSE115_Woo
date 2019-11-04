@@ -25,48 +25,7 @@ class PatientHomepage extends Component {
         super();
         YellowBox.ignoreWarnings(['Setting a timer']);
     }
-
-    async onPressTest() {
-        console.log("get email "+initialEmail)
-        /*
-        const docId = firebase.firestore.collection("users").doc(initialEmail).get()
-            .then((snapshot) => {
-                snapshot.docs(doc =>{
-                    console.log(doc.id)
-                })
-            }) 
-            */
-        const eventref = firebase.firestore().collection("users").doc(initialEmail).collection("events");
-        eventref.doc("test").set({
-            date: "this date",
-        })
-           
-            /*
-        const docRef = firebase.firestore().collection("users").doc(initialEmail).collection("events").doc("hiM90mTFaJLHRUQdWHlc");
-        return docRef.get().then(function(doc) {
-            if (doc.exists) {
-               
-                console.log(doc.get('date '))
-               return doc.get('date ');
-                
-            } else {
-                console.log("No such document");
-            }
-        }).catch(function(error) {
-            console.log("Error getting document:", error);
-        });
-        */
-        
-    }
     
-/*
-    createEvent(){
-        this.onPressTest()
-            .then((result) => {
-              console.log(result)  
-            })
-    }
-*/
     renderTop() {
         return (
             <Block flex = {0.4} column style = {{paddingHorizontal:20}}>
@@ -81,9 +40,7 @@ class PatientHomepage extends Component {
                     <Block row style = {{paddingHorizontal:30}}>
                     <Text style={{fontSize: 20, fontWeight: 'bold',color:'#40514e',paddingLeft:(width/2)-110 }}>Profile Part</Text>
                     
-                    {<Button
-                    title='Just For Testtt'
-                    onPress={this.onPressTest} />}
+                    
                     </Block> 
                     
                 </Block>
@@ -186,9 +143,11 @@ export default createMaterialBottomTabNavigator({
     shifting: true,
     barStyle: { backgroundColor: 'white' }
 })
+// import populated appointments and display them
 
 const appointment = [{
-        time: "12:00"
+        time: "12:00",
+        date: "11/20"
     },
     {
         time: "15:00"
@@ -209,6 +168,7 @@ const appointment = [{
         time: "8:00"
     }
 ]
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

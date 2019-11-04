@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOp
 import * as firebase from "firebase";
 import { YellowBox } from 'react-native';
 import Toast from 'react-native-tiny-toast';
+var hospitalStaff = 'No Hospital'
+export {hospitalStaff};
 var initialEmail = 'initialEmail';
 const { width, height } = Dimensions.get('window');
 export default class AdminHomepage extends Component {
@@ -10,7 +12,7 @@ export default class AdminHomepage extends Component {
         super();
         YellowBox.ignoreWarnings(['Setting a timer']);
     }
-    state = { email: '', err: null }
+    state = { email: '', hospitalStaff: '', err: null }
 
     
     handleSignOut = () => {
@@ -31,6 +33,7 @@ export default class AdminHomepage extends Component {
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '4',
+            hospitalStaff: this.state.hospitalStaff,
 
         }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
@@ -49,6 +52,7 @@ export default class AdminHomepage extends Component {
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '3',
+            hospitalStaff: this.state.hospitalStaff,
 
         }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
@@ -65,6 +69,7 @@ export default class AdminHomepage extends Component {
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '2',
+            hospitalStaff: this.state.hospitalStaff,
 
         }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
@@ -102,6 +107,13 @@ export default class AdminHomepage extends Component {
                     style={styles.input}
                     onChangeText={email => this.setState({ email })}
                     value={this.state.email}
+                />
+                <TextInput
+                    placeholder='Hospital'
+                    autoCapitalize="none"
+                    style={styles.input}
+                    onChangeText={hospitalStaff => this.setState({ hospitalStaff })}
+                    value={this.state.hospitalStaff}
                 />
                 <TouchableOpacity onPress={this.addDoctor}>
                     <Animated.View style={styles.button}>
