@@ -3,11 +3,11 @@ import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOp
 import * as firebase from "firebase";
 import {Calendar, Agenda} from 'react-native-calendars';
 import { initialEmail } from './Loading.js';
+//import undefined from 'firebase/empty-import';
 
 
 export default class Schedule extends Component {
 
-  name = "";
   constructor(props) {
     super(props);
     this.state = {
@@ -15,26 +15,37 @@ export default class Schedule extends Component {
       time: "",
       items: {}
     };
-    this.getAppointments = this.getAppointments.bind(this);
+    //this.getAppointments = this.getAppointments.bind(this);
   }
   
   async getAppointments(date){
     //var docRef = ;
-
-    await firebase.firestore().collection("users").doc(initialEmail).collection("events").doc("appointment").collection("date").doc(date).get().then(doc => {
+    try {
+      const doc = await firebase.firestore().collection("users").doc(initialEmail).collection("events").doc("appointment").collection("date").doc(date).get();
+      var name = doc.data().name;
+      console.log('name ' + doc.data().name)
+      var time = doc.data().time;
+      console.log('time ' + doc.data().time)
+      this.setState({
+        name: doc.data().name,
+        time: doc.data().time
+      });
+    } catch {
+      //console.log(error);
+    }
+    /*
+    await .then(doc => {
         if (doc.exists) {
           //console.log('name found ' + doc.data().name);
           //console.log('time found ' + doc.data().time);
-          this.setState({
-            name: doc.data().name,
-            time: doc.data().time
-          });
+
         } else {
             //console.log("No such document");
         }
     }).catch(function(error) {
         //console.log("Error getting document:", error);
     });
+    */
 
 }
 
@@ -48,7 +59,7 @@ export default class Schedule extends Component {
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
-        //getAppointments={this.getAppointments.bind(this)}
+        getAppointments={this.getAppointments.bind(this)}
         // markingType={'period'}
         // markedDates={{
         //    '2017-05-08': {textColor: '#666'},
@@ -77,19 +88,19 @@ export default class Schedule extends Component {
           this.state.items[strTime] = [];
           const numItems = Math.floor(Math.random() * 5); //Items in collection for that data
           this.getAppointments(strTime)
-          if ( !this.state.name.localeCompare("")) {
-            console.log(this.state.name)
+          //console.log(this.state.name)
+          if ( this.state.name.localeCompare("") == 1) {
+            console.log('this dudes name is ' + this.state.name)
           }
           //console.log('Testing ' + this.state.name)
           //if (appointment != null || appointment !== undefined ) {
             for (let j = 0; j < numItems; j++) {
-              this.state.items[strTime].push({
-                //firebase.firestore().collection('users').get('events')
-                name: 'Appointment for ' + this.state.name + '\nTime of appointment: ' + this.state.time, // + Put the actual time of the event here
-                height: 60 //Math.max(50, Math.floor(Math.random() * 150))
-              });
+                this.state.items[strTime].push({
+                  //firebase.firestore().collection('users').get('events')
+                  name: 'Appointment for ' + this.state.name + '\nTime of appointment: ' + this.state.time, // + Put the actual time of the event here
+                  height: 60 //Math.max(50, Math.floor(Math.random() * 150))
+                });
             }
-          //}
         }
       }
       //console.log(this.state.items);
