@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOp
 import * as firebase from "firebase";
 import {Calendar, Agenda} from 'react-native-calendars';
 import { initialEmail } from './Loading.js';
-//import undefined from 'firebase/empty-import';
 
 
 export default class Schedule extends Component {
@@ -33,20 +32,24 @@ export default class Schedule extends Component {
     } catch {
       //console.log(error);
     }
-    /*
-    await .then(doc => {
-        if (doc.exists) {
-          //console.log('name found ' + doc.data().name);
-          //console.log('time found ' + doc.data().time);
+}
 
-        } else {
-            //console.log("No such document");
-        }
-    }).catch(function(error) {
-        //console.log("Error getting document:", error);
+testfunction(date) {
+  console.log('test function: ')
+  firebase.firestore().collection("users").doc(initialEmail).collection("events").doc("appointment").collection("date").doc(date).collection("time").get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.data());
+        console.log(' at date ' + strTime)
+        console.log(doc.data().name)
+        this.state.items[strTime].push({
+          //firebase.firestore().collection('users').get('events')
+          name: 'Appointment for ' + doc.data().name + '\nTime of appointment: ' + doc.data().time, // + Put the actual time of the event here
+          height: 60 //Math.max(50, Math.floor(Math.random() * 150))
+        });
+        console.log(doc.id, " => ", doc.data());
     });
-    */
-
+  })
 }
 
 
@@ -60,19 +63,6 @@ export default class Schedule extends Component {
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
         getAppointments={this.getAppointments.bind(this)}
-        // markingType={'period'}
-        // markedDates={{
-        //    '2017-05-08': {textColor: '#666'},
-        //    '2017-05-09': {textColor: '#666'},
-        //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-        //    '2017-05-21': {startingDay: true, color: 'blue'},
-        //    '2017-05-22': {endingDay: true, color: 'gray'},
-        //    '2017-05-24': {startingDay: true, color: 'gray'},
-        //    '2017-05-25': {color: 'gray'},
-        //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-        // monthFormat={'yyyy'}
-        // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-        //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
       />
     );
   }
@@ -86,21 +76,28 @@ export default class Schedule extends Component {
         //console.log(strTime)
         if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
-          const numItems = Math.floor(Math.random() * 5); //Items in collection for that data
-          this.getAppointments(strTime)
-          //console.log(this.state.name)
-          if ( this.state.name.localeCompare("") == 1) {
-            console.log('this dudes name is ' + this.state.name)
-          }
-          //console.log('Testing ' + this.state.name)
-          //if (appointment != null || appointment !== undefined ) {
-            for (let j = 0; j < numItems; j++) {
-                this.state.items[strTime].push({
-                  //firebase.firestore().collection('users').get('events')
-                  name: 'Appointment for ' + this.state.name + '\nTime of appointment: ' + this.state.time, // + Put the actual time of the event here
-                  height: 60 //Math.max(50, Math.floor(Math.random() * 150))
-                });
+          this.testfunction(strTime);
+            firebase.firestore().collection("users").doc(initialEmail).collection("events").doc("appointment").collection("date").doc(strTime).collection("time").get().then(function(querySnapshot) {
+              querySnapshot.forEach(function(doc) {
+                  // doc.data() is never undefined for query doc snapshots
+                  console.log(doc.data());
+                  console.log(' at date ' + strTime)
+                  console.log(doc.data().name)
+                  this.state.items[strTime].push({
+                    //firebase.firestore().collection('users').get('events')
+                    name: 'Appointment for ' + doc.data().name + '\nTime of appointment: ' + doc.data().time, // + Put the actual time of the event here
+                    height: 60 //Math.max(50, Math.floor(Math.random() * 150))
+                  });
+                  console.log(doc.id, " => ", doc.data());
+              });
+          }).catch(function(error) {
+            var printError = function(error, explicit) {
+              console.log(`[${explicit ? 'EXPLICIT' : 'INEXPLICIT'}] ${error.name}: ${error.message}`);
             }
+            if (error instanceof TypeError) {
+              printError(error);
+            }
+          });
         }
       }
       //console.log(this.state.items);
