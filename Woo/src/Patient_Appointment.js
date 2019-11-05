@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Modal, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
-import CalendarPicker from 'react-native-calendar-picker'
+
+import DatePicker from 'react-native-datepicker'
 
 export default class Patient_AppointmentScreen extends Component {
 
@@ -9,7 +10,6 @@ export default class Patient_AppointmentScreen extends Component {
         super(props);
         this.state = {
             date: new Date(), 
-            modalVisible: false,
             hospital: null,
             doctor: null,
             description: null,
@@ -29,29 +29,33 @@ export default class Patient_AppointmentScreen extends Component {
             <View style={styles.container}>
                 <Text> AppointmentScreen Homepage</Text>
                 <View style={styles.req}>
-                    <Button onPress={() => { this.setState({ modalVisible: true }) } } title='Pick a Date'/>
-                    <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={this.state.modalVisible}
-                        onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                    }}>
-                        <View style={styles.container}>
-                            <View>
-                                <CalendarPicker
-                                    onDateChange={this.onDateChange}
-                                />
-                                <TouchableHighlight
-                                    onPress={() => {
-                                        this.setState({modalVisible: false})
-                                    }}>
-                                <Text>Hide Modal</Text>
-                                </TouchableHighlight>
-                            </View>
-                        </View>
-                    </Modal>
-                    <Text>Date Selected: {this.state.date.toString()}</Text>
+                    <DatePicker
+                        style={{ width: 200, padding: 15 }}
+                        date={this.state.date}
+                        mode="datetime"
+                        placeholder="select date"
+                        format="MM-DD-YYYY:HH:mm"
+                        minDate="01-01-1900"
+                        maxDate="01-01-2020"
+                        minuteInterval={15}
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        showIcon={true}
+                        customStyles={{
+                            dateIcon: {
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                marginLeft: 0
+                            },
+                            dateInput: {
+                                //borderColor: "#00BFFF",
+                                marginLeft: 36
+                            }
+
+                        }}
+                        onDateChange={(newDate) => this.setState({ date: newDate })}
+                    />
                     <TextInput
                         placeholder='Choose a Hospital'
                         autoCapitalize="none"
@@ -73,6 +77,7 @@ export default class Patient_AppointmentScreen extends Component {
                         onChangeText={description => this.setState({ description })}
                         value={this.state.description}
                     />
+                    <Button title="Request Appointment" />
                 </View>
             </View>
         );
