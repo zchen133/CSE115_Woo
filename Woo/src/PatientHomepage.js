@@ -24,8 +24,8 @@ class PatientHomepage extends Component {
         YellowBox.ignoreWarnings(['Setting a timer']);
     }
 
-    onPressTest(){
-        console.log("get email"+initialEmail)
+    onPressTest() {
+        console.log("get email" + initialEmail)
     }
     renderTop() {
         return (

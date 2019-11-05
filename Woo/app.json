@@ -24,7 +24,12 @@
       "**/*"
     ],
     "ios": {
+      "infoPlist": {
+        "UIUserInterfaceStyle": "Light"
+      },
       "supportsTablet": true
+
     }
+   
   }
 }
