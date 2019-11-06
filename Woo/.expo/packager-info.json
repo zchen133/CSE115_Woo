@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 37896,
-  "expoServerNgrokUrl": "https://ps-iwk.anonymous.woo.exp.direct",
-  "packagerNgrokUrl": "https://packager.ps-iwk.anonymous.woo.exp.direct",
-  "ngrokPid": 36708,
+  "packagerPid": 23268,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }
