@@ -54,7 +54,14 @@ class PatientHomepage extends Component {
     renderList(appointment) {
         return (
             <Block row card shadow color = "#ffffff" style={styles.items}>
-                <Text>{appointment.time}</Text>
+                <Block flex = {0.3}>
+                    <Image
+                    source={require('../assets/calendar.jpg')}
+                    style={{ flex: 1, height: null, width: null }}
+                    />
+                    </Block>
+                <Text style = {{paddingLeft:25}}>{appointment.time+'\n'+appointment.date+'\n'+appointment.hospital}</Text>
+                
                 
             </Block>
         );
@@ -146,26 +153,41 @@ export default createMaterialBottomTabNavigator({
 })
 
 const appointment = [{
-        time: "12:00"
-    },
-    {
-        time: "15:00"
-    },
-    {
-        time: "18:00"
-    },
-    {
-        time: "7:00"
-    },
-    {
-        time: "16:00"
-    },
-    {
-        time: "14:00"
-    },
-    {
-        time: "8:00"
-    }
+    time: "12:00",
+    date: "Oct 25th",
+    hospital: "UCSC Health Center"
+
+},
+{
+    time: "15:00",
+    date: "Oct 25th",
+    hospital: "UCSC Health Center"
+},
+{
+    time: "18:00",
+    date: "Oct 25th",
+    hospital: "UCSC Health Center"
+},
+{
+    time: "7:00",
+    date: "Oct 25th",
+    hospital: "UCSC Health Center"
+},
+{
+    time: "16:00",
+    date: "Oct 25th",
+    hospital: "UCSC Health Center"
+},
+{
+    time: "14:00",
+    date: "Oct 25th",
+    hospital: "UCSC Health Center"
+},
+{
+    time: "8:00",
+    date: "Oct 25th",
+    hospital: "UCSC Health Center"
+}
 ]
 const styles = StyleSheet.create({
     container: {
