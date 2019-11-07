@@ -3,11 +3,12 @@ import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOp
 
 import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView, ThemeColors } from 'react-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
 //var appointment
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
+//import add from  'assets\add-circle-512.png'
 
 import Login from './Login.js'
 import Block from './components.js'
@@ -17,6 +18,7 @@ import Patient_AppointmentScreen from './Patient_Appointment.js'
 import Patient_CheckinScreen from './Patient_Checkin.js'
 import Patient_PrescriptionScreen from './Patient_Prescription.js'
 import { initialEmail } from './Loading.js';
+import { FAB } from 'react-native-paper';
 
 class PatientHomepage extends Component {
     constructor() {
@@ -41,9 +43,7 @@ class PatientHomepage extends Component {
                     <Block row style = {{paddingHorizontal:30}}>
                     <Text style={{fontSize: 20, fontWeight: 'bold',color:'#40514e',paddingLeft:(width/2)-110 }}>Profile Part</Text>
                     
-                    {/* <Button
-                    title='Just For Test'
-                    onPress={this.onPressTest} />*/}
+                    
                     </Block> 
                     
                 </Block>
@@ -80,6 +80,8 @@ class PatientHomepage extends Component {
               {this.renderList(appointment)}
             </TouchableOpacity>
           ))}
+
+
                         </ScrollView>
                 </Block>
         );
@@ -151,6 +153,7 @@ export default createMaterialBottomTabNavigator({
     shifting: true,
     barStyle: { backgroundColor: 'white' }
 })
+// import populated appointments and display them
 
 const appointment = [{
     time: "12:00",
@@ -189,6 +192,7 @@ const appointment = [{
     hospital: "UCSC Health Center"
 }
 ]
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -215,5 +219,6 @@ const styles = StyleSheet.create({
     items: {
         padding: 20,
         marginBottom: 15
-    }
+    },
+    
 });

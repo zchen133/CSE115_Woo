@@ -3,6 +3,10 @@
   "lanType": "ip",
   "dev": true,
   "minify": false,
+<<<<<<< HEAD
   "urlRandomness": "jk-m7p",
+=======
+  "urlRandomness": "xn-edf",
+>>>>>>> origin/ScheduleAppointments
   "https": false
 }
