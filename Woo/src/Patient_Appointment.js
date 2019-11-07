@@ -57,7 +57,7 @@ export default class Patient_AppointmentScreen extends Component {
 
          }) 
          
-
+         /* Same logic can be used to query all receptionists with the same hospital as user requesting event time */
          const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("events");
          const hospitalQuery = userRef.where("date", "==", this.state.date)
                                       .where("time", "==", this.state.time)
@@ -130,7 +130,7 @@ export default class Patient_AppointmentScreen extends Component {
                     value={this.state.title}
                 />
                 <DatePicker
-        style={{width: 200}}
+        style={styles.req}
         date={this.state.date}
         mode="date"
         placeholder="select date"
@@ -144,7 +144,8 @@ export default class Patient_AppointmentScreen extends Component {
             position: 'absolute',
             left: 0,
             top: 4,
-            marginLeft: 0
+            marginLeft: 0,
+            
           },
           dateInput: {
             marginLeft: 36
@@ -154,7 +155,7 @@ export default class Patient_AppointmentScreen extends Component {
         onDateChange={(date) => {this.setState({date: date})}}
       />
       <DatePicker
-        style={{width: 200}}
+        style={styles.req}
         date={this.state.time}
         mode="time"
         format="HH:mm"
@@ -163,6 +164,18 @@ export default class Patient_AppointmentScreen extends Component {
         cancelBtnText="Cancel"
         minuteInterval={30}
         is24Hour={true}
+        customStyles={{
+            dateIcon: {
+                position: 'absolute',
+                left: 0,
+                top: 4,
+                marginLeft: 0,
+            },
+            dateInput: {
+                margineLeft: 36
+            }
+            
+        }}
         onDateChange={(time) => {this.setState({time: time})}}
       />
                 
@@ -216,10 +229,13 @@ const styles = StyleSheet.create({
     },
     req: {
         borderRadius: 10,
-        width: '90%',
+        width: '75%',
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
+        marginLeft: 45,
+        padding: 50
+
     },
     input: {
         // height: 40,
