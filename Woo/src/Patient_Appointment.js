@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: 45,
-        padding: 50
+        marginBottom: 20
 
     },
     input: {
