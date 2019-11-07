@@ -1,60 +1,56 @@
-import React, { Component, ReactNode}  from 'react';
+import React, { Component, ReactNode } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, Animated, Dimensions, TouchableHighlight, YellowBox, ScrollView } from 'react-native';
 import * as firebase from "firebase";
-import {Calendar, Agenda} from 'react-native-calendars';
+import { Calendar, Agenda } from 'react-native-calendars';
 
 export default class AppointmentScreen extends Component {
 
-  onPressSchedules = () => {
+    onPressSchedules = () => {
 
-    this.props.navigation.navigate('Schedule')
+        this.props.navigation.navigate('Schedule')
 
-  }
-  onPressRequests = () => {
+    }
+    onPressRequests = () => {
 
-    this.props.navigation.navigate('Requests')
+        this.props.navigation.navigate('Requests')
 
-  }
+    }
 
-  render() {
-    return (
-      <View>
-        <View style = {styles.requests}>
-          <Button
-            title='Schedule'
-            style = {styles.requests} 
-            onPress={this.onPressSchedules}/>
-        </View>
-        <View>
-          <Button
-            title='requests' 
-            style = {styles.requests} 
-            onPress={this.onPressRequests}/>
-        </View>
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View style={styles.container}>
+                <Button
+                    title='Schedule'
+                    style = {styles.requests} 
+                    onPress={this.onPressSchedules}/>
+                <Button
+                    title='requests' 
+                    style = {styles.requests} 
+                    onPress={this.onPressRequests}/>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    textAlign:'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingLeft:40,
-    paddingRight:40,
-    marginTop:10,
-    height:40
-  },
-  requests: {
-    textAlign:'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingLeft:40,
-    paddingRight:40,
-    marginTop:10,
-    height:40
-  },
+    container: {
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingLeft: 40,
+        paddingRight: 40,
+        marginTop: 10,
+        height: 200
+    },
+    requests: {
+        // textAlign: 'center',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // paddingLeft: 40,
+        // paddingRight: 40,
+        // marginTop: 10,
+        // height: 40
+    },
 });
 
 /*
