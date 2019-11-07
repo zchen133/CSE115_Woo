@@ -7,8 +7,8 @@ export default class Requests extends Component {
     onPressRequests = () => {
 
         this.props.navigation.navigate('PatientHomepage')
-    
-      }
+
+    }
 
     render() {
         return (
