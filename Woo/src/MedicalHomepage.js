@@ -9,6 +9,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 //var appointment
 import{createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
+import RequestScreen from './Medical_Request.js'
 
 class MedicalHomepage extends Component {
     constructor(){
@@ -80,16 +81,6 @@ class MedicalHomepage extends Component {
                 {this.renderBottom()}
                 </SafeAreaView>
            
-        );
-    }
-}
-class RequestScreen extends Component {
-    
-    render() {
-        return (
-         <View style={styles.container}>
-             <Text> Appointment Request Screen Homepage</Text>
-         </View>
         );
     }
 }

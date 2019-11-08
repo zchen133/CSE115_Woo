@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 2116,
+  "expoServerNgrokUrl": "https://jk-m7p.howardng.woo.exp.direct",
+  "packagerNgrokUrl": "https://packager.jk-m7p.howardng.woo.exp.direct",
+  "ngrokPid": 22896
 }
