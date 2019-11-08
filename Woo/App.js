@@ -14,6 +14,7 @@ import MedicalHomepage from './src/MedicalHomepage';
 import PatientHomepage from './src/PatientHomepage';
 import Schedule from './src/Schedule'
 import Requests from './src/Requests'
+import SearchSchedule from './src/SearchSchedule'
 
 
 import { Asset } from 'expo-asset'
@@ -55,7 +56,8 @@ const AppNavigator = createSwitchNavigator({
     MedicalHomepage,
     PatientHomepage,
     Schedule,
-    Requests
+    Requests,
+    SearchSchedule
 }, {
     initialRouteName: 'Loading',
     backgroundColor: '#111111'

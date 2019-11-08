@@ -16,6 +16,12 @@ export default class AppointmentScreen extends Component {
 
     }
 
+    onPressSearch = () => {
+
+      this.props.navigation.navigate('SearchSchedule')
+
+  }
+
     render() {
         return (
             <View style={styles.container}>
@@ -27,6 +33,10 @@ export default class AppointmentScreen extends Component {
                     title='requests' 
                     style = {styles.requests} 
                     onPress={this.onPressRequests}/>
+                <Button
+                    title='search'
+                    style = {styles.requests} 
+                    onPress={this.onPressSearch}/>
             </View>
         );
     }
