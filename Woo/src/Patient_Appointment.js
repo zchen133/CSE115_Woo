@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Modal, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
+import { StyleSheet, Modal, Text, View, Button, Picker, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
 import { initialEmail } from './Loading.js';
@@ -7,22 +7,50 @@ import Toast from 'react-native-tiny-toast';
 import { hospitalStaff } from './AdminHomepage.js';
 import DatePicker from 'react-native-datepicker';
 import { Platform } from '@unimodules/core';
+import {Dropdown} from 'react-native-material-dropdown'
 var appointments = [];
 var accepted = true;
 export default class Patient_AppointmentScreen extends Component {
 
-    state = { title: '', date: '', time: '', hospital: '', doctor: '', description: '', hospitalStaff: '',appointments: '',  err: null }
+    
+    state = { department:[{value:"UCSC",value:"UCLA"}],title: '', date: '', time: '', hospital: '', doctor: '', description: '', hospitalStaff: '',appointments: '',  err: null }
+    constructor(props){
+        super(props);
+        this.docRef = firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments");
+        
+        //this.department = this.department.bind(this)
+    }
+
+    // componentDidMount() {
+    //     this.getUserData()
+    //     //this.docRef.set({ birthday: '1-1-2019' }, { merge: true });
+    // }
+
+    getUserData = () => {
+        this.docRef.get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                let data = doc.id
+                console.log(doc.id);
+                this.setState({ department: ["addad"] });
+                //this.setState({department:[data]})
+                console.log("smg");
+            });
+        });
+
+    }
 
     clearfields = () => {
         this.setState({title:''})
         this.setState({date:''})
         this.setState({time:''})
+        
         this.setState({hospital:''})
         this.setState({doctor:''})
         this.setState({description:''})
     }
     handleAppointmentRequest = () => {
-        
+        this.setState({department:[{value:"sbb"},{value:"ttt"}]})
         if (this.state.title == '') {
             console.log('No title given');  
              Toast.show('Please enter title');
@@ -47,8 +75,8 @@ export default class Patient_AppointmentScreen extends Component {
         }
         console.log(accepted)
 
-        const eventrefPatient = firebase.firestore().collection("users").doc(initialEmail).collection("events");
-         eventrefPatient.doc(this.state.title).set({
+        const eventrefPatient = firebase.firestore().collection("users").doc(initialEmail).collection("requests");
+         eventrefPatient.doc(this.state.date+'_'+this.state.time).set({
              date: this.state.date,
              time: this.state.time,
              hospital: this.state.hospital,
@@ -58,7 +86,7 @@ export default class Patient_AppointmentScreen extends Component {
          }) 
          
          /* Same logic can be used to query all receptionists with the same hospital as user requesting event time */
-         const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("events");
+         const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests");
          const hospitalQuery = userRef.where("date", "==", this.state.date)
                                       .where("time", "==", this.state.time)
             .get()
@@ -78,8 +106,8 @@ export default class Patient_AppointmentScreen extends Component {
          
       if(accepted){
         Toast.show('Request sent');
-        const eventrefHospital= firebase.firestore().collection("hospital").doc(this.state.hospital).collection("events");
-        eventrefHospital.doc(this.state.title).set({
+        const eventrefHospital= firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests");
+        eventrefHospital.doc(this.state.date+'_'+this.state.time).set({
             date: this.state.date,
             time: this.state.time,
            hospitalStaff: this.state.hospitalStaff,
@@ -87,13 +115,14 @@ export default class Patient_AppointmentScreen extends Component {
             description: this.state.description,
 
         })
+        //console.log("date is",this.state.date)
       }
 
       if(!(accepted)){
         accepted = true;
         Toast.show('Request Denied');
-        const eventref = firebase.firestore().collection("users").doc(initialEmail).collection("events");
-         eventref.doc(this.state.title).delete().then(function() {
+        const eventref = firebase.firestore().collection("users").doc(initialEmail).collection("requests");
+         eventref.doc(this.state.date+'_'+this.state.time).delete().then(function() {
              console.log("document deleted");
          }).catch(function(error){
              console.log("Error removing document ", error);
@@ -105,6 +134,15 @@ export default class Patient_AppointmentScreen extends Component {
        
     }
 
+
+    renderPicker = () => {
+        
+        return(this.state.department.map((x,i) =>{
+            return(<Dropdown label = {x} data = {x}/>)
+        })
+
+        );
+    }
    
     
     
@@ -112,6 +150,7 @@ export default class Patient_AppointmentScreen extends Component {
 
 
     render() {
+        
        
         return (
             <View style={{ flex: 1, backgroundColor: '#ffffff', justifyContent: 'flex-end' }}>
@@ -122,6 +161,7 @@ export default class Patient_AppointmentScreen extends Component {
                         blurRadius={5}
                     />
                 </View>
+                <View style={styles.reqAll}>
                 <TextInput
                     placeholder='Event Title'
                     autoCapitalize="none"
@@ -136,7 +176,7 @@ export default class Patient_AppointmentScreen extends Component {
         placeholder="select date"
         format="YYYY-MM-DD"
         minDate="2019-11-03"
-        maxDate="2030-12-31"
+        maxDate="2020-12-31"
         confirmBtnText="Confirm"
         cancelBtnText="Cancel"
         customStyles={{
@@ -148,7 +188,7 @@ export default class Patient_AppointmentScreen extends Component {
             
           },
           dateInput: {
-            marginLeft: 36
+            marginLeft: 0
           }
           // ... You can check the source to find the other keys.
         }}
@@ -186,6 +226,27 @@ export default class Patient_AppointmentScreen extends Component {
                     onChangeText={hospital => this.setState({ hospital })}
                     value={this.state.hospital}
                 />
+                
+                    
+                {/* <Picker
+
+                    selectedValue={this.state.language}
+                    style={{height: 50, width: 100}}
+                    onValueChange={(value) =>
+                    (this.setState({value}))}>
+                    {this.renderPicker()}
+                
+                
+                
+                </Picker> */}
+
+                <Dropdown
+                    containerStyle={styles.pickerContainer}
+                    pickerStyle={styles.pickerContent}
+                    label = "Department"
+                    data = {this.state.department}
+                />
+                
                 <TextInput
                     placeholder='Requested Doctor (Optional)'
                     autoCapitalize="none"
@@ -202,15 +263,12 @@ export default class Patient_AppointmentScreen extends Component {
                     value={this.state.description}
                 />
                 <TouchableOpacity onPress={this.handleAppointmentRequest}>
-                    <Animated.View style={styles.button}>
+                    <View style={styles.button}>
                         <Text style={{ fontSize: 20 }}>Request Appointment</Text>
-                    </Animated.View>
+                    </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this.clearfields}>
-                    <Animated.View style={styles.closeButton}>
-                        <Text style={{ fontSize: 15 }}>Clear</Text>
-                    </Animated.View>
-                </TouchableOpacity>
+                
+            </View>
             </View>
         );
     }
@@ -233,20 +291,43 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: 45,
+        marginLeft: 10,
         marginBottom: 20
 
     },
-    input: {
+    reqAll: {
+        borderRadius: 10,
+        width: '75%',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 45,
+        marginBottom: 80
+
+    },
+    pickerContainer: {
         // height: 40,
         // alignItems: 'stretch',
         backgroundColor: 'white',
-        width: '90%',
+        width: "75%",
         // borderColor: 'black',
         // borderBottomWidth: 2.5,
         marginBottom: 20,
         marginLeft: 50,
         marginRight: 50,
+        //paddingVertical:10,
+        // paddingHorizontal: 10,
+    },
+    pickerContent: {
+        // height: 40,
+        // alignItems: 'stretch',
+        backgroundColor: 'white',
+        width: "65%",
+        // borderColor: 'black',
+        // borderBottomWidth: 2.5,
+        marginBottom: 20,
+        //marginLeft: 50,
+        //marginRight: 50,
         //paddingVertical:10,
         // paddingHorizontal: 10,
     },
@@ -284,8 +365,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: '75%',
         marginBottom: 20,
-        marginLeft: 50,
-        marginRight: 50,
+        marginLeft: 10,
+        marginRight: 10,
         height: 35,
         borderRadius: 25,
         borderWidth: 0.5,
@@ -297,9 +378,10 @@ const styles = StyleSheet.create({
     bottom: {
         backgroundColor: 'white',
         marginBottom: 20,
-        marginLeft: 50,
-        marginRight: 50,
+        marginLeft: 20,
+        marginRight: 20,
         height: 100,
+        width: 200,
         borderRadius: 25,
         borderWidth: 0.5,
         marginHorizontal: 20,
