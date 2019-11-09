@@ -25,7 +25,7 @@ export default class Schedule extends Component {
 
         events = await firebase.firestore().collection("users").doc(initialEmail).collection("events").doc("appointment").collection("date").doc(newDate).collection("time").get().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
-                events += 'Patient name: ' + doc.data().name + ' At time ' + doc.data().time + '\n';
+                events += '----------------------------------------\nPatient name: ' + doc.data().name + ' At time ' + doc.data().time + '\n';
             });
 
             if (events === "\n" ) {
