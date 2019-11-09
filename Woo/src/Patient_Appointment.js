@@ -4,10 +4,9 @@ import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
 import { initialEmail } from './Loading.js';
 import Toast from 'react-native-tiny-toast';
-import { hospitalStaff } from './AdminHomepage.js';
 import DatePicker from 'react-native-datepicker';
-import { Platform } from '@unimodules/core';
-var appointments = [];
+
+
 var accepted = true;
 export default class Patient_AppointmentScreen extends Component {
 
