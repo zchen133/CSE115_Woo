@@ -3,10 +3,6 @@ import { StyleSheet, Text, View, ScrollView, Button, TextInput, Image, Animated,
 import * as firebase from "firebase";
 import EditableText from './EditableTextComponent.js';
 import DatePicker from 'react-native-datepicker'
-// import { SafeAreaView } from 'react-navigation';
-// import { ScrollView } from 'react-native-gesture-handler';
-// var appointment
-// import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 
 export default class Patient_ProfileScreen extends Component {
 
@@ -27,11 +23,11 @@ export default class Patient_ProfileScreen extends Component {
         this.updateGender = this.updateGender.bind(this)
         this.updateAddress = this.updateAddress.bind(this)
         this.updateBirthday = this.updateBirthday.bind(this)
+        this.viewMedicalRecords = this.viewMedicalRecords.bind(this)
     }
 
     componentDidMount() {
         this.getUserData()
-        //this.docRef.set({ birthday: '1-1-2019' }, { merge: true });
     }
 
     updateAddress(input) {
@@ -54,13 +50,11 @@ export default class Patient_ProfileScreen extends Component {
         this.getUserData()
     }
     updateLastName(input) {
-
         this.docRef.set({ last: input }, { merge: true });
         this.getUserData()
     }
     updateBirthday(input) {
         this.docRef.set({ birthday: input }, { merge: true });
-        //this.docRef.set({ birthday: input }, { merge: true });
         this.getUserData()
     }
 
@@ -79,6 +73,11 @@ export default class Patient_ProfileScreen extends Component {
         })
     }
 
+    viewMedicalRecords() {
+        console.log('trying to navigate here')
+        this.props.navigation.navigate('MedicalRecords')
+    }
+
     render() {
         if (this.state.data) {
             return (
@@ -90,14 +89,6 @@ export default class Patient_ProfileScreen extends Component {
                     </View>
                     <View style={styles.userData}>
                         <ScrollView style={styles.scroll}>
-                            {/* <Button onPress={this.updateName} title='Edit Name'/>
-                            <Text style={styles.name}>{'Age: ' + this.state.data.age}</Text>
-                            <Button onPress={this.updateAge} title='Edit Age'/>
-                            <Text style={styles.name}>{'Gender: ' + this.state.data.gender}</Text>
-                            <Button onPress={this.updateGender} title='Edit Gender'/>
-                            <Text style={styles.name}>{'Email: ' + this.user.email}</Text>
-                            <Text style={styles.name}>{'Address: ' + this.state.data.address}</Text>
-                            <Button onPress={this.updateAddress} title='Edit Address'/> */}
                             <View style={styles.editableTextBorder}>
                                 <Text style={styles.text}>{'First Name: '}</Text>
                                 <EditableText text={this.state.data.first}
@@ -134,11 +125,6 @@ export default class Patient_ProfileScreen extends Component {
                             </View>
                             <View style={styles.editableTextBorder}>
                                 <Text style={styles.text}>{'Birthday: '}</Text>
-                                {/* <EditableText text={this.state.data.birthday}
-                                    sendText={(birthday) => this.updateBirthday(birthday)}
-                                    textProps={(styles.editableText)}
-                                    textInputProps={(styles.editableText)}
-                                /> */}
                                 <DatePicker //Doesn't support IOS darkmode yet
                                     style={{ width: 200 }}
                                     date={this.state.data.birthday}
@@ -175,6 +161,7 @@ export default class Patient_ProfileScreen extends Component {
                                 />
                             </View>
                             <View style={styles.bodyContent}>
+                                <Button title='Medical Records' onPress={this.viewMedicalRecords}/>
                             </View>
                         </ScrollView>
                     </View>
@@ -251,11 +238,13 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15
 
-    }, text: {
+    },
+    text: {
         fontSize: 20,
         flex: 1
 
-    }, editableText: {
+    },
+    editableText: {
         fontSize: 20,
         textAlign: 'right',
         flex: 1

@@ -12,6 +12,7 @@ import Recovery from './src/PasswordRecovery';
 import AdminHomepage from './src/AdminHomepage';
 import MedicalHomepage from './src/MedicalHomepage';
 import PatientHomepage from './src/PatientHomepage';
+import MedicalRecords from './src/MedicalRecords';
 
 
 import { Asset } from 'expo-asset'
@@ -51,7 +52,8 @@ const AppNavigator = createSwitchNavigator({
     Recovery,
     AdminHomepage,
     MedicalHomepage,
-    PatientHomepage
+    PatientHomepage,
+    MedicalRecords,
 }, {
     initialRouteName: 'Loading',
     backgroundColor: '#111111'

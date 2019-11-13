@@ -156,41 +156,41 @@ export default createMaterialBottomTabNavigator({
 // import populated appointments and display them
 
 const appointment = [{
-    time: "12:00",
-    date: "Oct 25th",
-    hospital: "UCSC Health Center"
+        time: "12:00",
+        date: "Oct 25th",
+        hospital: "UCSC Health Center"
 
-},
-{
-    time: "15:00",
-    date: "Oct 25th",
-    hospital: "UCSC Health Center"
-},
-{
-    time: "18:00",
-    date: "Oct 25th",
-    hospital: "UCSC Health Center"
-},
-{
-    time: "7:00",
-    date: "Oct 25th",
-    hospital: "UCSC Health Center"
-},
-{
-    time: "16:00",
-    date: "Oct 25th",
-    hospital: "UCSC Health Center"
-},
-{
-    time: "14:00",
-    date: "Oct 25th",
-    hospital: "UCSC Health Center"
-},
-{
-    time: "8:00",
-    date: "Oct 25th",
-    hospital: "UCSC Health Center"
-}
+    },
+    {
+        time: "15:00",
+        date: "Oct 25th",
+        hospital: "UCSC Health Center"
+    },
+    {
+        time: "18:00",
+        date: "Oct 25th",
+        hospital: "UCSC Health Center"
+    },
+    {
+        time: "7:00",
+        date: "Oct 25th",
+        hospital: "UCSC Health Center"
+    },
+    {
+        time: "16:00",
+        date: "Oct 25th",
+        hospital: "UCSC Health Center"
+    },
+    {
+        time: "14:00",
+        date: "Oct 25th",
+        hospital: "UCSC Health Center"
+    },
+    {
+        time: "8:00",
+        date: "Oct 25th",
+        hospital: "UCSC Health Center"
+    }
 ]
 
 const styles = StyleSheet.create({
@@ -220,5 +220,5 @@ const styles = StyleSheet.create({
         padding: 20,
         marginBottom: 15
     },
-    
+
 });
