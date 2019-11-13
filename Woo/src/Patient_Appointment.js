@@ -13,7 +13,7 @@ var accepted = true;
 export default class Patient_AppointmentScreen extends Component {
 
     
-    state = { department:[{value:"UCSC",value:"UCLA"}],title: '', date: '', time: '', hospital: '', doctor: '', description: '', hospitalStaff: '',appointments: '',  err: null }
+    state = { departmentList:[{value:"Null"}],doctorList:[{value:"Please Select A Department"}],availableTimeList:[{value:"19:00"}],title: '', date: '', time: '', hospital: '', doctor: '', description: '', hospitalStaff: '',appointments: '',  err: null }
     constructor(props){
         super(props);
         this.docRef = firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments");
@@ -21,24 +21,72 @@ export default class Patient_AppointmentScreen extends Component {
         //this.department = this.department.bind(this)
     }
 
-    // componentDidMount() {
+    componentDidMount() {
     //     this.getUserData()
+    this.getHosipltalList()
     //     //this.docRef.set({ birthday: '1-1-2019' }, { merge: true });
-    // }
+    }
 
-    getUserData = () => {
+    getHosipltalList = () =>{
+        depart_set = new Set([]);
+        new_array = [];
         this.docRef.get().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.id
-                console.log(doc.id);
-                this.setState({ department: ["addad"] });
-                //this.setState({department:[data]})
+                console.log("sa:",doc.id);
+                depart_set.add(doc.id);
+
                 console.log("smg");
             });
+            console.log("smg");
+            
+            depart_set.forEach(function(val) {
+                 new_array.push({value:val})
+                 //new_array["value"] = val;
+                 console.log("new_array: ",new_array);
+            })     
         });
-
+       this.setState({departmentList:new_array})
+       //this.setState({doctorList:new_array})
     }
+    getDoctorList = (selected) => {
+        depart_set = new Set([]);
+        new_array = [];
+        firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(selected).collection("Doctors").get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                let data = doc.id
+                console.log("sa:",doc.id);
+                depart_set.add(doc.id);
+
+                console.log("smg");
+            });
+            console.log("smg");
+            
+            depart_set.forEach(function(val) {
+                 new_array.push({value:val})
+                 //new_array["value"] = val;
+                 console.log("new_array: ",new_array);
+            })     
+        });
+       this.setState({doctorList:new_array})
+       //this.setState({doctorList:new_array})
+        console.log("selected:", selected)
+    }
+    // getUserData = () => {
+    //     this.docRef.get().then(function(querySnapshot) {
+    //         querySnapshot.forEach(function(doc) {
+    //             // doc.data() is never undefined for query doc snapshots
+    //             let data = doc.id
+    //             console.log(doc.id);
+    //             //this.setState({ departmentList: ["addad"] });
+    //             //this.setState({department:[data]})
+    //             console.log("smg");
+    //         });
+    //     });
+
+    // }
 
     clearfields = () => {
         this.setState({title:''})
@@ -49,8 +97,61 @@ export default class Patient_AppointmentScreen extends Component {
         this.setState({doctor:''})
         this.setState({description:''})
     }
+    logSetElements(value1, value2, set) {
+        console.log("s[" + value1 + "] = " + value2);
+    }
+
+    // sleep = (milliseconds) => {
+    //     return new Promise(resolve => setTimeout(resolve, milliseconds))
+    //   }
     handleAppointmentRequest = () => {
-        this.setState({department:[{value:"sbb"},{value:"ttt"}]})
+        depart_set = new Set([]);
+        new_array = [];
+        this.docRef.get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                let data = doc.id
+                console.log("sa:",doc.id);
+                depart_set.add(doc.id);
+                //this.setState({ department: ["addad"] });
+                //this.setState({department:[data]})
+                console.log("smg");
+            });
+            console.log("smg");
+            
+            depart_set.forEach(function(val) {
+                 new_array.push({value:val})
+                 //new_array["value"] = val;
+                 console.log("new_array: ",new_array);
+            })
+        //     new_array.forEach(function(val) {
+        //         //new_array.push({value:val})
+        //         console.log("available_time: ",val);
+        //    }) 
+           
+        });
+        
+        //this.setState({ department: ["addad"] })
+        //this.renderPicker()
+        // while(new_array.length < 1){
+
+        // }
+        this.sleep(500).then(() => {
+            //do stuff
+          
+    //     new_array.forEach(function(val) {
+    //         //new_array.push({value:val})
+    //         console.log("newarray: ",val);
+    //    })
+       this.setState({departmentList:new_array})
+    })
+        // return(this.state.department.map((x,i) =>{
+        //     return(<Dropdown label = {x} data = {x}/>)
+        // })
+    
+        //console.log(this.state.department[0]);
+        
+        //this.setState({department:[{value:"sbb"},{value:"ttt"}]})
         if (this.state.title == '') {
             console.log('No title given');  
              Toast.show('Please enter title');
@@ -135,14 +236,14 @@ export default class Patient_AppointmentScreen extends Component {
     }
 
 
-    renderPicker = () => {
+    // renderPicker = () => {
         
-        return(this.state.department.map((x,i) =>{
-            return(<Dropdown label = {x} data = {x}/>)
-        })
+    //     return(this.state.departmentList.map((x,i) =>{
+    //         return(<Dropdown label = {x} data = {x}/>)
+    //     })
 
-        );
-    }
+    //     );
+    // }
    
     
     
@@ -244,16 +345,31 @@ export default class Patient_AppointmentScreen extends Component {
                     containerStyle={styles.pickerContainer}
                     pickerStyle={styles.pickerContent}
                     label = "Department"
-                    data = {this.state.department}
+                    data = {this.state.departmentList}
+                    onChangeText = {(selected) => this.getDoctorList(selected)}
                 />
+                <Dropdown
+                    containerStyle={styles.pickerContainer}
+                    pickerStyle={styles.pickerContent}
+                    label = "Doctor"
+                    //value = {this.state.doctorList[0]}
+                    data = {this.state.doctorList}
+                />
+                <Dropdown
+                    containerStyle={styles.pickerContainer}
+                    pickerStyle={styles.pickerContent}
+                    label = "Available Time"
+                    //value = {this.state.doctorList[0]}
+                    data = {this.state.availableTimeList}
+                />                
                 
-                <TextInput
+                {/* <TextInput
                     placeholder='Requested Doctor (Optional)'
                     autoCapitalize="none"
                     style={styles.input}
                     onChangeText={doctor => this.setState({ doctor })}
                     value={this.state.doctor}
-                />
+                /> */}
                 <TextInput
                     placeholder='(Description)'
                     autoCapitalize="none"
