@@ -74,7 +74,6 @@ export default class Patient_ProfileScreen extends Component {
     }
 
     viewMedicalRecords() {
-        console.log('trying to navigate here')
         this.props.navigation.navigate('MedicalRecords')
     }
 
