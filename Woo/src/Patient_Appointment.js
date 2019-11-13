@@ -4,74 +4,105 @@ import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
 import { initialEmail } from './Loading.js';
 import Toast from 'react-native-tiny-toast';
-import { hospitalStaff } from './AdminHomepage.js';
+import { hospital,first,last } from './Loading.js';
 import DatePicker from 'react-native-datepicker';
 import { Platform } from '@unimodules/core';
-import {Dropdown} from 'react-native-material-dropdown'
+import { Dropdown } from 'react-native-material-dropdown'
 var appointments = [];
 var accepted = true;
 export default class Patient_AppointmentScreen extends Component {
 
-    
-    state = { departmentList:[{value:"Null"}],doctorList:[{value:"Please Select A Department"}],availableTimeList:[{value:"19:00"}],title: '', date: '', time: '', hospital: '', doctor: '', description: '', hospitalStaff: '',appointments: '',  err: null }
-    constructor(props){
+
+    state = { departmentList: [{ value: "Null" }], doctorList: [{ value: "Please Select A Department" }], availableTimeList: [{ value: "Null" }], hospitalList: [{ value: "Null" }], date: '', time: '', hospital: '', doctor: '',department: '', description: '', hospital: '', appointments: '', err: null }
+    constructor(props) {
         super(props);
-        this.docRef = firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments");
-        
+        this.docRef = firebase.firestore().collection("hospital");
+        this.selectedDepartment;
+        this.selectedDoctor;
+        this.selectedDate;
+        this.selectedHospital;
+
         //this.department = this.department.bind(this)
     }
 
     componentDidMount() {
-    //     this.getUserData()
-    this.getHosipltalList()
-    //     //this.docRef.set({ birthday: '1-1-2019' }, { merge: true });
+        //     this.getUserData()
+        this.getHospitalList()
+        //     //this.docRef.set({ birthday: '1-1-2019' }, { merge: true });
     }
 
-    getHosipltalList = () =>{
+    getHospitalList = () => {
         depart_set = new Set([]);
         new_array = [];
-        this.docRef.get().then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
+        this.docRef.get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.id
-                console.log("sa:",doc.id);
+                console.log("sa:", doc.id);
                 depart_set.add(doc.id);
 
                 console.log("smg");
             });
             console.log("smg");
-            
-            depart_set.forEach(function(val) {
-                 new_array.push({value:val})
-                 //new_array["value"] = val;
-                 console.log("new_array: ",new_array);
-            })     
+
+            depart_set.forEach(function (val) {
+                new_array.push({ value: val })
+                //new_array["value"] = val;
+                console.log("new_array: ", new_array);
+            })
         });
-       this.setState({departmentList:new_array})
-       //this.setState({doctorList:new_array})
+        this.setState({ hospitalList: new_array })
+        //this.setState({doctorList:new_array})
+    }
+    getDepartmentList = (selected) => {
+        this.setState({ hospital: selected });
+        this.setState({ selectedHospital: selected });
+        depart_set = new Set([]);
+        new_array = [];
+        firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                // doc.data() is never undefined for query doc snapshots
+                let data = doc.id
+                console.log("sa:", doc.id);
+                depart_set.add(doc.id);
+
+                console.log("smg");
+            });
+            console.log("smg");
+
+            depart_set.forEach(function (val) {
+                new_array.push({ value: val })
+                //new_array["value"] = val;
+                console.log("new_array: ", new_array);
+            })
+        });
+        this.setState({ departmentList: new_array })
+        //this.setState({doctorList:new_array})
     }
     getDoctorList = (selected) => {
+        this.setState({ department: selected });
+        this.setState({ selectedDepartment: selected });
         depart_set = new Set([]);
         new_array = [];
-        firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(selected).collection("Doctors").get().then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
+        firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(selected).collection("Doctors").get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.id
-                console.log("sa:",doc.id);
+                console.log("sa:", doc.id);
                 depart_set.add(doc.id);
 
                 console.log("smg");
             });
             console.log("smg");
-            
-            depart_set.forEach(function(val) {
-                 new_array.push({value:val})
-                 //new_array["value"] = val;
-                 console.log("new_array: ",new_array);
-            })     
+
+            depart_set.forEach(function (val) {
+                new_array.push({ value: val })
+                //new_array["value"] = val;
+                console.log("new_array: ", new_array);
+            })
         });
-       this.setState({doctorList:new_array})
-       //this.setState({doctorList:new_array})
+        this.setState({ doctorList: new_array })
+        //this.setState({doctorList:new_array})
         console.log("selected:", selected)
     }
     // getUserData = () => {
@@ -88,14 +119,66 @@ export default class Patient_AppointmentScreen extends Component {
 
     // }
 
+    getAvailableTimeListCal = () => {
+        all_time = new Set(["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00"]);
+        unavailable_time = new Set([])
+        new_array = [];
+        firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc("2019-11-13").collection("Time").get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                console.log("sa:", doc.id);
+                unavailable_time.add(doc.id);
+
+            });
+            console.log("date exist");
+            var available_time = new Set([...all_time].filter(x => !unavailable_time.has(x)));
+            available_time.forEach(function (val) {
+                new_array.push({ value: val });
+            });
+
+        });
+        this.setState({ availableTimeList: new_array })
+    }
+    getAvailableTimeList = (selected) => {
+
+        this.setState({ date: selected });
+        this.setState({ selectedDate: selected });
+        all_time = new Set(["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00"]);
+        unavailable_time = new Set([])
+        new_array = [];
+        console.log("selected depart:", this.state.selectedDepartment)
+        console.log("selected doctor:", this.state.selectedDoctor)
+        console.log("selected date: ", this.state.selectedDate)
+        console.log("date: ", this.state.date)
+        firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(selected).get().then((querySnapshot) => {
+            if (querySnapshot.exists) {
+                console.log("Yes such document!");
+                this.getAvailableTimeListCal()
+                //ParentClass.prototype.this.getAvailableTimeListCal().call();
+            } else {
+                // doc.data() will be undefined in this case
+                all_time.forEach(function (val) {
+                    new_array.push({ value: val });
+                });
+                this.setState({ availableTimeList: new_array })
+                console.log("No such document!");
+            }
+
+        });
+
+    }
+    setSelectedTime = (selected) => {
+        this.setState({ time: selected });
+        this.setState({ selectedTime: selected });
+    }
+
     clearfields = () => {
-        this.setState({title:''})
-        this.setState({date:''})
-        this.setState({time:''})
         
-        this.setState({hospital:''})
-        this.setState({doctor:''})
-        this.setState({description:''})
+        this.setState({ date: '' })
+        this.setState({ time: '' })
+
+        this.setState({ hospital: '' })
+        this.setState({ doctor: '' })
+        this.setState({ description: '' })
     }
     logSetElements(value1, value2, set) {
         console.log("s[" + value1 + "] = " + value2);
@@ -105,154 +188,112 @@ export default class Patient_AppointmentScreen extends Component {
     //     return new Promise(resolve => setTimeout(resolve, milliseconds))
     //   }
     handleAppointmentRequest = () => {
-        depart_set = new Set([]);
-        new_array = [];
-        this.docRef.get().then(function(querySnapshot) {
-            querySnapshot.forEach(function(doc) {
-                // doc.data() is never undefined for query doc snapshots
-                let data = doc.id
-                console.log("sa:",doc.id);
-                depart_set.add(doc.id);
-                //this.setState({ department: ["addad"] });
-                //this.setState({department:[data]})
-                console.log("smg");
-            });
-            console.log("smg");
-            
-            depart_set.forEach(function(val) {
-                 new_array.push({value:val})
-                 //new_array["value"] = val;
-                 console.log("new_array: ",new_array);
-            })
-        //     new_array.forEach(function(val) {
-        //         //new_array.push({value:val})
-        //         console.log("available_time: ",val);
-        //    }) 
-           
-        });
+        console.log('date:',this.state.date);
+        console.log('time:',this.state.time);
+        console.log('hospital:',this.state.hospital);
         
-        //this.setState({ department: ["addad"] })
-        //this.renderPicker()
-        // while(new_array.length < 1){
-
-        // }
-        this.sleep(500).then(() => {
-            //do stuff
-          
-    //     new_array.forEach(function(val) {
-    //         //new_array.push({value:val})
-    //         console.log("newarray: ",val);
-    //    })
-       this.setState({departmentList:new_array})
-    })
-        // return(this.state.department.map((x,i) =>{
-        //     return(<Dropdown label = {x} data = {x}/>)
-        // })
-    
-        //console.log(this.state.department[0]);
-        
-        //this.setState({department:[{value:"sbb"},{value:"ttt"}]})
-        if (this.state.title == '') {
-            console.log('No title given');  
-             Toast.show('Please enter title');
-            return;
-        }
         if (this.state.date == '') {
-            console.log('No date given');  
-             Toast.show('Please enter appointment date');
+            console.log('No date given');
+            Toast.show('Please enter appointment date');
             return;
         }
 
         if (this.state.time == '') {
-            console.log('No time selected');  
-             Toast.show('Please enter appointment time');
+            console.log('No time selected');
+            Toast.show('Please enter appointment time');
             return;
         }
 
         if (this.state.hospital == '') {
-            console.log('No hospital given');  
-             Toast.show('Please enter hospital');
+            console.log('No hospital given');
+            Toast.show('Please enter hospital');
             return;
         }
         console.log(accepted)
 
         const eventrefPatient = firebase.firestore().collection("users").doc(initialEmail).collection("requests");
-         eventrefPatient.doc(this.state.date+'_'+this.state.time).set({
-             date: this.state.date,
-             time: this.state.time,
-             hospital: this.state.hospital,
-             doctor: this.state.doctor,
-             description: this.state.description,
-
-         }) 
-         
-         /* Same logic can be used to query all receptionists with the same hospital as user requesting event time */
-         const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests");
-         const hospitalQuery = userRef.where("date", "==", this.state.date)
-                                      .where("time", "==", this.state.time)
-            .get()
-            .then(function(querySnapshot) {
-                querySnapshot.forEach(function(doc) {
-            
-                if(doc.id != ''){
-                   accepted = false;
-                   console.log(doc.id)
-                }
-                
-            });
-        })
-        .catch(function(error){
-            console.log("Error getting documents: ", error);
-        });
-         
-      if(accepted){
-        Toast.show('Request sent');
-        const eventrefHospital= firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests");
-        eventrefHospital.doc(this.state.date+'_'+this.state.time).set({
+        eventrefPatient.doc(this.state.date + '_' + this.state.time + '_' + initialEmail).set({
             date: this.state.date,
             time: this.state.time,
-           hospitalStaff: this.state.hospitalStaff,
-           doctor: this.state.doctor,
+            hospital: this.state.hospital,
+            doctor: this.state.doctor,
             description: this.state.description,
+            department:this.state.selectedDepartment,
+            first_name: first,
+            last_name: last
 
         })
-        //console.log("date is",this.state.date)
-      }
 
-      if(!(accepted)){
-        accepted = true;
-        Toast.show('Request Denied');
-        const eventref = firebase.firestore().collection("users").doc(initialEmail).collection("requests");
-         eventref.doc(this.state.date+'_'+this.state.time).delete().then(function() {
-             console.log("document deleted");
-         }).catch(function(error){
-             console.log("Error removing document ", error);
-         });
-         
-        
-      }
+        /* Same logic can be used to query all receptionists with the same hospital as user requesting event time */
+        const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests");
+        const hospitalQuery = userRef.where("date", "==", this.state.date)
+            .where("time", "==", this.state.time)
+            .get()
+            .then(function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
+
+                    if (doc.id != '') {
+                        accepted = false;
+                        console.log(doc.id)
+                    }
+
+                });
+            })
+            .catch(function (error) {
+                console.log("Error getting documents: ", error);
+            });
+
+        if (accepted) {
+            Toast.show('Request sent');
+            const eventrefHospital = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests");
+            eventrefHospital.doc(this.state.date + '_' + this.state.time + '_' + initialEmail).set({
+                date: this.state.date,
+            time: this.state.time,
+            hospital: this.state.hospital,
+            doctor: this.state.doctor,
+            description: this.state.description,
+            department:this.state.selectedDepartment,
+            first_name: first,
+            last_name: last
+
+            })
+            //console.log("date is",this.state.date)
+        }
+
+        if (!(accepted)) {
+            accepted = true;
+            Toast.show('Request Denied');
+            const eventref = firebase.firestore().collection("users").doc(initialEmail).collection("requests");
+            eventref.doc(this.state.date + '_' + this.state.time + '_' + initialEmail).delete().then(function () {
+                console.log("document deleted");
+            }).catch(function (error) {
+                console.log("Error removing document ", error);
+            });
+
+
+        }
         //Update appointments and export to homepage view
-       
+
     }
 
 
     // renderPicker = () => {
-        
+
     //     return(this.state.departmentList.map((x,i) =>{
     //         return(<Dropdown label = {x} data = {x}/>)
     //     })
 
     //     );
     // }
-   
-    
-    
+
+
+
 
 
 
     render() {
-        
-       
+
+
         return (
             <View style={{ flex: 1, backgroundColor: '#ffffff', justifyContent: 'flex-end' }}>
                 <View style={{ ...StyleSheet.absoluteFill }}>
@@ -263,128 +304,85 @@ export default class Patient_AppointmentScreen extends Component {
                     />
                 </View>
                 <View style={styles.reqAll}>
-                <TextInput
-                    placeholder='Event Title'
-                    autoCapitalize="none"
-                    style={styles.input}
-                    onChangeText={title => this.setState({ title })}
-                    value={this.state.title}
-                />
-                <DatePicker
-        style={styles.req}
-        date={this.state.date}
-        mode="date"
-        placeholder="select date"
-        format="YYYY-MM-DD"
-        minDate="2019-11-03"
-        maxDate="2020-12-31"
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        customStyles={{
-          dateIcon: {
-            position: 'absolute',
-            left: 0,
-            top: 4,
-            marginLeft: 0,
-            
-          },
-          dateInput: {
-            marginLeft: 0
-          }
-          // ... You can check the source to find the other keys.
-        }}
-        onDateChange={(date) => {this.setState({date: date})}}
-      />
-      <DatePicker
-        style={styles.req}
-        date={this.state.time}
-        mode="time"
-        format="HH:mm"
-        placeholder="select time"
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        minuteInterval={30}
-        is24Hour={true}
-        customStyles={{
-            dateIcon: {
-                position: 'absolute',
-                left: 0,
-                top: 4,
-                marginLeft: 0,
-            },
-            dateInput: {
-                margineLeft: 36
-            }
-            
-        }}
-        onDateChange={(time) => {this.setState({time: time})}}
-      />
-                
-                <TextInput
-                    placeholder='Hospital'
-                    autoCapitalize="none"
-                    style={styles.input}
-                    onChangeText={hospital => this.setState({ hospital })}
-                    value={this.state.hospital}
-                />
-                
-                    
-                {/* <Picker
+                  
+                    <Dropdown
+                        containerStyle={styles.pickerContainer}
+                        pickerStyle={styles.pickerContent}
+                        label="Hospital"
+                        data={this.state.hospitalList}
+                        onChangeText={(selected) => this.getDepartmentList(selected)}
+                    />
+                    <Dropdown
+                        containerStyle={styles.pickerContainer}
+                        pickerStyle={styles.pickerContent}
+                        label="Department"
+                        data={this.state.departmentList}
+                        onChangeText={(selected) => this.getDoctorList(selected)}
+                    />
+                    <Dropdown
+                        containerStyle={styles.pickerContainer}
+                        pickerStyle={styles.pickerContent}
+                        label="Doctor"
+                        //value = {this.state.doctorList[0]}
+                        data={this.state.doctorList}
+                        onChangeText={(selected) => this.setState({ selectedDoctor: selected,doctor:selected })}
+                    />
+                    <DatePicker
+                        style={styles.req}
+                        date={this.state.date}
+                        mode="date"
+                        placeholder="select date"
+                        format="YYYY-MM-DD"
+                        minDate="2019-11-03"
+                        maxDate="2020-12-31"
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        customStyles={{
+                            dateIcon: {
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                marginLeft: 0,
 
-                    selectedValue={this.state.language}
-                    style={{height: 50, width: 100}}
-                    onValueChange={(value) =>
-                    (this.setState({value}))}>
-                    {this.renderPicker()}
-                
-                
-                
-                </Picker> */}
+                            },
+                            dateInput: {
+                                marginLeft: 0
+                            }
+                            // ... You can check the source to find the other keys.
+                        }}
+                        onDateChange={(date) => this.getAvailableTimeList(date)}
+                    />
+                    <Dropdown
+                        containerStyle={styles.pickerContainer}
+                        pickerStyle={styles.pickerContent}
+                        label="Available Time"
+                        //value = {this.state.doctorList[0]}
+                        data={this.state.availableTimeList}
+                        onChangeText={(selected) => this.setSelectedTime(selected)}
+                    />
 
-                <Dropdown
-                    containerStyle={styles.pickerContainer}
-                    pickerStyle={styles.pickerContent}
-                    label = "Department"
-                    data = {this.state.departmentList}
-                    onChangeText = {(selected) => this.getDoctorList(selected)}
-                />
-                <Dropdown
-                    containerStyle={styles.pickerContainer}
-                    pickerStyle={styles.pickerContent}
-                    label = "Doctor"
-                    //value = {this.state.doctorList[0]}
-                    data = {this.state.doctorList}
-                />
-                <Dropdown
-                    containerStyle={styles.pickerContainer}
-                    pickerStyle={styles.pickerContent}
-                    label = "Available Time"
-                    //value = {this.state.doctorList[0]}
-                    data = {this.state.availableTimeList}
-                />                
-                
-                {/* <TextInput
+                    {/* <TextInput
                     placeholder='Requested Doctor (Optional)'
                     autoCapitalize="none"
                     style={styles.input}
                     onChangeText={doctor => this.setState({ doctor })}
                     value={this.state.doctor}
                 /> */}
-                <TextInput
-                    placeholder='(Description)'
-                    autoCapitalize="none"
-                    style={styles.bottom}
-                    multiline={true}
-                    onChangeText={description => this.setState({ description })}
-                    value={this.state.description}
-                />
-                <TouchableOpacity onPress={this.handleAppointmentRequest}>
-                    <View style={styles.button}>
-                        <Text style={{ fontSize: 20 }}>Request Appointment</Text>
-                    </View>
-                </TouchableOpacity>
-                
-            </View>
+                    <TextInput
+                        placeholder='(Description)'
+                        autoCapitalize="none"
+                        style={styles.bottom}
+                        multiline={true}
+                        onChangeText={description => this.setState({ description })}
+                        value={this.state.description}
+                    />
+                    <TouchableOpacity onPress={this.handleAppointmentRequest}>
+                        <View style={styles.button}>
+                            <Text style={{ fontSize: 20 }}>Request Appointment</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                </View>
             </View>
         );
     }
@@ -418,7 +416,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: 45,
-        marginBottom: 80
+        marginBottom: 20
 
     },
     pickerContainer: {
@@ -428,7 +426,7 @@ const styles = StyleSheet.create({
         width: "75%",
         // borderColor: 'black',
         // borderBottomWidth: 2.5,
-        marginBottom: 20,
+        marginBottom: 30,
         marginLeft: 50,
         marginRight: 50,
         //paddingVertical:10,
@@ -505,7 +503,7 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         borderColor: 'rgba(0,0,0,0.2)',
     },
-   
+
 });
 
 const pickerSelectStyles = StyleSheet.create({

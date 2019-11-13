@@ -3,18 +3,38 @@ import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOp
 import * as firebase from "firebase";
 import { YellowBox } from 'react-native';
 import Toast from 'react-native-tiny-toast';
-var hospitalStaff = 'No Hospital'
-export {hospitalStaff};
+var hospital = 'null'
+export {hospital};
 var initialEmail = 'initialEmail';
 const { width, height } = Dimensions.get('window');
 export default class AdminHomepage extends Component {
     constructor() {
         super();
         YellowBox.ignoreWarnings(['Setting a timer']);
+        this.user = firebase.auth().currentUser
+        this.docRef = firebase.firestore().collection("users").doc(this.user.email);
     }
-    state = { email: '', hospitalStaff: '', err: null }
+    state = { email: '', hospital: '', err: null }
 
+    componentDidMount(){
+        this.getUserData()
+    }
     
+    getUserData() {
+        this.docRef.get().then((doc) => {
+            if (doc.exists) {
+                let data = doc.get("hospital")
+                this.setState({ hospital: data })
+            } else {
+                this.setState({ hospital: "null" })
+                console.log('No such document')
+            }
+        }).catch((err) => {
+            this.setState({ hospital: "null" })
+            console.log('Error: ', err)
+        })
+    }
+
     handleSignOut = () => {
         firebase
             .auth()
@@ -33,7 +53,7 @@ export default class AdminHomepage extends Component {
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '4',
-            hospitalStaff: this.state.hospitalStaff,
+            hospital: this.state.hospital,
 
         }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
@@ -52,7 +72,7 @@ export default class AdminHomepage extends Component {
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '3',
-            hospitalStaff: this.state.hospitalStaff,
+            hospital: this.state.hospital,
 
         }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
@@ -69,7 +89,7 @@ export default class AdminHomepage extends Component {
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '2',
-            hospitalStaff: this.state.hospitalStaff,
+            hospital: this.state.hospital,
 
         }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
@@ -86,6 +106,7 @@ export default class AdminHomepage extends Component {
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '1',
+            hospital: "Null",
 
         }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
@@ -108,13 +129,7 @@ export default class AdminHomepage extends Component {
                     onChangeText={email => this.setState({ email })}
                     value={this.state.email}
                 />
-                <TextInput
-                    placeholder='Hospital'
-                    autoCapitalize="none"
-                    style={styles.input}
-                    onChangeText={hospitalStaff => this.setState({ hospitalStaff })}
-                    value={this.state.hospitalStaff}
-                />
+                
                 <TouchableOpacity onPress={this.addDoctor}>
                     <Animated.View style={styles.button}>
                         <Text style={{ fontSize: 20 }}>Set Doctor</Text>
