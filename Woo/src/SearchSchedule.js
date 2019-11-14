@@ -4,6 +4,7 @@ import * as firebase from "firebase";
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Fumi } from 'react-native-textinput-effects';
 import { initialEmail } from './Loading.js';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class SearchSchedule extends Component {
 
@@ -49,28 +50,31 @@ export default class SearchSchedule extends Component {
     const { events } = this.state;
     const newString = events ? events.toString() : ''
       return (
-        <View style = {styles.container}>
-            <Text
-              style = {styles.titleText}>Search for a users appointments</Text>
-              <Fumi
-                label={'Email Address'}
-                iconClass={FontAwesomeIcon}
-                iconName={'pencil'}
-                iconColor={'white'}
-                inputStyle={{ color: '#000000' }}
-                onChangeText={email => { this.setState({email}) } }
-              /> 
-            <Button
-              style={styles.buttonStyle}
-              onPress = {() => this.onQuery(this.state.email)}
-              title="Get specfic user appointments"
-            />
-            <Button
-              onPress = {() => this.onPressRequests()}
-              title="Go back"
-            />
-            <Text> Appointments found for user: { newString }</Text>
-        </View>
+        <ScrollView style = {styles.scrollView}>
+          <View style = {styles.container}>
+              <Text
+                style = {styles.titleText}>Search for a users appointments</Text>
+                <Fumi
+                  label={'Email Address'}
+                  iconClass={FontAwesomeIcon}
+                  iconName={'pencil'}
+                  iconColor={'white'}
+                  inputStyle={{ color: '#000000' }}
+                  onChangeText={email => { this.setState({email}) } }
+                /> 
+              <Button
+                style={styles.buttonStyle}
+                onPress = {() => this.onQuery(this.state.email)}
+                title="Get specfic user appointments"
+              />
+              <Button
+                onPress = {() => this.onPressRequests()}
+                title="Go back"
+              />
+              <Text style = {styles.titleText}> Appointments found for user:</Text>
+              <Text>{newString}</Text>
+          </View>
+        </ScrollView>
         );
     }
 }
@@ -85,6 +89,8 @@ const styles = StyleSheet.create({
     },
     titleText: {
       paddingBottom: 16,
+      borderColor: '#72C3C9',
+      backgroundColor: '#72C3C9',
       textAlign: 'center',
       color: '#404d5b',
       fontSize: 20,
@@ -107,5 +113,8 @@ const styles = StyleSheet.create({
       paddingLeft: 25,
       marginTop: 10,
       width: 300
+    },
+    scrollView: {
+      backgroundColor: '#72C3C9'
     }
   });
