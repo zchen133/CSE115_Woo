@@ -1,6 +1,8 @@
 import React, { Component, ReactNode } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import * as firebase from "firebase";
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import { Fumi } from 'react-native-textinput-effects';
 import { initialEmail } from './Loading.js';
 
 export default class SearchSchedule extends Component {
@@ -13,6 +15,10 @@ export default class SearchSchedule extends Component {
         };
         this.onQuery = this.onQuery.bind(this);
         this.searchEmail = this.searchEmail.bind(this);
+    }
+
+    onPressRequests = () => {
+      this.props.navigation.navigate('PatientHomepage')
     }
 
     onQuery = (email) => {
@@ -46,14 +52,22 @@ export default class SearchSchedule extends Component {
         <View style = {styles.container}>
             <Text
               style = {styles.titleText}>Search for a users appointments</Text>
-            <TextInput
-              style = {styles.form}
-              placeholder = "Enter a users email"
-              onChangeText={email => this.setState({ email })}
-            /> 
+              <Fumi
+                label={'Email Address'}
+                iconClass={FontAwesomeIcon}
+                iconName={'pencil'}
+                iconColor={'white'}
+                inputStyle={{ color: '#000000' }}
+                onChangeText={email => { this.setState({email}) } }
+              /> 
             <Button
+              style={styles.buttonStyle}
               onPress = {() => this.onQuery(this.state.email)}
               title="Get specfic user appointments"
+            />
+            <Button
+              onPress = {() => this.onPressRequests()}
+              title="Go back"
             />
             <Text> Appointments found for user: { newString }</Text>
         </View>
@@ -70,14 +84,28 @@ const styles = StyleSheet.create({
       borderColor: '#72C3C9',
     },
     titleText: {
+      paddingBottom: 16,
+      textAlign: 'center',
+      color: '#404d5b',
       fontSize: 20,
       fontWeight: 'bold',
-      marginBottom: 3,
+      opacity: 0.8,
     },
     form : {
       justifyContent: 'center',
       marginTop: 50,
       padding: 20,
       backgroundColor: '#ffffff',
+    },
+    buttonStyle: {
+      backgroundColor: '#fff',
+      borderWidth: 1,
+      borderColor: '#336633',
+      paddingTop: 4,
+      paddingBottom: 4,
+      paddingRight: 25,
+      paddingLeft: 25,
+      marginTop: 10,
+      width: 300
     }
   });
