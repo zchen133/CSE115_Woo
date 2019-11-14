@@ -3,10 +3,10 @@ import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOp
 import * as firebase from "firebase";
 import { YellowBox } from 'react-native';
 import Toast from 'react-native-tiny-toast';
-var hospitalStaff = 'No Hospital'
-export {hospitalStaff};
+var hospital = 'No Hospital'
+export {hospital};
 var initialEmail = 'initialEmail';
-const { width, height } = Dimensions.get('window');
+
 export default class AdminHomepage extends Component {
     constructor() {
         super();
@@ -30,13 +30,21 @@ export default class AdminHomepage extends Component {
             Toast.show('Please enter the email');
             return;  
         }
+        if(this.state.hospitalStaff !== ''){
+            hospital = this.state.hospitalStaff
+        }
+        else{ 
+            Toast.show('Please enter the hospital');
+            return;  
+        }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '4',
-            hospitalStaff: this.state.hospitalStaff,
+            hospital: this.state.hospitalStaff,
 
         }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
+       
     }
 
 
@@ -49,10 +57,17 @@ export default class AdminHomepage extends Component {
             Toast.show('Please enter the email');
             return;  
         }
+        if(this.state.hospital !== ''){
+            hospital = this.state.hospitalStaff
+        }
+        else{ 
+            Toast.show('Please enter the hospital');
+            return;  
+        }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '3',
-            hospitalStaff: this.state.hospitalStaff,
+            hospital: this.state.hospitalStaff,
 
         }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
@@ -66,10 +81,17 @@ export default class AdminHomepage extends Component {
             Toast.show('Please enter the email');
             return;  
         }
+        if(this.state.hospital !== ''){
+            hospital = this.state.hospitalStaff
+        }
+        else{ 
+            Toast.show('Please enter the hospital');
+            return;  
+        }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '2',
-            hospitalStaff: this.state.hospitalStaff,
+            hospital: this.state.hospitalStaff,
 
         }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
