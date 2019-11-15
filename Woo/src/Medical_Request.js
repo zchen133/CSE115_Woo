@@ -88,12 +88,7 @@ export default class RequestScreen extends Component {
         }
 
     accept(appointment){
-        //this.setState({appointment:[{time:"15:30"},{time:"16:00"}]})
-        console.log("Accept hospital: ",hospital)
-        console.log("Accept appointment.department: ",appointment.department)
-        console.log("Accept appointment.doctor_name: ",appointment.doctor_name)
-        console.log("Accept appointment.time: ",appointment.time)
-        console.log("Accept appointment.date: ",appointment.date)
+        
         firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(appointment.department).collection("Doctors").doc(appointment.doctor_name).set({
 
         }).then(()=>{
@@ -108,7 +103,8 @@ export default class RequestScreen extends Component {
                 description: appointment.description,
                 department:appointment.department,
                 first_name: appointment.first_name,
-                last_name: appointment.last_name
+                last_name: appointment.last_name,
+                email:appointment.userEmail
         
                 })
             })
@@ -217,13 +213,13 @@ export default class RequestScreen extends Component {
         return (
             <Block flex = {0.8} colomn color = {this.state.requestColor} style = {styles.pageBottom}>
                
-                    <Text style={{fontSize: 20, fontWeight: 'bold' }}>Appointment Requests</Text>
+                    <Text style={{fontSize: 20, marginLeft:100,fontWeight: 'bold' }}>Pending Requests</Text>
                     
                     <ScrollView showsVerticalScrollIndicator = {true}>
                         
                     {this.state.appointment.map(appointment => (
-            <TouchableOpacity activeOpacity={0.8} key={`${appointment.time}`} 
-                onPress = {event =>{alert(`${appointment.time}`)}}>
+            <TouchableOpacity activeOpacity={0.8} key={`${appointment.id}`} 
+                onPress = {event =>{alert(`${appointment.description}`)}}>
               {
               this.renderList(appointment)}
             </TouchableOpacity>
@@ -234,28 +230,7 @@ export default class RequestScreen extends Component {
     }
 }
 
-/*const appointment = [{
-    time: "12:00"
-},
-{
-    time: "15:00"
-},
-{
-    time: "18:00"
-},
-{
-    time: "7:00"
-},
-{
-    time: "16:00"
-},
-{
-    time: "14:00"
-},
-{
-    time: "8:00"
-}
-]*/
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -272,7 +247,8 @@ const styles = StyleSheet.create({
     items: {
         padding: 20,
         marginBottom: 15
-    },buttons:{
+    },
+    buttons:{
         alignItems:'center',
         marginRight:20
     }

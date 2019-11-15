@@ -60,6 +60,7 @@ export default class Signup extends Component {
                     last: this.state.lastName,
                     email: this.state.email,
                     accountType: this.state.accountType,
+                    accountTypeString: "Patients"
                 })
 
             })

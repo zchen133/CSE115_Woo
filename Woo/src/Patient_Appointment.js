@@ -21,6 +21,7 @@ export default class Patient_AppointmentScreen extends Component {
         this.selectedDoctor;
         this.selectedDate;
         this.selectedHospital;
+        
 
         //this.department = this.department.bind(this)
     }
@@ -84,7 +85,7 @@ export default class Patient_AppointmentScreen extends Component {
         this.setState({ selectedDepartment: selected });
         depart_set = new Set([]);
         new_array = [];
-        firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(selected).collection("Doctors").get().then(function (querySnapshot) {
+        firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").doc(selected).collection("Doctors").get().then(function (querySnapshot) {
             querySnapshot.forEach(function (doc) {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.id
@@ -123,7 +124,7 @@ export default class Patient_AppointmentScreen extends Component {
         all_time = new Set(["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00"]);
         unavailable_time = new Set([])
         new_array = [];
-        firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc("2019-11-13").collection("Time").get().then(function (querySnapshot) {
+        firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(this.state.selectedDate).collection("Time").get().then(function (querySnapshot) {
             querySnapshot.forEach(function (doc) {
                 console.log("sa:", doc.id);
                 unavailable_time.add(doc.id);
@@ -149,7 +150,7 @@ export default class Patient_AppointmentScreen extends Component {
         console.log("selected doctor:", this.state.selectedDoctor)
         console.log("selected date: ", this.state.selectedDate)
         console.log("date: ", this.state.date)
-        firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(selected).get().then((querySnapshot) => {
+        firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(selected).get().then((querySnapshot) => {
             if (querySnapshot.exists) {
                 console.log("Yes such document!");
                 this.getAvailableTimeListCal()
@@ -220,7 +221,8 @@ export default class Patient_AppointmentScreen extends Component {
             description: this.state.description,
             department:this.state.selectedDepartment,
             first_name: first,
-            last_name: last
+            last_name: last,
+            email: initialEmail
 
         })
 
@@ -254,8 +256,8 @@ export default class Patient_AppointmentScreen extends Component {
             description: this.state.description,
             department:this.state.selectedDepartment,
             first_name: first,
-            last_name: last
-
+            last_name: last,
+            email:initialEmail
             })
             //console.log("date is",this.state.date)
         }

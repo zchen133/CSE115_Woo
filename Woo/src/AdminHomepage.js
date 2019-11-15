@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOp
 import * as firebase from "firebase";
 import { YellowBox } from 'react-native';
 import Toast from 'react-native-tiny-toast';
+import { Dropdown } from 'react-native-material-dropdown'
 var hospital = 'null'
 export {hospital};
 var initialEmail = 'initialEmail';
@@ -14,17 +15,28 @@ export default class AdminHomepage extends Component {
         this.user = firebase.auth().currentUser
         this.docRef = firebase.firestore().collection("users").doc(this.user.email);
     }
-    state = { email: '', hospital: '', err: null }
+    state = { email: '', hospital: '', first_name:"", last_name:"",err: null,departmentList: [{ value: "Null" }],selectedDepartment:'',accountTypeNumber:'' }
 
     componentDidMount(){
         this.getUserData()
+        
     }
-    
+    addToHospital = (acType) =>{
+        firebase.firestore().collection("hospital").doc(this.state.hospital).collection("Departments").doc(this.state.selectedDepartment).collection(acType).doc(this.state.first_name+" "+this.state.last_name).set({
+
+        })
+    }
     getUserData() {
         this.docRef.get().then((doc) => {
             if (doc.exists) {
                 let data = doc.get("hospital")
+                //let first_name = doc.get("first")
+                //let last_name = doc.get("last")
                 this.setState({ hospital: data })
+                //this.setState({first_name:first_name})
+                //this.setState({last_name:last_name})
+                
+                this.getDepartmentList()
             } else {
                 this.setState({ hospital: "null" })
                 console.log('No such document')
@@ -34,7 +46,21 @@ export default class AdminHomepage extends Component {
             console.log('Error: ', err)
         })
     }
-
+    
+    getDepartmentList = () => {
+        depart_set = new Set([]);
+        new_array = [];
+        firebase.firestore().collection("hospital").doc(this.state.hospital).collection("Departments").get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                // doc.data() is never undefined for query doc snapshots
+                depart_set.add(doc.id);
+            });
+            depart_set.forEach(function (val) {
+                new_array.push({ value: val })
+            })
+        });
+        this.setState({ departmentList: new_array })
+    }
     handleSignOut = () => {
         firebase
             .auth()
@@ -43,73 +69,179 @@ export default class AdminHomepage extends Component {
     }
 
     addDoctor = () => {
-        if (this.state.email !== '') {
+        if (this.state.email !== ''&&this.state.selectedDepartment!='') {
             initialEmail = this.state.email;
         }
         else{ 
-            Toast.show('Please enter the email');
+            Toast.show('Please enter the email and select a department');
             return;  
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
-        docRef.update({
-            accountType: '4',
-            hospital: this.state.hospital,
+        
 
-        }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
-        console.log(this.state.err);
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                let first = doc.get("first")
+                let last = doc.get("last")
+                let currentDepartment = doc.get("department")
+                if(currentDepartment!=null&&currentDepartment!='Null'){
+                    Toast.show('Please reset the permission');  
+                    return;
+                }
+                else{
+                    docRef.update({
+                        accountType: '4',
+                        hospital: this.state.hospital,
+                        department: this.state.selectedDepartment,
+                        accountTypeString: "Doctors"
+
+            
+                    }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
+                }
+                this.setState({first_name:first})
+                this.setState({last_name:last})
+                this.addToHospital("Doctors")
+            } else { 
+                console.log('No such document')
+            }
+        }).catch((err) => {
+            console.log('Error: ', err)
+        })
     }
 
 
 
     addNurse = () => {
-        if (this.state.email !== '') {
+        if (this.state.email !== ''&&this.state.selectedDepartment!='') {
             initialEmail = this.state.email;
         }
         else{ 
-            Toast.show('Please enter the email');
+            Toast.show('Please enter the email and select a department');
             return;  
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
-        docRef.update({
-            accountType: '3',
-            hospital: this.state.hospital,
-
-        }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
+        
         console.log(this.state.err);
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                let first = doc.get("first")
+                let last = doc.get("last")
+                let currentDepartment = doc.get("department")
+                if(currentDepartment!=null&&currentDepartment!='Null'){
+                    Toast.show('Please reset the permission');  
+                    return;
+                }
+                else{
+                    docRef.update({
+                        accountType: '3',
+                        hospital: this.state.hospital,
+                        department: this.state.selectedDepartment,
+                        accountTypeString: "Nurses"
+
+            
+                    }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
+                }
+                this.setState({first_name:first})
+                this.setState({last_name:last})
+                this.addToHospital("Nurses")
+            } else { 
+                console.log('No such document')
+            }
+        }).catch((err) => {
+            console.log('Error: ', err)
+        })
     }
 
     addReceptionist = () => {
-        if (this.state.email !== '') {
+        if (this.state.email !== ''&&this.state.selectedDepartment!='') {
             initialEmail = this.state.email;
         }
         else{ 
-            Toast.show('Please enter the email');
+            Toast.show('Please enter the email and select a department');
             return;  
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
-        docRef.update({
-            accountType: '2',
-            hospital: this.state.hospital,
 
-        }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
         console.log(this.state.err);
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                let first = doc.get("first")
+                let last = doc.get("last")
+                let currentDepartment = doc.get("department")
+                if(currentDepartment!=null&&currentDepartment!='Null'){
+                    Toast.show('Please reset the permission');  
+                    return;
+                }
+                else{
+                    docRef.update({
+                        accountType: '2',
+                        hospital: this.state.hospital,
+                        department: this.state.selectedDepartment,
+                        accountTypeString: "Receptionists"
+
+            
+                    }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
+                }
+                this.setState({first_name:first})
+                this.setState({last_name:last})
+                this.addToHospital("Receptionists")
+            } else { 
+                console.log('No such document')
+            }
+        }).catch((err) => {
+            console.log('Error: ', err)
+        })
     }
 
     resetPermission = () => {
-        if (this.state.email !== '') {
+        if (this.state.email !== ''&&this.state.selectedDepartment!='') {
             initialEmail = this.state.email;
         }
         else{ 
-            Toast.show('Please enter the email');
+            Toast.show('Please enter the email and select a department');
             return;  
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
-        docRef.update({
-            accountType: '1',
-            hospital: "Null",
 
-        }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
-        console.log(this.state.err);
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                let type = doc.get("accountType")
+                let first = doc.get("first")
+                let last = doc.get("last")
+                this.setState({first_name:first})
+                this.setState({last_name:last})
+                console.log("type:"+this.type)
+                //this.setState({accountTypeNumber:type})
+                let accountType = '1'
+                if(type == "4"){
+                    accountType = "Doctors"
+                }else if(type == "3"){
+                    accountType = "Nurses"
+                }else if(type == "2"){
+                    accountType = "Receptionists"
+                }
+                console.log("hos:"+this.state.hospital+"dep:"+this.state.selectedDepartment+"accouttype:"+accountType+"first:"+this.state.first_name+"last"+this.state.last_name)
+                firebase.firestore().collection("hospital").doc(this.state.hospital).collection("Departments").doc(this.state.selectedDepartment).collection(accountType).doc(this.state.first_name+" "+this.state.last_name).delete().then(()=>{
+                    
+                    docRef.update({
+                        accountType: '1',
+                        hospital: "Null",
+                        department: 'Null',
+                        accountTypeString:"Patients"
+            
+                    }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
+                    console.log(this.state.err);
+                    
+                }).catch(function(error){
+                    console.log("Error removing document ", error);
+                    alert("error in userRef")
+                });
+            } else { 
+                console.log('No such document')
+            }
+        }).catch((err) => {
+            console.log('Error: ', err)
+        })
     }
 
     render() {
@@ -129,7 +261,13 @@ export default class AdminHomepage extends Component {
                     onChangeText={email => this.setState({ email })}
                     value={this.state.email}
                 />
-                
+                <Dropdown
+                        containerStyle={styles.pickerContainer}
+                        pickerStyle={styles.pickerContent}
+                        label="Department"
+                        data={this.state.departmentList}
+                        onChangeText={(selected) => this.setState({selectedDepartment:selected})}
+                    />
                 <TouchableOpacity onPress={this.addDoctor}>
                     <Animated.View style={styles.button}>
                         <Text style={{ fontSize: 20 }}>Set Doctor</Text>
@@ -211,4 +349,32 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         borderColor: 'rgba(0,0,0,0.2)',
     },
+    pickerContainer: {
+        // height: 40,
+        // alignItems: 'stretch',
+        backgroundColor: 'white',
+        width: "75%",
+        //height: 50,
+        // borderColor: 'black',
+        // borderBottomWidth: 2.5,
+        //marginBottom: 30,
+        marginLeft: 50,
+        marginRight: 50,
+        //paddingVertical:10,
+        // paddingHorizontal: 10,
+    },
+    pickerContent: {
+        // height: 40,
+        // alignItems: 'stretch',
+        backgroundColor: 'white',
+        width: "75%",
+        //height: 30,
+        // borderColor: 'black',
+        // borderBottomWidth: 2.5,
+        marginBottom: 20,
+        //marginLeft: 50,
+        //marginRight: 50,
+        //paddingVertical:10,
+        // paddingHorizontal: 10,
+    }
 });
