@@ -3,15 +3,15 @@ import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import * as firebase from "firebase";
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Fumi } from 'react-native-textinput-effects';
-import { initialEmail } from './Loading.js';
 import { ScrollView } from 'react-native-gesture-handler';
+import Block from './components.js'
 
 export default class SearchSchedule extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            events: "",
+            events: [],
             email: "",
         };
         this.onQuery = this.onQuery.bind(this);
@@ -34,21 +34,37 @@ export default class SearchSchedule extends Component {
   
       async searchEmail(email) {
          events = "\n";
-         querySnapshot = await firebase.firestore().collection("users").doc(email).collection("events").get(); //.then(function(querySnapshot) {
+         returnValue = [];
+         querySnapshot = await firebase.firestore().collection("users").doc(email).collection("events").get(); 
          querySnapshot.forEach(function(doc) {
             console.log(doc.data())
-            events += "----------------------------------------\nAppointment date " + doc.data().date +"\nDescription: " 
-            + doc.data().description + "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital + "\nat time: " + doc.data().time;
+            events = "found"
+            appointmentText = "Appointment date " + doc.data().date +"\nDescription: " + 
+            doc.data().description + "\nDoctor: " + doc.data().doctor + "\nHospital: " 
+            + doc.data().hospital + "\nat time: " + doc.data().time;
+            returnValue.push(
+              <Block  card shadow color = "#f6f5f5" style = {styles.pageTop}>
+                <Block row style = {{paddingHorizontal:30, paddingTop: 10}}>
+                  <Text>{appointmentText}</Text>
+                </Block>
+              </Block>
+            )
           });
           if (events === "\n" ) {
-              events += "NO APPOINTMENTS FOUND OR INVALID EMAIL";
+            appointmentText = "NO APPOINTMENTS FOUND OR INVALID EMAIL";
+            returnValue.push(
+              <Block  card shadow color = "#f6f5f5" style = {styles.pageTop}>
+                <Block row style = {{paddingHorizontal:30, paddingTop: 30}}>
+                  <Text>{appointmentText}</Text>
+                </Block>
+              </Block>
+            )
           }
-          return events
+          return returnValue;
   }
 
   render() {
     const { events } = this.state;
-    const newString = events ? events.toString() : ''
       return (
         <ScrollView style = {styles.scrollView}>
           <View style = {styles.container}>
@@ -57,7 +73,7 @@ export default class SearchSchedule extends Component {
                 <Fumi
                   label={'Email Address'}
                   iconClass={FontAwesomeIcon}
-                  iconName={'pencil'}
+                  iconName={'envelope-square'}
                   iconColor={'white'}
                   inputStyle={{ color: '#000000' }}
                   onChangeText={email => { this.setState({email}) } }
@@ -72,7 +88,9 @@ export default class SearchSchedule extends Component {
                 title="Go back"
               />
               <Text style = {styles.titleText}> Appointments found for user:</Text>
-              <Text>{newString}</Text>
+              <View>
+                {events}
+              </View>
           </View>
         </ScrollView>
         );
@@ -102,6 +120,11 @@ const styles = StyleSheet.create({
       marginTop: 50,
       padding: 20,
       backgroundColor: '#ffffff',
+    },
+    pageTop: {
+      paddingTop: 30,
+      paddingBottom: 45,
+      zIndex: 1
     },
     buttonStyle: {
       backgroundColor: '#fff',

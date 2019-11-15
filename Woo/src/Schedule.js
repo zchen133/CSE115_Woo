@@ -15,36 +15,48 @@ export default class Schedule extends Component {
         };
         this.onDateChange = this.onDateChange.bind(this);
         this.loadEvents = this.loadEvents.bind(this);
+        this.findUserAppointments = this.findUserAppointments.bind(this);
     }
 
+    async findUserAppointments(email, date) {
+      console.log(date);
+      querySnapshot = await firebase.firestore().collection("users").doc(email).collection("events").get();
+        querySnapshot.forEach(function(doc) {
+          console.log(doc.data())
+          /**
+           * if doc.data().date === date 
+           * {
+           *    events += "Email: "+ email + "\nDescription: " + doc.data().description + 
+           *    "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital + 
+           *    "\nat time: " + doc.data().time;
+           * }
+           */
+        });
+        if (events === "\n" ) {
+            events += "NO APPOINTMENTS FOUND OR INVALID EMAIL";
+        }
+      return events
+    }
+    
     async loadEvents(date) {
         this.setState({ selectedStartDate: date })
 
         var newDate = date.toString().substr(0, date.toString().length - 18)
         var events = "\n";
 
-        events = await firebase.firestore().collection("users").doc(initialEmail).collection("events").doc("appointment").collection("date").doc(newDate).collection("time").get().then(function(querySnapshot) {
+        querySnapshot = await firebase.firestore().collection("users").get();
             querySnapshot.forEach(function(doc) {
-                events += '----------------------------------------\nPatient name: ' + doc.data().name + ' At time ' + doc.data().time + '\n';
+              this.findUserAppointments(doc.data().email, newDate).then((res) => {
+                events += res;
+              })       
             });
-
-            if (events === "\n" ) {
-                events += "NO APPOINTMENTS FOUND";
-            }
-
             return events
-
-        }).catch(function(error) {
-            console.log(error)
-            console.log('No events found!')
-        });
-
-        return events
     }
+
 
     onPressRequests = () => {
       this.props.navigation.navigate('PatientHomepage')
-  }
+    }
 
 
     onDateChange(date) {
@@ -53,6 +65,7 @@ export default class Schedule extends Component {
             console.log("is it printing here: " + res)
         })
     }
+
     render() {
         const { selectedStartDate } = this.state;
         const startDate = selectedStartDate ? selectedStartDate.toString() : '';
