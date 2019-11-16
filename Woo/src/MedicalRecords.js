@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, SafeAreaView, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
+import { StyleSheet, ScrollView, SafeAreaView, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 
 export default class MedicalRecords extends Component {
@@ -134,26 +134,28 @@ export default class MedicalRecords extends Component {
             return (
                 <SafeAreaView style={styles.container}>
                     <View style={styles.records}>
-                        <Text style={styles.title}>Personal Information</Text>
-                        <Text style={styles.subText}>{this.state.data.first + ' ' + this.state.data.last}</Text>
-                        <Text style={styles.subText}>{this.state.data.email}</Text>
-                        <Text style={styles.subText}>{this.state.data.gender}</Text>
-                        <Text style={styles.subText}>{this.state.data.age}</Text>
-                        <Text style={styles.subText}>{this.state.data.address}</Text>
+                        <ScrollView style={styles.scroll}>
+                            <Text style={styles.title}>Personal Information</Text>
+                            <Text style={styles.subText}>{this.state.data.first + ' ' + this.state.data.last}</Text>
+                            <Text style={styles.subText}>{this.state.data.email}</Text>
+                            <Text style={styles.subText}>{this.state.data.gender}</Text>
+                            <Text style={styles.subText}>{this.state.data.age}</Text>
+                            <Text style={styles.subText}>{this.state.data.address}</Text>
 
-                        <Text style={styles.title}>Medical History</Text>
-                        <Text style={styles.subText}>{this.state.medicalHistory}</Text>
+                            <Text style={styles.title}>Medical History</Text>
+                            <Text style={styles.subText}>{this.state.medicalHistory}</Text>
 
-                        <Text style={styles.title}>Family Medical History</Text>
-                        <Text style={styles.subText}>{this.state.familyHistory}</Text>
+                            <Text style={styles.title}>Family Medical History</Text>
+                            <Text style={styles.subText}>{this.state.familyHistory}</Text>
 
-                        <Text style={styles.title}>Medication History</Text>
-                        <Text style={styles.subText}>{this.state.medicationHistory}</Text>
+                            <Text style={styles.title}>Medication History</Text>
+                            <Text style={styles.subText}>{this.state.medicationHistory}</Text>
 
-                        <Text style={styles.title}>Treatment History</Text>
-                        <Text style={styles.subText}>{this.state.treatmentHistory}</Text>
+                            <Text style={styles.title}>Treatment History</Text>
+                            <Text style={styles.subText}>{this.state.treatmentHistory}</Text>
 
-                        <Button onPress={() => { this.props.navigation.navigate('PatientHomepage') } } title='Go back' />
+                            <Button onPress={() => { this.props.navigation.navigate('PatientHomepage') } } title='Go back' />
+                        </ScrollView>
                     </View>
                 </SafeAreaView>
             );
@@ -173,6 +175,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#72C3C9',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    scroll: {
+        marginLeft: 15,
+        marginRight: 15
+
     },
     records: {
         width: '95%',
