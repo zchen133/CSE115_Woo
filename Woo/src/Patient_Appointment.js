@@ -4,16 +4,16 @@ import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
 import { initialEmail } from './Loading.js';
 import Toast from 'react-native-tiny-toast';
-import { hospital,first,last } from './Loading.js';
+import { hospital, first, last } from './Loading.js';
 import DatePicker from 'react-native-datepicker';
 import { Platform } from '@unimodules/core';
 import { Dropdown } from 'react-native-material-dropdown'
 var appointments = [];
-var accepted = true;
+//var accepted = true;
 export default class Patient_AppointmentScreen extends Component {
 
 
-    state = { departmentList: [{ value: "Null" }], doctorList: [{ value: "Please Select A Department" }], availableTimeList: [{ value: "Null" }], hospitalList: [{ value: "Null" }], date: '', time: '', hospital: '', doctor: '',department: '', description: '', hospital: '', appointments: '', err: null }
+    state = { departmentList: [{ value: "Null" }], doctorList: [{ value: "Please Select A Department" }], availableTimeList: [{ value: "Null" }], hospitalList: [{ value: "Null" }], date: '', time: '', hospital: '', doctor: '', department: '', description: '', hospital: '', appointments: '', err: null }
     constructor(props) {
         super(props);
         this.docRef = firebase.firestore().collection("hospital");
@@ -21,7 +21,7 @@ export default class Patient_AppointmentScreen extends Component {
         this.selectedDoctor;
         this.selectedDate;
         this.selectedHospital;
-        
+
 
         //this.department = this.department.bind(this)
     }
@@ -58,6 +58,10 @@ export default class Patient_AppointmentScreen extends Component {
     getDepartmentList = (selected) => {
         this.setState({ hospital: selected });
         this.setState({ selectedHospital: selected });
+        if(this.state.selectedHospital == null){
+            Toast.show("Please select hospital first")
+            return
+        }
         depart_set = new Set([]);
         new_array = [];
         firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").get().then(function (querySnapshot) {
@@ -83,6 +87,14 @@ export default class Patient_AppointmentScreen extends Component {
     getDoctorList = (selected) => {
         this.setState({ department: selected });
         this.setState({ selectedDepartment: selected });
+        if(this.state.selectedHospital == null){
+            Toast.show("Please select hospital first")
+            return
+        }
+        if(this.state.selectedDepartment == null){
+            Toast.show("Please select department first")
+            return
+        }
         depart_set = new Set([]);
         new_array = [];
         firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").doc(selected).collection("Doctors").get().then(function (querySnapshot) {
@@ -140,6 +152,18 @@ export default class Patient_AppointmentScreen extends Component {
         this.setState({ availableTimeList: new_array })
     }
     getAvailableTimeList = (selected) => {
+        if(this.state.selectedHospital == null){
+            Toast.show("Please select hospital first")
+            return
+        }
+        if(this.state.selectedDepartment == null){
+            Toast.show("Please select department first")
+            return
+        }
+        if(this.state.selectedDoctor == null){
+            Toast.show("Please select doctor first")
+            return
+        }
 
         this.setState({ date: selected });
         this.setState({ selectedDate: selected });
@@ -173,7 +197,7 @@ export default class Patient_AppointmentScreen extends Component {
     }
 
     clearfields = () => {
-        
+
         this.setState({ date: '' })
         this.setState({ time: '' })
 
@@ -188,11 +212,12 @@ export default class Patient_AppointmentScreen extends Component {
     // sleep = (milliseconds) => {
     //     return new Promise(resolve => setTimeout(resolve, milliseconds))
     //   }
-    handleAppointmentRequest = () => {
-        console.log('date:',this.state.date);
-        console.log('time:',this.state.time);
-        console.log('hospital:',this.state.hospital);
-        
+    handleAppointmentRequestOld = () => {
+        var accepted = true;
+        console.log('date:', this.state.date);
+        console.log('time:', this.state.time);
+        console.log('hospital:', this.state.hospital);
+
         if (this.state.date == '') {
             console.log('No date given');
             Toast.show('Please enter appointment date');
@@ -219,45 +244,55 @@ export default class Patient_AppointmentScreen extends Component {
             hospital: this.state.hospital,
             doctor: this.state.doctor,
             description: this.state.description,
-            department:this.state.selectedDepartment,
+            department: this.state.selectedDepartment,
             first_name: first,
             last_name: last,
             email: initialEmail
 
         })
+        console.log(this.state.date + '_' + this.state.time + '_' + initialEmail)
+        const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests").doc(this.state.date + '_' + this.state.time + '_' + initialEmail);
+        userRef.get()
+            .then(function (querySnapshot) {
+                if (querySnapshot.exists) {
+                    accepted = false;
+                    console.log("duihao", accepted)
+                }
+            })
+
 
         /* Same logic can be used to query all receptionists with the same hospital as user requesting event time */
-        const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests");
-        const hospitalQuery = userRef.where("date", "==", this.state.date)
-            .where("time", "==", this.state.time)
-            .get()
-            .then(function (querySnapshot) {
-                querySnapshot.forEach(function (doc) {
+        // const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests");
+        // const hospitalQuery = userRef.where("date", "==", this.state.date)
+        //     .where("time", "==", this.state.time)
+        //     .get()
+        //     .then(function (querySnapshot) {
+        //         querySnapshot.forEach(function (doc) {
 
-                    if (doc.id != '') {
-                        accepted = false;
-                        console.log(doc.id)
-                    }
+        //             if (doc.id != '') {
+        //                 accepted = false;
+        //                 console.log(doc.id)
+        //             }
 
-                });
-            })
-            .catch(function (error) {
-                console.log("Error getting documents: ", error);
-            });
+        //         });
+        //     })
+        //     .catch(function (error) {
+        //         console.log("Error getting documents: ", error);
+        //     });
 
         if (accepted) {
             Toast.show('Request sent');
             const eventrefHospital = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests");
             eventrefHospital.doc(this.state.date + '_' + this.state.time + '_' + initialEmail).set({
                 date: this.state.date,
-            time: this.state.time,
-            hospital: this.state.hospital,
-            doctor: this.state.doctor,
-            description: this.state.description,
-            department:this.state.selectedDepartment,
-            first_name: first,
-            last_name: last,
-            email:initialEmail
+                time: this.state.time,
+                hospital: this.state.hospital,
+                doctor: this.state.doctor,
+                description: this.state.description,
+                department: this.state.selectedDepartment,
+                first_name: first,
+                last_name: last,
+                email: initialEmail
             })
             //console.log("date is",this.state.date)
         }
@@ -278,20 +313,69 @@ export default class Patient_AppointmentScreen extends Component {
 
     }
 
+    handleAppointmentRequest = () => {
+        //var accepted = true;
+        console.log('date:', this.state.date);
+        console.log('time:', this.state.time);
+        console.log('hospital:', this.state.hospital);
 
-    // renderPicker = () => {
-
-    //     return(this.state.departmentList.map((x,i) =>{
-    //         return(<Dropdown label = {x} data = {x}/>)
-    //     })
-
-    //     );
-    // }
+        console.log(this.state.date + '_' + this.state.time + '_' + initialEmail)
 
 
+        if (this.state.date == '') {
+            console.log('No date given');
+            Toast.show('Please enter appointment date');
+            return;
+        }
 
+        if (this.state.time == '') {
+            console.log('No time selected');
+            Toast.show('Please enter appointment time');
+            return;
+        }
 
+        if (this.state.hospital == '') {
+            console.log('No hospital given');
+            Toast.show('Please enter hospital');
+            return;
+        }
+        const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests").doc(this.state.date + '_' + this.state.time + '_' + initialEmail);
+        userRef.get()
+            .then((querySnapshot) => {
+                if (querySnapshot.exists) {
+                    Toast.show('Request Denied');
+                } else {
+                    Toast.show('Request sent');
+                    const eventrefHospital = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests");
+                    eventrefHospital.doc(this.state.date + '_' + this.state.time + '_' + initialEmail).set({
+                        date: this.state.date,
+                        time: this.state.time,
+                        hospital: this.state.hospital,
+                        doctor: this.state.doctor,
+                        description: this.state.description,
+                        department: this.state.selectedDepartment,
+                        first_name: first,
+                        last_name: last,
+                        email: initialEmail
+                    })
 
+                    const eventrefPatient = firebase.firestore().collection("users").doc(initialEmail).collection("requests");
+                    eventrefPatient.doc(this.state.date + '_' + this.state.time + '_' + initialEmail).set({
+                        date: this.state.date,
+                        time: this.state.time,
+                        hospital: this.state.hospital,
+                        doctor: this.state.doctor,
+                        description: this.state.description,
+                        department: this.state.selectedDepartment,
+                        first_name: first,
+                        last_name: last,
+                        email: initialEmail
+                    })
+                }
+            })
+        //Update appointments and export to homepage view
+
+    }
 
     render() {
 
@@ -306,7 +390,7 @@ export default class Patient_AppointmentScreen extends Component {
                     />
                 </View>
                 <View style={styles.reqAll}>
-                  
+
                     <Dropdown
                         containerStyle={styles.pickerContainer}
                         pickerStyle={styles.pickerContent}
@@ -327,7 +411,16 @@ export default class Patient_AppointmentScreen extends Component {
                         label="Doctor"
                         //value = {this.state.doctorList[0]}
                         data={this.state.doctorList}
-                        onChangeText={(selected) => this.setState({ selectedDoctor: selected,doctor:selected })}
+                        onChangeText={(selected) => {
+                            if(this.state.selectedHospital == null){
+                                Toast.show("Please select hospital first")
+                                return
+                            }
+                            if(this.state.selectedDepartment == null){
+                                Toast.show("Please select department first")
+                                return
+                            }
+                            this.setState({ selectedDoctor: selected, doctor: selected })}}
                     />
                     <DatePicker
                         style={styles.req}
@@ -360,7 +453,25 @@ export default class Patient_AppointmentScreen extends Component {
                         label="Available Time"
                         //value = {this.state.doctorList[0]}
                         data={this.state.availableTimeList}
-                        onChangeText={(selected) => this.setSelectedTime(selected)}
+                        onChangeText={
+                            (selected) => {
+                                if(this.state.selectedHospital == null){
+                                    Toast.show("Please select hospital first")
+                                    return
+                                }
+                                if(this.state.selectedDepartment == null){
+                                    Toast.show("Please select department first")
+                                    return
+                                }
+                                if(this.state.selectedDoctor == null){
+                                    Toast.show("Please select doctor first")
+                                    return
+                                }
+                                if(this.state.selectedDate == null){
+                                    Toast.show("Please select the date first")
+                                    return
+                                }
+                                this.setSelectedTime(selected)}}
                     />
 
                     {/* <TextInput
