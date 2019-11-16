@@ -4,12 +4,14 @@ import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
 import Login from './Login.js'
 import Block from './components.js'
+import Patient_Profile from './Patient_Profile'
 import { SafeAreaView } from 'react-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
 //var appointment
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import RequestScreen from './Medical_Request.js'
+import MedicalRecords from './MedicalRecord.js'
 
 class MedicalHomepage extends Component {
     constructor() {
@@ -18,9 +20,10 @@ class MedicalHomepage extends Component {
         this.user = firebase.auth().currentUser
         this.docRef = firebase.firestore().collection("users").doc(this.user.email);
         this.state = {
+            checkedColor:'',
             data:'',
             nowDate: new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(),
-            appointment: [{ id: "null", time: "00:00", date: "2000-01-01", userEmail: "null", first_name: "null", last_name: "null", doctor_name: "null", department: "null", description: "null" }],
+            appointment: [{ id: "null", time: "00:00", date: "2000-01-01", checked:false,userEmail: "null", first_name: "null", last_name: "null", doctor_name: "null", department: "null", description: "null" }],
         }
     }
 
@@ -47,7 +50,8 @@ class MedicalHomepage extends Component {
                     var doctor_name = doc.get("doctor")
                     var first_name = doc.get("first_name") 
                     var last_name = doc.get("last_name")
-                    var app = {id:id,time:time,date:date,userEmail:userEmail,department:department,description:description,doctor_name:doctor_name,first_name:first_name,last_name:last_name}
+                    var checked = doc.get("checked")
+                    var app = {id:id,time:time,date:date,checked:checked,userEmail:userEmail,department:department,description:description,doctor_name:doctor_name,first_name:first_name,last_name:last_name}
                 
                     new_array.push(app); 
                     });
@@ -73,6 +77,15 @@ class MedicalHomepage extends Component {
             console.log('Error: ', err)
         })
     }
+
+    cancel(appointment){
+
+    }
+
+    
+
+    
+
     renderTop() {
         return (
             <Block flex={0.4} column style={{ paddingHorizontal: 20 }}>
@@ -100,7 +113,7 @@ class MedicalHomepage extends Component {
     renderList(appointment) {
         return (
             <Block row card shadow color="#ffffff" style={styles.items}>
-                <Block flex={0.45}>
+                <Block flex={0.9}>
                     <Image
                         source={require('../assets/calendar.jpg')}
                         style={{ flex: 1, height: null, width: null }}
@@ -110,6 +123,13 @@ class MedicalHomepage extends Component {
                 <Text style={{ paddingLeft: 25 }}>{"Time: "+appointment.time + '\n' + "Date: "+appointment.date + '\n' + "Patient Name: "+appointment.first_name+" "+appointment.last_name}</Text>
 
 
+                <TouchableOpacity onPress={event =>{}}>
+                    <Block flex ={0.4}>
+                <View style={styles.buttons}>
+                        <Icon name="ios-checkmark-circle" size={40} />
+                    </View>
+                    </Block>
+                     </TouchableOpacity>
             </Block>
         );
     }
@@ -123,7 +143,7 @@ class MedicalHomepage extends Component {
                 <ScrollView showsVerticalScrollIndicator={true}>
                     {this.state.appointment.map(appointment => (
                         <TouchableOpacity activeOpacity={0.8} key={`${appointment.id}`}
-                            onPress={event => { alert(`${appointment.time}`) }}>
+                            onPress={event => {}}>
                             {this.renderList(appointment)}
                         </TouchableOpacity>
                     ))}
@@ -151,15 +171,7 @@ class AppointmentScreen extends Component {
         );
     }
 }
-class RecordScreen extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text> Medical Record Screen Homepage</Text>
-            </View>
-        );
-    }
-}
+
 class PrescriptionScreen extends Component {
     handleSignOut = () => {
         firebase
@@ -211,7 +223,7 @@ export default createMaterialBottomTabNavigator({
         }
     },
     Record: {
-        screen: RecordScreen,
+        screen: MedicalRecords,
         navigationOptions: {
             tabBarLabel: 'Record',
             tabBarIcon: ({ tintColor }) => (
@@ -265,5 +277,8 @@ const styles = StyleSheet.create({
         padding: 20,
         marginBottom: 15
     },
-
+    buttons:{
+        alignItems:'center',
+        marginLeft:30
+    }
 });

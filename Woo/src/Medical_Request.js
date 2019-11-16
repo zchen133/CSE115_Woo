@@ -104,11 +104,30 @@ export default class RequestScreen extends Component {
                 department:appointment.department,
                 first_name: appointment.first_name,
                 last_name: appointment.last_name,
-                email:appointment.userEmail
+                email:appointment.userEmail,
+                checked:false
         
                 })
             })
         })
+
+        this.userEventsRef = firebase.firestore().collection("users").doc(appointment.userEmail).collection("events");
+        console.log("??????"+hospital)
+        this.userEventsRef.doc(appointment.date+"_"+appointment.time+"_"+hospital).set({
+            date: appointment.date,
+                time: appointment.time,
+                hospital: hospital,
+                doctor: appointment.doctor_name,
+                description: appointment.description,
+                department:appointment.department,
+                first_name: appointment.first_name,
+                last_name: appointment.last_name,
+                email:appointment.userEmail,
+                checked:false
+        }).catch(function(error){
+            console.log("Error removing document ", error);
+            alert("error in docRef")
+        });
 
         this.docRef = firebase.firestore().collection("hospital").doc(hospital).collection("requests");
         this.docRef.doc(appointment.id).delete().then(function() {
