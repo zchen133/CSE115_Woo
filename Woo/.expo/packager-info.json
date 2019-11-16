@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 118760,
+  "expoServerNgrokUrl": "https://db-3i5.howardng.woo.exp.direct",
+  "packagerNgrokUrl": "https://packager.db-3i5.howardng.woo.exp.direct",
+  "ngrokPid": 117048
 }

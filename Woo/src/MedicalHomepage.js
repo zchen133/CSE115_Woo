@@ -11,7 +11,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import RequestScreen from './Medical_Request.js'
-import MedicalRecords from './MedicalRecord.js'
+import MedicalRecords from './MedicalRecords.js'
 
 class MedicalHomepage extends Component {
     constructor() {
@@ -279,6 +279,6 @@ const styles = StyleSheet.create({
     },
     buttons:{
         alignItems:'center',
-        marginLeft:30
+        paddingLeft:30
     }
 });
