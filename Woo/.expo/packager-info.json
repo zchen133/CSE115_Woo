@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19002,
+  "devToolsPort": 19003,
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerNgrokUrl": "https://et-jbf.anonymous.woo.exp.direct",
+  "packagerNgrokUrl": "https://packager.et-jbf.anonymous.woo.exp.direct",
+  "ngrokPid": 5654
 }

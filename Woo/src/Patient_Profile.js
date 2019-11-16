@@ -15,8 +15,6 @@ export default class Patient_ProfileScreen extends Component {
             //name:"Name",
 
         };
-
-
         this.updateFirstName = this.updateFirstName.bind(this)
         this.updateLastName = this.updateLastName.bind(this)
         this.updateAge = this.updateAge.bind(this)
