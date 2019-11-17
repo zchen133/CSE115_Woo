@@ -15,13 +15,23 @@ export default class Loading extends Component {
         YellowBox.ignoreWarnings(['Setting a timer']);
     }
 
+    handleSignOut = () => {
+        firebase
+            .auth()
+            .signOut()
+            .then(
+                //test = 0,
+                this.props.navigation.navigate('Login'));
+    }
+
     readUserData = () => {
         var docRef = firebase.firestore().collection("users").doc(initialEmail);
         return docRef.get().then(function(doc) {
             if (doc.exists) {
                 return doc.get('accountType');
             } else {
-                console.log("No such document");
+                //bug, if user manages to get here, infinite loading.
+                console.log("No such document ");
             }
         }).catch(function(error) {
             console.log("Error getting document:", error);
