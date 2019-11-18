@@ -167,7 +167,7 @@ export default class Patient_ProfileScreen extends Component {
                                 style={{ height: 200, width: 200 ,alignSelf: 'center', alignItems:'center',alignContent:'center',marginBottom:20}}>
                                
                             
-                            <Text style={{marginTop:100,alignSelf:'center',fontFamily:'sans-serif-thin',borderWidth:1,borderColor:'#ffffff',color:'#ffffff',fontSize:20,fontWeight: 'bold'}}>{" Medical Record "}</Text>
+                            <Text style={{marginTop:100,alignSelf:'center',borderWidth:1,borderColor:'#ffffff',color:'#ffffff',fontSize:20,fontWeight: 'bold'}}>{" Medical Record "}</Text>
                             </ImageBackground>
                             </View>
                             </TouchableOpacity>  
