@@ -5,8 +5,12 @@ import { test, loginEmail } from './Login.js';
 import { AppLoading } from 'expo';
 var newtest;
 var initialEmail = 'initialEmail';
+<<<<<<< HEAD
 export {initialEmail};
 
+=======
+export { initialEmail };
+>>>>>>> adam/google-calendar-api
 export default class Loading extends Component {
 
     constructor() {

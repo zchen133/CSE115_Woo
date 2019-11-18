@@ -1,9 +1,19 @@
 {
   "devToolsPort": 19002,
+<<<<<<< HEAD
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
   "expoServerNgrokUrl": null,
   "packagerNgrokUrl": null,
   "ngrokPid": null
+=======
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 27088,
+  "expoServerNgrokUrl": "https://5z-ckd.anonymous.woo.exp.direct",
+  "packagerNgrokUrl": "https://packager.5z-ckd.anonymous.woo.exp.direct",
+  "ngrokPid": 11960,
+  "webpackServerPort": null
+>>>>>>> adam/google-calendar-api
 }

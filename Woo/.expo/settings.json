@@ -3,6 +3,10 @@
   "lanType": "ip",
   "dev": true,
   "minify": false,
+<<<<<<< HEAD
   "urlRandomness": "px-tm6",
+=======
+  "urlRandomness": "5z-ckd",
+>>>>>>> adam/google-calendar-api
   "https": false
 }
