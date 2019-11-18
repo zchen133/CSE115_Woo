@@ -39,11 +39,11 @@ export default class SearchSchedule extends Component {
          querySnapshot.forEach(function(doc) {
             console.log(doc.data())
             events = "found"
-            appointmentText = "Appointment date " + doc.data().date +"\nDescription: " + 
+            appointmentText = "Date: " + doc.data().date +"\nDescription: " + 
             doc.data().description + "\nDoctor: " + doc.data().doctor + "\nHospital: " 
             + doc.data().hospital + "\nat time: " + doc.data().time;
             returnValue.push(
-              <Block  card shadow color = "#f6f5f5" style = {styles.pageTop}>
+              <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={doc.data().time}>
                 <Block row style = {{paddingHorizontal:30, paddingTop: 10}}>
                   <Text>{appointmentText}</Text>
                 </Block>
