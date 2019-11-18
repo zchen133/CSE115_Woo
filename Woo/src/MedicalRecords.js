@@ -158,7 +158,7 @@ export default class MedicalRecords extends Component {
                                 <View style={styles.button}>
                                 <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Back</Text>
                                 </View>
-                                </TouchableOpacity>
+                            </TouchableOpacity>
                             
                         </ScrollView>
                     </View>
