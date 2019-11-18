@@ -15,17 +15,10 @@ class MedicalHomepage extends Component {
         super();
         YellowBox.ignoreWarnings(['Setting a timer']);
     }
-<<<<<<< HEAD
-   
-    renderTop(){
-        return(
-        <Block flex = {0.4} column style = {{paddingHorizontal:20}}>
-=======
 
     renderTop() {
         return (
             <Block flex = {0.4} column style = {{paddingHorizontal:20}}>
->>>>>>> adam/google-calendar-api
                 <Block flex = {0.3} >
                 </Block>
                 <Block flex = {false} row style = {{paddingHorizontal:15,paddingVertical:5}}>
@@ -47,7 +40,7 @@ class MedicalHomepage extends Component {
                 </Block>
         );
     }
-<<<<<<< HEAD
+
     renderList(appointment){
         return (
             <Block row card shadow color = "#ffffff" style={styles.items}>
@@ -59,12 +52,6 @@ class MedicalHomepage extends Component {
                     </Block>
                 <Text style = {{paddingLeft:25}}>{appointment.time+'\n'+appointment.date+'\n'+appointment.hospital}</Text>
                 
-=======
-    renderList(appointment) {
-        return (
-            <Block row card shadow color = "#e5e6eb" style={styles.items}>
-                <Text>{appointment.time}</Text>
->>>>>>> adam/google-calendar-api
                 
             </Block>
         );
@@ -233,11 +220,7 @@ const styles = StyleSheet.create({
     },
     safe: {
         flex: 1,
-<<<<<<< HEAD
         backgroundColor: '#11999e'
-=======
-        backgroundColor: '#72C3C9'
->>>>>>> adam/google-calendar-api
 
     },
     pageTop: {

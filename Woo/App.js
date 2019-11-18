@@ -12,9 +12,9 @@ import Recovery from './src/PasswordRecovery';
 import AdminHomepage from './src/AdminHomepage';
 import MedicalHomepage from './src/MedicalHomepage';
 import PatientHomepage from './src/PatientHomepage';
-import Schedule from './src/Schedule'
+import Schedule from './src/MedicalSchedule'
 import Requests from './src/Requests'
-import SearchSchedule from './src/SearchSchedule'
+import SearchSchedule from './src/MedicalSearchSchedule'
 
 
 import { Asset } from 'expo-asset'
