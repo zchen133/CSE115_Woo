@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOp
 import * as firebase from "firebase";
 import { initialEmail } from './Loading.js';
 import CalendarPicker from 'react-native-calendar-picker';
+import Block from './components.js'
 
 
 export default class Schedule extends Component {
@@ -11,11 +12,10 @@ export default class Schedule extends Component {
         super(props);
         this.state = {
             selectedStartDate: null,
-            events: "",
+            events: [],
         };
         this.onDateChange = this.onDateChange.bind(this);
         this.loadEvents = this.loadEvents.bind(this);
-        this.findUserAppointments = this.findUserAppointments.bind(this);
         this.dayConverter = this.dayConverter.bind(this);
     }
 
@@ -69,43 +69,44 @@ export default class Schedule extends Component {
       return isoDate;
     } 
 
-    async findUserAppointments(email, date) {
-      //console.log(date);
-      events = "\n";
-      querySnapshot = await firebase.firestore().collection("users").doc(email).collection("events").get();
-        querySnapshot.forEach(function(doc) {
-          //console.log(doc.data())
-            if (doc.data().date === date) 
-            {
-               events += "Email: "+ email + "\nDescription: " + doc.data().description + 
-               "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital + 
-               "\nat time: " + doc.data().time;
-               console.log(events);
-            }
-        });
-        return events
-    }
-
     async loadEvents(date) {
         var newDate = date.toString().substr(0, date.toString().length - 18);
         this.setState({ selectedStartDate: newDate })
         newDate = this.dayConverter(newDate);
         var events = "\n";
+        var returnValue = [];
         querySnapshot = await firebase.firestore().collection("users").doc("zchen133@ucsc.edu").collection("events").get();
             querySnapshot.forEach((doc) => {
               console.log(doc.id)
               var eventInfo = doc.id.split("_");
               if (eventInfo[0] === newDate) {
-                events +=  events += "\nDescription: " + doc.data().description + 
+                events = "found"
+                var appointmentText = "Checked in? " + doc.data().checked + "\nDepartment: " + doc.data().department
+                +"\nDescription: " + doc.data().description + 
                 "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital + 
-                "\nat time: " + doc.data().time;
-              }
+                "\nat time: " + doc.data().time + "\nPatient first name: " + doc.data().first_name + 
+                "\nPatient last name: " + doc.data().last_name;
+                returnValue.push(
+                  <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={doc.data().time}>
+                    <Block row style = {{paddingHorizontal:30, paddingTop: 10}}>
+                      <Text>{appointmentText}</Text>
+                    </Block>
+                  </Block>
+                  )
+                }
               }     
             );
             if (events === "\n" ) {
-              events += "NO APPOINTMENTS FOUND OR INVALID EMAIL";
+              var appointmentText = "NO APPOINTMENTS FOUND OR INVALID EMAIL";
+              returnValue.push(
+                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop}>
+                  <Block row style = {{paddingHorizontal:30, paddingTop: 10}}>
+                    <Text>{appointmentText}</Text>
+                  </Block>
+                </Block>
+                )
             }
-            return events
+            return returnValue;
     }
 
 
@@ -123,6 +124,7 @@ export default class Schedule extends Component {
     render() {
         const { selectedStartDate } = this.state;
         const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+        const { events } = this.state
         return (
         <ScrollView style = {styles.scrollView}>
           <View style={styles.container}>
@@ -136,7 +138,10 @@ export default class Schedule extends Component {
               <Text
                 style={styles.titleText}>SELECTED DATE: { startDate }</Text>
               <Text
-              style={styles.titleText}>Appointments: { this.state.events }</Text>
+              style={styles.titleText}>Appointments: </Text>
+              <View>
+                { events }  
+              </View> 
            </View>
           </View>
         </ScrollView>
