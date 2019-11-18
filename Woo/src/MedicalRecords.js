@@ -136,11 +136,11 @@ export default class MedicalRecords extends Component {
                     <View style={styles.records}>
                         <ScrollView style={styles.scroll}>
                             <Text style={styles.title}>Personal Information</Text>
-                            <Text style={styles.subText}>{this.state.data.first + ' ' + this.state.data.last}</Text>
-                            <Text style={styles.subText}>{this.state.data.email}</Text>
-                            <Text style={styles.subText}>{this.state.data.gender}</Text>
-                            <Text style={styles.subText}>{this.state.data.age}</Text>
-                            <Text style={styles.subText}>{this.state.data.address}</Text>
+                            <Text style={styles.subText}>{"Name: "+this.state.data.first + ' ' + this.state.data.last}</Text>
+                            <Text style={styles.subText}>{"Email: "+this.state.data.email}</Text>
+                            <Text style={styles.subText}>{"Gender: "+this.state.data.gender}</Text>
+                            <Text style={styles.subText}>{"Age: "+this.state.data.age}</Text>
+                            <Text style={styles.subText}>{"Address: "+this.state.data.address}</Text>
 
                             <Text style={styles.title}>Medical History</Text>
                             <Text style={styles.subText}>{this.state.medicalHistory}</Text>
@@ -153,8 +153,13 @@ export default class MedicalRecords extends Component {
 
                             <Text style={styles.title}>Treatment History</Text>
                             <Text style={styles.subText}>{this.state.treatmentHistory}</Text>
-
-                            <Button onPress={() => { this.props.navigation.navigate('PatientHomepage') } } title='Go back' />
+                            <TouchableOpacity 
+                                onPress = {event =>{this.props.navigation.navigate('PatientHomepage')}}>
+                                <View style={styles.button}>
+                                <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Back</Text>
+                                </View>
+                                </TouchableOpacity>
+                            
                         </ScrollView>
                     </View>
                 </SafeAreaView>
@@ -199,4 +204,16 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: 'grey'
     },
+    button: {
+        backgroundColor: '#f1f1f1',
+        height: 70,
+        marginHorizontal: 20,
+        borderRadius: 35,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 5,
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2
+    }
 });

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
+import { StyleSheet, ImageBackground,Text, View, ScrollView, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 import EditableText from './EditableTextComponent.js';
 import DatePicker from 'react-native-datepicker'
+import Block from './components.js';
 
 export default class Patient_ProfileScreen extends Component {
 
@@ -78,6 +79,7 @@ export default class Patient_ProfileScreen extends Component {
     render() {
         if (this.state.data) {
             return (
+                
                 <View style={styles.container}>
                     <View style={styles.header}></View>
                     <Image style={styles.avatar} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }} />
@@ -157,11 +159,23 @@ export default class Patient_ProfileScreen extends Component {
                                     textInputProps={(styles.editableText)}
                                 />
                             </View>
-                            <View style={styles.bodyContent}>
-                                <Button title='Medical Records' onPress={this.viewMedicalRecords}/>
+                            <TouchableOpacity 
+                                onPress = {event =>{this.viewMedicalRecords()}}>
+                            <View>
+                            <ImageBackground
+                                source={require('../assets/profile_folder.png')}
+                                style={{ height: 200, width: 200 ,alignSelf: 'center', alignItems:'center',alignContent:'center',marginBottom:20}}>
+                               
+                            
+                            <Text style={{marginTop:100,alignSelf:'center',fontFamily:'sans-serif-thin',borderWidth:1,borderColor:'#ffffff',color:'#ffffff',fontSize:20,fontWeight: 'bold'}}>{" Medical Record "}</Text>
+                            </ImageBackground>
                             </View>
+                            </TouchableOpacity>  
+                            
                         </ScrollView>
                     </View>
+                    
+                             
                 </View>
             );
         } else {
@@ -233,7 +247,8 @@ const styles = StyleSheet.create({
     },
     scroll: {
         marginLeft: 15,
-        marginRight: 15
+        marginRight: 15,
+        marginBottom:80
 
     },
     text: {
