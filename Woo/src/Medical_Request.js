@@ -15,6 +15,7 @@ export default class RequestScreen extends Component {
         //this.getUserData()
         //this.getAllRequests = this.getAllRequests.bind(this)
         this.state = {
+            refresh:false,
             requestColor : "#e7eff6",
             data: null,
             changed: null,
@@ -230,7 +231,8 @@ export default class RequestScreen extends Component {
     render() {
         
         return (
-            <Block flex = {0.8} colomn color = {this.state.requestColor} style = {styles.pageBottom}>
+            <Block>
+            <Block flex = {0.9} colomn color = {this.state.requestColor} style = {styles.pageBottom}>
                
                     <Text style={{fontSize: 20, marginLeft:100,fontWeight: 'bold' }}>Pending Requests</Text>
                     
@@ -243,8 +245,18 @@ export default class RequestScreen extends Component {
               this.renderList(appointment)}
             </TouchableOpacity>
           ))}
-                        </ScrollView>
+            </ScrollView>
                 </Block>
+                <Block flex={0.2}>
+                    <TouchableOpacity 
+                        onPress={event =>this.getAllRequests()}>
+                        <View style={styles.closeButton}>
+                            <Text style={{fontSize: 20, fontWeight: 'bold'}}>Refresh</Text>
+                        </View>
+                        
+                </TouchableOpacity>
+                    </Block>
+            </Block>
         );
     }
 }
@@ -270,5 +282,19 @@ const styles = StyleSheet.create({
     buttons:{
         alignItems:'center',
         marginRight:20
+    },
+    closeButton:{
+        
+        backgroundColor: 'white',
+        height: 70,
+        marginHorizontal: 20,
+        borderRadius: 35,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 5,
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2
+        
     }
 });

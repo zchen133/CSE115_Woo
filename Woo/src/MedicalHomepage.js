@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
+import { StyleSheet, Text, ImageBackground,View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
 import Login from './Login.js'
@@ -11,15 +11,22 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import RequestScreen from './Medical_Request.js'
-import MedicalRecords from './MedicalRecords.js'
+var recordCheck=false
+
 
 class MedicalHomepage extends Component {
+    
     constructor() {
         super();
         YellowBox.ignoreWarnings(['Setting a timer']);
         this.user = firebase.auth().currentUser
+        
         this.docRef = firebase.firestore().collection("users").doc(this.user.email);
         this.state = {
+            isHomepage:true,
+            refreshTime:0,
+            patientInfo:"null",
+            record:null,
             checkedColor:'',
             data:'',
             nowDate: new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(),
@@ -78,11 +85,138 @@ class MedicalHomepage extends Component {
         })
     }
 
-    cancel(appointment){
+    getPatientInfo(emailAddress){
+        this.docRef = firebase.firestore().collection("users").doc(emailAddress);
+        this.docRef.get().then((doc) => {
+            if (doc.exists) {
+                let data = doc.data()
+                this.setState({ patientInfo: data })
+                //console.log(this.state.data.accountTypeString)
+                this.getPatientRecord(emailAddress)
+            } else {
+                this.setState({ patientInfo: null })
+                console.log('No such document')
+            }
+        }).catch((err) => {
+            this.setState({ patientInfo: null })
+            console.log('Error: ', err)
+        })
 
+        
     }
 
+    getPatientRecord(emailAddress){
+        //this.records = firebase.firestore().collection("users").doc(emailAddress).collection("records")
+        var new_array = [];
+        
+        //alert(emailAddress)
+        firebase.firestore().collection("users").doc(emailAddress).collection("records").get().then((querySnapshot) => {
+            
+            querySnapshot.forEach(function(doc) {
+                if(doc.exists){
+            console.log("exist")
+
+            var id = doc.id
+            let data = doc.data()
+            var dataToString = ""
+            for(const key in data) {
+                dataToString += key + ': ' + data[key] + '\n'
+            }
+
+            var app = {id:id,data:dataToString}
+            console.log("data:::"+dataToString)
+            new_array.push(app); 
+            }
+            })
+            //this.setState({record:new_array})
+            console.log("record:::"+this.state.record)
+
+            if(new_array!=null&&new_array.length!=0){
+                //console.log("here???")
+                this.setState({isHomepage:false})
+                this.setState({record:new_array})
+            }
+            else{
+                alert("No Medical record")
+            }
+        })
+        
+    }
     
+
+    renderRecord(appointment){
+        console.log("start to renderRecord")
+        if(appointment.userEmail==this.state.patientInfo.email&&recordCheck!=true){
+            recordCheck=true
+        return (
+            <Block column card shadow color="#e7eff6" style={styles.items}>
+
+            <Block color="f1f1f1"> 
+                <Text style={styles.title}>Personal Information</Text>
+                </Block>
+
+
+
+                <Block color="#ffffff" style={{borderColor:'black',borderBottomWidth:1,borderTopWidth:1}} >
+                <Text style={styles.subText}>{"Patient Name: "+this.state.patientInfo.first + ' ' + this.state.patientInfo.last}</Text>
+                <Text style={styles.subText}>{"Patient email: "+this.state.patientInfo.email}</Text>
+                <Text style={styles.subText}>{"Patient gender: "+this.state.patientInfo.gender}</Text>
+                <Text style={styles.subText}>{"Patient age: "+this.state.patientInfo.age}</Text>
+                <Text style={styles.subText}>{"Address: "+this.state.patientInfo.address}</Text> 
+            </Block>
+            <Block color="f1f1f1"> 
+                <Text style={styles.title}>Family Medical History</Text>
+                </Block>
+                <Block color="#ffffff" style={{borderColor:'black',borderBottomWidth:1,borderTopWidth:1}}>
+                <Text style={styles.subText}>{this.state.record[0].data}</Text>
+                </Block>
+
+                <Block color="f1f1f1"> 
+                <Text style={styles.title}>Medical History</Text>
+                </Block>
+                <Block color="#ffffff" style={{borderColor:'black',borderBottomWidth:1,borderTopWidth:1}}>
+                <Text style={styles.subText}>{this.state.record[1].data}</Text>
+                </Block>
+
+                <Block color="f1f1f1"> 
+                <Text style={styles.title}>MedicalDirectives</Text>
+                </Block>
+                <Block color="#ffffff" style={{borderColor:'black',borderBottomWidth:1,borderTopWidth:1}}>
+                <Text style={styles.subText}>{this.state.record[2].data}</Text>
+                </Block>
+
+                <Block color="f1f1f1"> 
+                <Text style={styles.title}>Medication History</Text>
+                </Block>
+                <Block color="#ffffff" style={{borderColor:'black',borderBottomWidth:1,borderTopWidth:1}}>
+                <Text style={styles.subText}>{this.state.record[3].data}</Text>
+                </Block>
+
+                <Block color="f1f1f1"> 
+                <Text style={styles.title}>Treatment History</Text>
+                </Block>
+                <Block color="#ffffff" style={{borderColor:'black',borderBottomWidth:1,borderTopWidth:1}}>
+                <Text style={styles.subText}>{this.state.record[5].data}</Text>
+                </Block>
+                
+
+                <TouchableOpacity 
+                        onPress={event => {this.setState({isHomepage:true}),this.setState({record:null}),recordCheck=false}}>
+                            <View style={styles.closeButton}>
+                            <Text style={{fontSize: 20, fontWeight: 'bold'}}>Back</Text>
+                            </View>
+                        
+                        </TouchableOpacity>
+
+            
+            </Block>             
+                   
+                
+        );
+    
+    }
+        
+    }
 
     
 
@@ -111,43 +245,63 @@ class MedicalHomepage extends Component {
         );
     }
     renderList(appointment) {
+        if(this.state.record==null||this.state.record.length==0){
         return (
             <Block row card shadow color="#ffffff" style={styles.items}>
-                <Block flex={0.9}>
+                <Block flex={0.56}>
                     <Image
                         source={require('../assets/calendar.jpg')}
                         style={{ flex: 1, height: null, width: null }}
                     />
                 </Block>
+                
+                <Text style={{ paddingLeft: 25 }}>{"Time: "+appointment.time + '\n' + "Date: "+appointment.date + '\n' + "Patient Name: "+appointment.first_name+" "+appointment.last_name+'\n'}</Text>
+                
 
-                <Text style={{ paddingLeft: 25 }}>{"Time: "+appointment.time + '\n' + "Date: "+appointment.date + '\n' + "Patient Name: "+appointment.first_name+" "+appointment.last_name}</Text>
-
-
-                <TouchableOpacity onPress={event =>{}}>
-                    <Block flex ={0.4}>
-                <View style={styles.buttons}>
-                        <Icon name="ios-checkmark-circle" size={40} />
-                    </View>
-                    </Block>
-                     </TouchableOpacity>
+                
             </Block>
         );
     }
+        else{
+            return(
+            this.renderRecord(appointment)
+            );
+        }
+    }
+
+    test(){
+        alert("nmsl")
+    }
+
     renderBottom() {
 
         return (
             <Block flex={0.8} colomn color="#e7eff6" style={styles.pageBottom}>
 
-                <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Upcoming Appointment(Today Only)</Text>
+                <Text style={{ fontSize: 20, fontWeight: 'bold',alignSelf:'center' }}>Appointment for today</Text>
+
+                
 
                 <ScrollView showsVerticalScrollIndicator={true}>
+                {this.state.isHomepage?(
+                <TouchableOpacity 
+                        onPress={event =>this.getAppointmentList()}>
+                        <View style={styles.refreshButton}>
+                            <Icon name="ios-refresh" color="#000000" size={24} />
+                        </View>
+                        
+                </TouchableOpacity>): null
+                }
                     {this.state.appointment.map(appointment => (
                         <TouchableOpacity activeOpacity={0.8} key={`${appointment.id}`}
-                            onPress={event => {}}>
+                            onPress={event => {this.getPatientInfo(`${appointment.userEmail}`)}}>
                             {this.renderList(appointment)}
                         </TouchableOpacity>
                     ))}
                 </ScrollView>
+
+                
+
             </Block>
         );
     }
@@ -167,6 +321,16 @@ class AppointmentScreen extends Component {
         return (
             <View style={styles.container}>
                 <Text> Full Appointment List Screen Homepage</Text>
+            </View>
+        );
+    }
+}
+
+class RecordScreen extends Component {
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text> Medical Record Screen Homepage</Text>
             </View>
         );
     }
@@ -223,7 +387,7 @@ export default createMaterialBottomTabNavigator({
         }
     },
     Record: {
-        screen: MedicalRecords,
+        screen: RecordScreen,
         navigationOptions: {
             tabBarLabel: 'Record',
             tabBarIcon: ({ tintColor }) => (
@@ -241,7 +405,8 @@ export default createMaterialBottomTabNavigator({
         }
     }
 
-}, {
+}, 
+    {
     initialRouteName: 'Home',
     order: ['Request', 'Appointment', 'Home', 'Record', 'Prescription'],
     activeTinColor: 'white',
@@ -262,6 +427,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#11999e'
 
     },
+    title:{
+        fontFamily:'sans-serif-thin',
+        paddingTop: 15,
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
     pageTop: {
         paddingTop: 30,
         paddingBottom: 45,
@@ -277,8 +448,53 @@ const styles = StyleSheet.create({
         padding: 20,
         marginBottom: 15
     },
-    buttons:{
+    iconButton:{
         alignItems:'center',
         paddingLeft:30
+    },
+    closeButton:{
+        marginTop:20,
+        backgroundColor: 'white',
+        height: 70,
+        marginHorizontal: 20,
+        borderRadius: 35,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 5,
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2
+        
+    },
+    refreshButton:{
+        marginTop:10,
+        marginBottom:10,
+        backgroundColor: 'white',
+        height: 50,
+        width:50,
+        marginHorizontal: 20,
+        borderRadius: 35,
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 5,
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2
+        
+    },
+    records:{
+        alignItems:'center',
+        
+        paddingLeft:30
+    },
+    floatingButton:{
+        width: 60,  
+        height: 60,   
+        borderRadius: 30,            
+        backgroundColor: '#72C3C9',                                    
+        position: 'absolute',                                          
+        bottom: 10,                                                    
+        right: 10, 
     }
 });
