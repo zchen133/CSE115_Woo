@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, ImageBackground,Text, View, ScrollView, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
+import { StyleSheet, ImageBackground, Text, View, ScrollView, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 import EditableText from './EditableTextComponent.js';
 import DatePicker from 'react-native-datepicker'
@@ -79,7 +79,7 @@ export default class Patient_ProfileScreen extends Component {
     render() {
         if (this.state.data) {
             return (
-                
+
                 <View style={styles.container}>
                     <View style={styles.header}></View>
                     <Image style={styles.avatar} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }} />
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     scroll: {
         marginLeft: 15,
         marginRight: 15,
-        marginBottom:80
+        marginBottom: 80
 
     },
     text: {

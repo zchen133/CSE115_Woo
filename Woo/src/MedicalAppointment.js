@@ -18,9 +18,9 @@ export default class AppointmentScreen extends Component {
 
     onPressSearch = () => {
 
-      this.props.navigation.navigate('SearchSchedule')
+        this.props.navigation.navigate('SearchSchedule')
 
-  }
+    }
 
     render() {
         return (

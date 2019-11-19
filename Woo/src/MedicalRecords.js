@@ -51,7 +51,7 @@ export default class MedicalRecords extends Component {
             if (doc.exists) {
                 let data = doc.data()
                 var total = ""
-                for(const key in data) {
+                for (const key in data) {
                     total += key + ': ' + data[key] + '\n'
                 }
                 return total
@@ -72,7 +72,7 @@ export default class MedicalRecords extends Component {
             if (doc.exists) {
                 let data = doc.data()
                 var total = ""
-                for(const key in data) {
+                for (const key in data) {
                     total += key + ': ' + data[key] + '\n'
                 }
                 return total
@@ -93,7 +93,7 @@ export default class MedicalRecords extends Component {
             if (doc.exists) {
                 let data = doc.data()
                 var total = ""
-                for(const key in data) {
+                for (const key in data) {
                     total += key + ': ' + data[key] + '\n'
                 }
                 return total
@@ -114,7 +114,7 @@ export default class MedicalRecords extends Component {
             if (doc.exists) {
                 let data = doc.data()
                 var total = ""
-                for(const key in data) {
+                for (const key in data) {
                     total += key + ': ' + data[key] + '\n'
                 }
                 return total
