@@ -37,7 +37,6 @@ export default class RecordScreen extends Component {
         this.setState({ wishes: '' })
     }
     handleRecordInput = () => {
-
         var dataEmail = this.state.email;
         var dataName = this.state.name;
         var dataSocial = this.state.social;
@@ -60,7 +59,7 @@ export default class RecordScreen extends Component {
         var dataTreatmentHistory = this.state.TreatmentHistory;
         var dataWishes = this.state.wishes;
         var dataMedicalDirectives = this.state.MedicalDirectives;
-        var permissionRef = firebase.firestore().collection("users").doc(initialEmail);
+        //var permissionRef = firebase.firestore().collection("users").doc(initialEmail);
 
         this.docRef.get().then(function (doc) {
             if (doc.exists) {
@@ -68,7 +67,6 @@ export default class RecordScreen extends Component {
                     console.log('Incorrect permissions')
                     Toast.show('You are not permitted to edit medical records')
                 } else {
-
 
                     if (dataEmail == '') {
                         console.log('No email given');
@@ -82,7 +80,7 @@ export default class RecordScreen extends Component {
                     }
 
                     if (dataSocial == '') {
-                        console.log('No Social SSN give');
+                        console.log('No Social SSN given');
                         Toast.show('Please enter Social Security Number');
                         return;
                     }
@@ -154,7 +152,6 @@ export default class RecordScreen extends Component {
                         return;
                     }
 
-
                     /* Grab user email and add medical record to user in database */
                     const recordRef = firebase.firestore().collection("users").doc(dataEmail).collection("records")
                     recordRef.doc(dataPersonal).set({
@@ -194,11 +191,12 @@ export default class RecordScreen extends Component {
 
                     /* Grab doctor's hospital and store medical record under user's name */
 
-                    var docRef = firebase.firestore().collection("users").doc(dataEmail);
-                    console.log(dataEmail)
+                    var docRef = firebase.firestore().collection("users").doc(initialEmail);
+                    
 
                     docRef.get().then(function (doc) {
                         if (doc.exists) {
+                            
                             const patientRef = firebase.firestore().collection("hospital").doc(doc.get('hospital')).collection("Patients")
                             patientRef.doc(dataEmail).set({
                                 email: dataEmail,
