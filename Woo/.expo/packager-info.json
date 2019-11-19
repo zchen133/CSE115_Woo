@@ -1,18 +1,9 @@
 {
   "devToolsPort": 19002,
-<<<<<<< HEAD
   "expoServerPort": 19000,
   "packagerPort": 19001,
   "packagerPid": 9556,
   "expoServerNgrokUrl": "https://5z-ckd.anonymous.woo.exp.direct",
   "packagerNgrokUrl": "https://packager.5z-ckd.anonymous.woo.exp.direct",
   "ngrokPid": 20380
-=======
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
->>>>>>> c9f765e4e989b1350921b5a9e9e89f7062856731
 }
