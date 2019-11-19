@@ -20,54 +20,54 @@ export default class Schedule extends Component {
     }
 
     dayConverter(date) {
-      var convertDate = date.split(" ");
-      var isoDate = "";
+        var convertDate = date.split(" ");
+        var isoDate = "";
 
-      isoDate+=convertDate[3] +"-";
+        isoDate += convertDate[3] + "-";
 
-      switch(convertDate[1]) {
-        case ("Jan"):
-          isoDate+="01";
-          break;
-        case ("Feb"):
-          isoDate+="02";
-          break;
-        case ("Mar"):
-          isoDate+="03";
-          break;
-        case ("Apr"):
-          isoDate+="04";
-          break;
-        case ("May"):
-          isoDate+="05";
-          break;
-        case ("Jun"):
-          isoDate+="06";
-          break;
-        case ("Jul"):
-          isoDate+="07";
-          break;
-        case ("Aug"):
-          isoDate+="08";
-          break;
-        case ("Sep"):
-          isoDate+="09";
-          break;
-        case ("Oct"):
-          isoDate+="10";
-          break;
-        case ("Nov"):
-          isoDate+="11";
-          break;
-        case ("Dec"):
-          isoDate+="12";
-          break;
-      }
+        switch (convertDate[1]) {
+            case ("Jan"):
+                isoDate += "01";
+                break;
+            case ("Feb"):
+                isoDate += "02";
+                break;
+            case ("Mar"):
+                isoDate += "03";
+                break;
+            case ("Apr"):
+                isoDate += "04";
+                break;
+            case ("May"):
+                isoDate += "05";
+                break;
+            case ("Jun"):
+                isoDate += "06";
+                break;
+            case ("Jul"):
+                isoDate += "07";
+                break;
+            case ("Aug"):
+                isoDate += "08";
+                break;
+            case ("Sep"):
+                isoDate += "09";
+                break;
+            case ("Oct"):
+                isoDate += "10";
+                break;
+            case ("Nov"):
+                isoDate += "11";
+                break;
+            case ("Dec"):
+                isoDate += "12";
+                break;
+        }
 
-      isoDate += "-" + convertDate[2];
+        isoDate += "-" + convertDate[2];
 
-      return isoDate;
-    } 
+        return isoDate;
+    }
 
     async loadEvents(date) {
         var newDate = date.toString().substr(0, date.toString().length - 18);
@@ -75,43 +75,54 @@ export default class Schedule extends Component {
         newDate = this.dayConverter(newDate);
         var events = "\n";
         var returnValue = [];
+<<<<<<< HEAD
         querySnapshot = await firebase.firestore().collection("users").doc(initialEmail).collection("events").get();
             querySnapshot.forEach((doc) => {
               console.log(doc.id)
               var eventInfo = doc.id.split("_");
               if (eventInfo[0] === newDate) {
+=======
+        querySnapshot = await firebase.firestore().collection("users").doc("zchen133@ucsc.edu").collection("events").get();
+        querySnapshot.forEach((doc) => {
+            console.log(doc.id)
+            var eventInfo = doc.id.split("_");
+            if (eventInfo[0] === newDate) {
+>>>>>>> c9f765e4e989b1350921b5a9e9e89f7062856731
                 events = "found"
-                var appointmentText = "Checked in? " + doc.data().checked + "\nDepartment: " + doc.data().department
-                +"\nDescription: " + doc.data().description + 
-                "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital + 
-                "\nat time: " + doc.data().time + "\nPatient first name: " + doc.data().first_name + 
-                "\nPatient last name: " + doc.data().last_name;
+                var appointmentText = "Checked in? " + doc.data().checked + "\nDepartment: " + doc.data().department +
+                    "\nDescription: " + doc.data().description +
+                    "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital +
+                    "\nat time: " + doc.data().time + "\nPatient first name: " + doc.data().first_name +
+                    "\nPatient last name: " + doc.data().last_name;
                 returnValue.push(
-                  <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={doc.data().time}>
+                    <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={doc.data().time}>
                     <Block row style = {{paddingHorizontal:30, paddingTop: 10}}>
                       <Text>{appointmentText}</Text>
                     </Block>
                   </Block>
-                  )
-                }
-              }     
-            );
-            if (events === "\n" ) {
-              var appointmentText = "NO APPOINTMENTS FOUND OR INVALID EMAIL";
-              returnValue.push(
+                )
+            }
+        });
+        if (events === "\n") {
+            var appointmentText = "NO APPOINTMENTS FOUND OR INVALID EMAIL";
+            returnValue.push(
                 <Block  card shadow color = "#f6f5f5" style = {styles.pageTop}>
                   <Block row style = {{paddingHorizontal:30, paddingTop: 10}}>
                     <Text>{appointmentText}</Text>
                   </Block>
                 </Block>
-                )
-            }
-            return returnValue;
+            )
+        }
+        return returnValue;
     }
 
 
     onPressRequests = () => {
+<<<<<<< HEAD
       this.props.navigation.navigate('MedicalHomepage')
+=======
+        this.props.navigation.navigate('PatientHomepage')
+>>>>>>> c9f765e4e989b1350921b5a9e9e89f7062856731
     }
 
 
@@ -126,7 +137,7 @@ export default class Schedule extends Component {
         const startDate = selectedStartDate ? selectedStartDate.toString() : '';
         const { events } = this.state
         return (
-        <ScrollView style = {styles.scrollView}>
+            <ScrollView style = {styles.scrollView}>
           <View style={styles.container}>
             <CalendarPicker
               onDateChange={this.onDateChange}
@@ -145,23 +156,23 @@ export default class Schedule extends Component {
            </View>
           </View>
         </ScrollView>
-      );
+        );
     }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#72C3C9',
-    borderTopWidth: 15,
-    borderColor: '#72C3C9',
-  },
-  titleText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 3,
-  },
-  scrollView: {
-    backgroundColor: '#72C3C9'
-  }
+    container: {
+        flex: 1,
+        backgroundColor: '#72C3C9',
+        borderTopWidth: 15,
+        borderColor: '#72C3C9',
+    },
+    titleText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 3,
+    },
+    scrollView: {
+        backgroundColor: '#72C3C9'
+    }
 });

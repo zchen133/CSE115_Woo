@@ -13,25 +13,25 @@ export default class Signup extends Component {
 
         // TODO: Show errors on screen
         if (this.state.firstName == '') {
-            console.log('No firstname selected');  
-             Toast.show('Please enter your first name');
+            console.log('No firstname selected');
+            Toast.show('Please enter your first name');
             return;
         }
         if (this.state.lastName == '') {
-            console.log('No lastname selected');  
-             Toast.show('Please enter your last name');
+            console.log('No lastname selected');
+            Toast.show('Please enter your last name');
             return;
         }
 
         if (this.state.email == '') {
-            console.log('No email selected');  
-             Toast.show('Please enter your email');
+            console.log('No email selected');
+            Toast.show('Please enter your email');
             return;
         }
 
         if (this.state.password == '') {
-            console.log('No email selected');  
-             Toast.show('Please enter your password');
+            console.log('No email selected');
+            Toast.show('Please enter your password');
             return;
         }
 
@@ -47,7 +47,7 @@ export default class Signup extends Component {
             return;
         }
 
-       
+
 
         console.log("Attempt to Signup");
         firebase
@@ -63,10 +63,10 @@ export default class Signup extends Component {
                 })
 
             })
-            .then(()=>this.props.navigation.navigate('Loading'))
-            .catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
-       
-        
+            .then(() => this.props.navigation.navigate('Loading'))
+            .catch(error => { this.setState({ err: error.message }), Toast.show(error.message) });
+
+
     }
 
     BackLoginPage = () => {
