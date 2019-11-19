@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
+import { StyleSheet, ImageBackground,Text, View, ScrollView, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 import EditableText from './EditableTextComponent.js';
 import DatePicker from 'react-native-datepicker'
-// import { SafeAreaView } from 'react-navigation';
-// import { ScrollView } from 'react-native-gesture-handler';
-// var appointment
-// import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
+import Block from './components.js';
 
 export default class Patient_ProfileScreen extends Component {
 
@@ -19,19 +16,17 @@ export default class Patient_ProfileScreen extends Component {
             //name:"Name",
 
         };
-
-
         this.updateFirstName = this.updateFirstName.bind(this)
         this.updateLastName = this.updateLastName.bind(this)
         this.updateAge = this.updateAge.bind(this)
         this.updateGender = this.updateGender.bind(this)
         this.updateAddress = this.updateAddress.bind(this)
         this.updateBirthday = this.updateBirthday.bind(this)
+        this.viewMedicalRecords = this.viewMedicalRecords.bind(this)
     }
 
     componentDidMount() {
         this.getUserData()
-        //this.docRef.set({ birthday: '1-1-2019' }, { merge: true });
     }
 
     updateAddress(input) {
@@ -54,13 +49,11 @@ export default class Patient_ProfileScreen extends Component {
         this.getUserData()
     }
     updateLastName(input) {
-
         this.docRef.set({ last: input }, { merge: true });
         this.getUserData()
     }
     updateBirthday(input) {
         this.docRef.set({ birthday: input }, { merge: true });
-        //this.docRef.set({ birthday: input }, { merge: true });
         this.getUserData()
     }
 
@@ -79,9 +72,14 @@ export default class Patient_ProfileScreen extends Component {
         })
     }
 
+    viewMedicalRecords() {
+        this.props.navigation.navigate('MedicalRecords')
+    }
+
     render() {
         if (this.state.data) {
             return (
+                
                 <View style={styles.container}>
                     <View style={styles.header}></View>
                     <Image style={styles.avatar} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }} />
@@ -90,14 +88,6 @@ export default class Patient_ProfileScreen extends Component {
                     </View>
                     <View style={styles.userData}>
                         <ScrollView style={styles.scroll}>
-                            {/* <Button onPress={this.updateName} title='Edit Name'/>
-                            <Text style={styles.name}>{'Age: ' + this.state.data.age}</Text>
-                            <Button onPress={this.updateAge} title='Edit Age'/>
-                            <Text style={styles.name}>{'Gender: ' + this.state.data.gender}</Text>
-                            <Button onPress={this.updateGender} title='Edit Gender'/>
-                            <Text style={styles.name}>{'Email: ' + this.user.email}</Text>
-                            <Text style={styles.name}>{'Address: ' + this.state.data.address}</Text>
-                            <Button onPress={this.updateAddress} title='Edit Address'/> */}
                             <View style={styles.editableTextBorder}>
                                 <Text style={styles.text}>{'First Name: '}</Text>
                                 <EditableText text={this.state.data.first}
@@ -134,11 +124,6 @@ export default class Patient_ProfileScreen extends Component {
                             </View>
                             <View style={styles.editableTextBorder}>
                                 <Text style={styles.text}>{'Birthday: '}</Text>
-                                {/* <EditableText text={this.state.data.birthday}
-                                    sendText={(birthday) => this.updateBirthday(birthday)}
-                                    textProps={(styles.editableText)}
-                                    textInputProps={(styles.editableText)}
-                                /> */}
                                 <DatePicker //Doesn't support IOS darkmode yet
                                     style={{ width: 200 }}
                                     date={this.state.data.birthday}
@@ -174,10 +159,23 @@ export default class Patient_ProfileScreen extends Component {
                                     textInputProps={(styles.editableText)}
                                 />
                             </View>
-                            <View style={styles.bodyContent}>
+                            <TouchableOpacity 
+                                onPress = {event =>{this.viewMedicalRecords()}}>
+                            <View>
+                            <ImageBackground
+                                source={require('../assets/profile_folder.png')}
+                                style={{ height: 200, width: 200 ,alignSelf: 'center', alignItems:'center',alignContent:'center',marginBottom:20}}>
+                               
+                            
+                            <Text style={{marginTop:100,alignSelf:'center',borderWidth:1,borderColor:'#ffffff',color:'#ffffff',fontSize:20,fontWeight: 'bold'}}>{" Medical Record "}</Text>
+                            </ImageBackground>
                             </View>
+                            </TouchableOpacity>  
+                            
                         </ScrollView>
                     </View>
+                    
+                             
                 </View>
             );
         } else {
@@ -249,13 +247,16 @@ const styles = StyleSheet.create({
     },
     scroll: {
         marginLeft: 15,
-        marginRight: 15
+        marginRight: 15,
+        marginBottom:80
 
-    }, text: {
+    },
+    text: {
         fontSize: 20,
         flex: 1
 
-    }, editableText: {
+    },
+    editableText: {
         fontSize: 20,
         textAlign: 'right',
         flex: 1

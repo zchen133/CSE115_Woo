@@ -4,7 +4,7 @@ import * as firebase from "firebase";
 import { YellowBox } from 'react-native';
 import Toast from 'react-native-tiny-toast';
 var hospitalStaff = 'No Hospital'
-export {hospitalStaff};
+export { hospitalStaff };
 var initialEmail = 'initialEmail';
 const { width, height } = Dimensions.get('window');
 export default class AdminHomepage extends Component {
@@ -14,7 +14,7 @@ export default class AdminHomepage extends Component {
     }
     state = { email: '', hospitalStaff: '', err: null }
 
-    
+
     handleSignOut = () => {
         firebase
             .auth()
@@ -25,17 +25,16 @@ export default class AdminHomepage extends Component {
     addDoctor = () => {
         if (this.state.email !== '') {
             initialEmail = this.state.email;
-        }
-        else{ 
+        } else {
             Toast.show('Please enter the email');
-            return;  
+            return;
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '4',
             hospitalStaff: this.state.hospitalStaff,
 
-        }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
+        }).catch(error => { this.setState({ err: error.message }), Toast.show(error.message) });
         console.log(this.state.err);
     }
 
@@ -44,50 +43,47 @@ export default class AdminHomepage extends Component {
     addNurse = () => {
         if (this.state.email !== '') {
             initialEmail = this.state.email;
-        }
-        else{ 
+        } else {
             Toast.show('Please enter the email');
-            return;  
+            return;
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '3',
             hospitalStaff: this.state.hospitalStaff,
 
-        }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
+        }).catch(error => { this.setState({ err: error.message }), Toast.show(error.message) });
         console.log(this.state.err);
     }
 
     addReceptionist = () => {
         if (this.state.email !== '') {
             initialEmail = this.state.email;
-        }
-        else{ 
+        } else {
             Toast.show('Please enter the email');
-            return;  
+            return;
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '2',
             hospitalStaff: this.state.hospitalStaff,
 
-        }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
+        }).catch(error => { this.setState({ err: error.message }), Toast.show(error.message) });
         console.log(this.state.err);
     }
 
     resetPermission = () => {
         if (this.state.email !== '') {
             initialEmail = this.state.email;
-        }
-        else{ 
+        } else {
             Toast.show('Please enter the email');
-            return;  
+            return;
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
         docRef.update({
             accountType: '1',
 
-        }).catch(error => {this.setState({ err: error.message }),Toast.show(error.message)});
+        }).catch(error => { this.setState({ err: error.message }), Toast.show(error.message) });
         console.log(this.state.err);
     }
 

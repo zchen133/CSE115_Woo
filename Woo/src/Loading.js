@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as firebase from "firebase";
-import { StyleSheet, Text, View, ActivityIndicator, YellowBox,ImageBackground,sleep } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, YellowBox, ImageBackground, sleep } from 'react-native';
 import { test, loginEmail } from './Login.js';
 import { AppLoading } from 'expo';
 var newtest;
@@ -30,27 +30,27 @@ export default class Loading extends Component {
     }
 
     componentDidMount() {
-        
+
         firebase.auth().onAuthStateChanged(user => {
             console.log("newtest after import:" + newtest);
-            
+
 
             if (user) {
 
                 initialEmail = user.email
                 this.readUserData()
                     .then((result) => {
-                        
+
                         if (result == 1) {
                             let that = this;
-                            setTimeout(function(){that.props.navigation.navigate('PatientHomepage')}, 3000);
+                            setTimeout(function() { that.props.navigation.navigate('PatientHomepage') }, 3000);
 
                         } else if (result == 5) {
                             let that = this;
-                            setTimeout(function(){that.props.navigation.navigate('AdminHomepage')}, 3000);
+                            setTimeout(function() { that.props.navigation.navigate('AdminHomepage') }, 3000);
                         } else if (result == 2 || result == 3 || result == 4) {
                             let that = this;
-                            setTimeout(function(){that.props.navigation.navigate('MedicalHomepage')}, 3000);
+                            setTimeout(function() { that.props.navigation.navigate('MedicalHomepage') }, 3000);
                         }
                     })
                 // console.log("test after import:" + test + 'newtest' + newtest + 'email' + user.email);
@@ -71,7 +71,7 @@ export default class Loading extends Component {
     }
 
     render() {
-        
+
         return (
             <ImageBackground
                 source={require('../assets/loadingPage.gif')}
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         //backgroundColor: '#f5f5f5',
         //alignItems: 'center',
         //justifyContent: 'center',
-        width:null,
-        height:null,
+        width: null,
+        height: null,
     },
 });

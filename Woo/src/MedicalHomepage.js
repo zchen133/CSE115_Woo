@@ -40,8 +40,7 @@ class MedicalHomepage extends Component {
                 </Block>
         );
     }
-
-    renderList(appointment){
+    renderList(appointment) {
         return (
             <Block row card shadow color = "#ffffff" style={styles.items}>
                 <Block flex = {0.3}>

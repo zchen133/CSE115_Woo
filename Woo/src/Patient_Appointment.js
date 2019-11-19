@@ -11,108 +11,108 @@ var appointments = [];
 var accepted = true;
 export default class Patient_AppointmentScreen extends Component {
 
-    state = { title: '', date: '', time: '', hospital: '', doctor: '', description: '', hospitalStaff: '',appointments: '',  err: null }
+    state = { title: '', date: '', time: '', hospital: '', doctor: '', description: '', hospitalStaff: '', appointments: '', err: null }
 
     clearfields = () => {
-        this.setState({title:''})
-        this.setState({date:''})
-        this.setState({time:''})
-        this.setState({hospital:''})
-        this.setState({doctor:''})
-        this.setState({description:''})
+        this.setState({ title: '' })
+        this.setState({ date: '' })
+        this.setState({ time: '' })
+        this.setState({ hospital: '' })
+        this.setState({ doctor: '' })
+        this.setState({ description: '' })
     }
     handleAppointmentRequest = () => {
-        
+
         if (this.state.title == '') {
-            console.log('No title given');  
-             Toast.show('Please enter title');
+            console.log('No title given');
+            Toast.show('Please enter title');
             return;
         }
         if (this.state.date == '') {
-            console.log('No date given');  
-             Toast.show('Please enter appointment date');
+            console.log('No date given');
+            Toast.show('Please enter appointment date');
             return;
         }
 
         if (this.state.time == '') {
-            console.log('No time selected');  
-             Toast.show('Please enter appointment time');
+            console.log('No time selected');
+            Toast.show('Please enter appointment time');
             return;
         }
 
         if (this.state.hospital == '') {
-            console.log('No hospital given');  
-             Toast.show('Please enter hospital');
+            console.log('No hospital given');
+            Toast.show('Please enter hospital');
             return;
         }
         console.log(accepted)
 
         const eventrefPatient = firebase.firestore().collection("users").doc(initialEmail).collection("events");
-         eventrefPatient.doc(this.state.title).set({
-             date: this.state.date,
-             time: this.state.time,
-             hospital: this.state.hospital,
-             doctor: this.state.doctor,
-             description: this.state.description,
-
-         }) 
-         
-         /* Same logic can be used to query all receptionists with the same hospital as user requesting event time */
-         const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("events");
-         const hospitalQuery = userRef.where("date", "==", this.state.date)
-                                      .where("time", "==", this.state.time)
-            .get()
-            .then(function(querySnapshot) {
-                querySnapshot.forEach(function(doc) {
-            
-                if(doc.id != ''){
-                   accepted = false;
-                   console.log(doc.id)
-                }
-                
-            });
-        })
-        .catch(function(error){
-            console.log("Error getting documents: ", error);
-        });
-         
-      if(accepted){
-        Toast.show('Request sent');
-        const eventrefHospital= firebase.firestore().collection("hospital").doc(this.state.hospital).collection("events");
-        eventrefHospital.doc(this.state.title).set({
+        eventrefPatient.doc(this.state.title).set({
             date: this.state.date,
             time: this.state.time,
-           hospitalStaff: this.state.hospitalStaff,
-           doctor: this.state.doctor,
+            hospital: this.state.hospital,
+            doctor: this.state.doctor,
             description: this.state.description,
 
         })
-      }
 
-      if(!(accepted)){
-        accepted = true;
-        Toast.show('Request Denied');
-        const eventref = firebase.firestore().collection("users").doc(initialEmail).collection("events");
-         eventref.doc(this.state.title).delete().then(function() {
-             console.log("document deleted");
-         }).catch(function(error){
-             console.log("Error removing document ", error);
-         });
-         
-        
-      }
+        /* Same logic can be used to query all receptionists with the same hospital as user requesting event time */
+        const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("events");
+        const hospitalQuery = userRef.where("date", "==", this.state.date)
+            .where("time", "==", this.state.time)
+            .get()
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+
+                    if (doc.id != '') {
+                        accepted = false;
+                        console.log(doc.id)
+                    }
+
+                });
+            })
+            .catch(function(error) {
+                console.log("Error getting documents: ", error);
+            });
+
+        if (accepted) {
+            Toast.show('Request sent');
+            const eventrefHospital = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("events");
+            eventrefHospital.doc(this.state.title).set({
+                date: this.state.date,
+                time: this.state.time,
+                hospitalStaff: this.state.hospitalStaff,
+                doctor: this.state.doctor,
+                description: this.state.description,
+
+            })
+        }
+
+        if (!(accepted)) {
+            accepted = true;
+            Toast.show('Request Denied');
+            const eventref = firebase.firestore().collection("users").doc(initialEmail).collection("events");
+            eventref.doc(this.state.title).delete().then(function() {
+                console.log("document deleted");
+            }).catch(function(error) {
+                console.log("Error removing document ", error);
+            });
+
+
+        }
         //Update appointments and export to homepage view
-       
+
     }
 
-   
-    
-    
+
+
+
 
 
 
     render() {
-       
+
         return (
             <View style={{ flex: 1, backgroundColor: '#ffffff', justifyContent: 'flex-end' }}>
                 <View style={{ ...StyleSheet.absoluteFill }}>
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         borderColor: 'rgba(0,0,0,0.2)',
     },
-   
+
 });
 
 const pickerSelectStyles = StyleSheet.create({
