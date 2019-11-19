@@ -75,19 +75,11 @@ export default class Schedule extends Component {
         newDate = this.dayConverter(newDate);
         var events = "\n";
         var returnValue = [];
-<<<<<<< HEAD
         querySnapshot = await firebase.firestore().collection("users").doc(initialEmail).collection("events").get();
             querySnapshot.forEach((doc) => {
               console.log(doc.id)
               var eventInfo = doc.id.split("_");
               if (eventInfo[0] === newDate) {
-=======
-        querySnapshot = await firebase.firestore().collection("users").doc("zchen133@ucsc.edu").collection("events").get();
-        querySnapshot.forEach((doc) => {
-            console.log(doc.id)
-            var eventInfo = doc.id.split("_");
-            if (eventInfo[0] === newDate) {
->>>>>>> c9f765e4e989b1350921b5a9e9e89f7062856731
                 events = "found"
                 var appointmentText = "Checked in? " + doc.data().checked + "\nDepartment: " + doc.data().department +
                     "\nDescription: " + doc.data().description +
@@ -118,11 +110,7 @@ export default class Schedule extends Component {
 
 
     onPressRequests = () => {
-<<<<<<< HEAD
-      this.props.navigation.navigate('MedicalHomepage')
-=======
-        this.props.navigation.navigate('PatientHomepage')
->>>>>>> c9f765e4e989b1350921b5a9e9e89f7062856731
+      this.props.navigation.navigate('MedicalHomepage');
     }
 
 
