@@ -5,11 +5,8 @@ import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
 import { SafeAreaView, ThemeColors } from 'react-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
-//var appointment
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
-//import add from  'assets\add-circle-512.png'
-
 import Login from './Login.js'
 import Block from './components.js'
 

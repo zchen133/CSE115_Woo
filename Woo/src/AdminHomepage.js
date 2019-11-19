@@ -8,7 +8,7 @@ var hospital = 'null'
 export { hospital };
 
 var initialEmail = 'initialEmail';
-const { width, height } = Dimensions.get('window');
+
 export default class AdminHomepage extends Component {
     constructor() {
         super();
@@ -76,6 +76,13 @@ export default class AdminHomepage extends Component {
             Toast.show('Please enter the email and select a department');
             return;
         }
+        if(this.state.hospitalStaff !== ''){
+            hospital = this.state.hospitalStaff
+        }
+        else{ 
+            Toast.show('Please enter the hospital');
+            return;  
+        }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
 
 
@@ -117,6 +124,13 @@ export default class AdminHomepage extends Component {
             Toast.show('Please enter the email and select a department');
             return;
         }
+        if(this.state.hospital !== ''){
+            hospital = this.state.hospitalStaff
+        }
+        else{ 
+            Toast.show('Please enter the hospital');
+            return;  
+        }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
 
         console.log(this.state.err);
@@ -155,6 +169,13 @@ export default class AdminHomepage extends Component {
         } else {
             Toast.show('Please enter the email and select a department');
             return;
+        }
+        if(this.state.hospital !== ''){
+            hospital = this.state.hospitalStaff
+        }
+        else{ 
+            Toast.show('Please enter the hospital');
+            return;  
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, ImageBackground, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
-import Login from './Login.js'
 import Block from './components.js'
 import Patient_Profile from './Patient_Profile'
 import { SafeAreaView } from 'react-navigation';
@@ -320,16 +319,6 @@ class AppointmentScreen extends Component {
         return (
             <View style={styles.container}>
                 <Text> Full Appointment List Screen Homepage</Text>
-            </View>
-        );
-    }
-}
-
-class RecordScreen extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text> Medical Record Screen Homepage</Text>
             </View>
         );
     }

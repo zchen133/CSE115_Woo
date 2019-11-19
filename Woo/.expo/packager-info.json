@@ -5,5 +5,6 @@
   "packagerPid": 10679,
   "expoServerNgrokUrl": "https://v4-4ym.anonymous.woo.exp.direct",
   "packagerNgrokUrl": "https://packager.v4-4ym.anonymous.woo.exp.direct",
-  "ngrokPid": 10704
+  "ngrokPid": 10704,
+  "webpackServerPort": null
 }
