@@ -3,16 +3,12 @@ import { StyleSheet, Text, View, Button, TextInput, Image, Animated, Dimensions,
 import * as firebase from "firebase";
 import { Calendar, Agenda } from 'react-native-calendars';
 
-export default class AppointmentScreen extends Component {
+
+export default class MedicalAppointment extends Component {
 
     onPressSchedules = () => {
 
         this.props.navigation.navigate('Schedule')
-
-    }
-    onPressRequests = () => {
-
-        this.props.navigation.navigate('Requests')
 
     }
 
@@ -24,20 +20,18 @@ export default class AppointmentScreen extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Button
-                    title='Schedule'
-                    style = {styles.requests} 
-                    onPress={this.onPressSchedules}/>
-                <Button
-                    title='requests' 
-                    style = {styles.requests} 
-                    onPress={this.onPressRequests}/>
-                <Button
-                    title='search'
-                    style = {styles.requests} 
-                    onPress={this.onPressSearch}/>
-            </View>
+            <ScrollView style = {styles.scrollView}>
+                <View style={styles.container}>
+                    <Button
+                        title='Schedule'
+                        style = {styles.requests} 
+                        onPress={this.onPressSchedules}/>
+                    <Button
+                        title='search'
+                        style = {styles.requests} 
+                        onPress={this.onPressSearch}/>
+                </View>
+            </ScrollView>
         );
     }
 }
@@ -52,7 +46,8 @@ const styles = StyleSheet.create({
         marginTop: 10,
         height: 200
     },
-    requests: {
+    scrollView: {
+        backgroundColor: '#72C3C9'
         // textAlign: 'center',
         // justifyContent: 'center',
         // alignItems: 'center',

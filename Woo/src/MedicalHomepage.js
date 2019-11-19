@@ -14,6 +14,8 @@ import RequestScreen from './Medical_Request.js'
 var recordCheck = false
 
 
+import MedicalAppointment from './MedicalAppointment.js';
+
 class MedicalHomepage extends Component {
     constructor() {
         super();
@@ -375,7 +377,7 @@ export default createMaterialBottomTabNavigator({
         }
     },
     Appointment: {
-        screen: AppointmentScreen,
+        screen: MedicalAppointment,
         navigationOptions: {
             tabBarLabel: 'Appointment',
             tabBarIcon: ({ tintColor }) => (

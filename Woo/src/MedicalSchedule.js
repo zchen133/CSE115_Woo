@@ -75,7 +75,7 @@ export default class Schedule extends Component {
         newDate = this.dayConverter(newDate);
         var events = "\n";
         var returnValue = [];
-        querySnapshot = await firebase.firestore().collection("users").doc("zchen133@ucsc.edu").collection("events").get();
+        querySnapshot = await firebase.firestore().collection("users").doc(initialEmail).collection("events").get();
         querySnapshot.forEach((doc) => {
             console.log(doc.id)
             var eventInfo = doc.id.split("_");
@@ -110,7 +110,7 @@ export default class Schedule extends Component {
 
 
     onPressRequests = () => {
-        this.props.navigation.navigate('PatientHomepage')
+        this.props.navigation.navigate('MedicalHomepage');
     }
 
 
