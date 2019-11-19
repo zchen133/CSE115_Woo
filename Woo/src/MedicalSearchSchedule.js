@@ -19,11 +19,7 @@ export default class SearchSchedule extends Component {
     }
 
     onPressRequests = () => {
-<<<<<<< HEAD
       this.props.navigation.navigate('MedicalHomepage')
-=======
-        this.props.navigation.navigate('PatientHomepage')
->>>>>>> c9f765e4e989b1350921b5a9e9e89f7062856731
     }
 
     onQuery = (email) => {
