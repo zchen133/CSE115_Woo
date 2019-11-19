@@ -10,15 +10,17 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 
+import MedicalAppointment from './MedicalAppointment.js';
+
 class MedicalHomepage extends Component {
     constructor() {
         super();
         YellowBox.ignoreWarnings(['Setting a timer']);
     }
-
+   
     renderTop() {
         return (
-            <Block flex = {0.4} column style = {{paddingHorizontal:20}}>
+        <Block flex = {0.4} column style = {{paddingHorizontal:20}}>
                 <Block flex = {0.3} >
                 </Block>
                 <Block flex = {false} row style = {{paddingHorizontal:15,paddingVertical:5}}>
@@ -154,7 +156,7 @@ export default createMaterialBottomTabNavigator({
         }
     },
     Appointment: {
-        screen: AppointmentScreen,
+        screen: MedicalAppointment,
         navigationOptions: {
             tabBarLabel: 'Appointment',
             tabBarIcon: ({ tintColor }) => (
