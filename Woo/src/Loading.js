@@ -4,8 +4,11 @@ import { StyleSheet, Text, View, ActivityIndicator, YellowBox, ImageBackground, 
 import { test, loginEmail } from './Login.js';
 import { AppLoading } from 'expo';
 var newtest;
-var initialEmail = 'initialEmail';
-export { initialEmail };
+var initialEmail = 'Null';
+var hospital = "Null";
+var first = "Null";
+var last = "Null"
+export { initialEmail, hospital, first, last };
 
 export default class Loading extends Component {
 
@@ -19,6 +22,9 @@ export default class Loading extends Component {
         var docRef = firebase.firestore().collection("users").doc(initialEmail);
         return docRef.get().then(function(doc) {
             if (doc.exists) {
+                hospital = doc.get("hospital");
+                first = doc.get("first")
+                last = doc.get("last")
                 return doc.get('accountType');
             } else {
                 console.log("No such document");
