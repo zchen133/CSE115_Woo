@@ -4,6 +4,7 @@ import * as firebase from "firebase";
 import EditableText from './EditableTextComponent.js';
 import DatePicker from 'react-native-datepicker'
 import Block from './components.js';
+import DialogInput from 'react-native-dialog-input';
 
 export default class Patient_ProfileScreen extends Component {
 
@@ -13,6 +14,7 @@ export default class Patient_ProfileScreen extends Component {
         this.docRef = firebase.firestore().collection("users").doc(this.user.email);
         this.state = {
             data: null,
+            visible: false,
             //name:"Name",
 
         };
@@ -22,6 +24,7 @@ export default class Patient_ProfileScreen extends Component {
         this.updateGender = this.updateGender.bind(this)
         this.updateAddress = this.updateAddress.bind(this)
         this.updateBirthday = this.updateBirthday.bind(this)
+        this.updateProfilePic = this.updateProfilePic.bind(this)
         this.viewMedicalRecords = this.viewMedicalRecords.bind(this)
     }
 
@@ -57,11 +60,24 @@ export default class Patient_ProfileScreen extends Component {
         this.getUserData()
     }
 
+    updateProfilePic(input) {
+        this.docRef.set({ profilePic: input }, { merge: true });
+        this.getUserData()
+        this.setState({ visible: false })
+    }
+
     getUserData() {
         this.docRef.get().then((doc) => {
             if (doc.exists) {
-                let data = doc.data()
-                this.setState({ data: data })
+                if(doc.data().profilePic == null) {
+                    this.docRef.set({ profilePic: 'https://bootdey.com/img/Content/avatar/avatar6.png' }, { merge: true })
+                    this.getUserData()
+                }
+                else {
+                    let data = doc.data()
+                    this.setState({ data: data })
+                    console.log(this.state.data)
+                }
             } else {
                 this.setState({ data: null })
                 console.log('No such document')
@@ -82,7 +98,7 @@ export default class Patient_ProfileScreen extends Component {
 
                 <View style={styles.container}>
                     <View style={styles.header}></View>
-                    <Image style={styles.avatar} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }} />
+                    <Image style={styles.avatar} source={ { uri: this.state.data.profilePic} } />
                     <View style={styles.body}>
                         <Text style={styles.name}>{this.state.data.first + ' ' + this.state.data.last}</Text>
                     </View>
@@ -159,6 +175,13 @@ export default class Patient_ProfileScreen extends Component {
                                     textInputProps={(styles.editableText)}
                                 />
                             </View>
+                            <Button title='Change Picture' onPress={() => {this.setState({ visible: true }) } } style={styles.profPic}/>
+                            <DialogInput isDialogVisible={this.state.visible}
+                                title={"Paste a new URL for the picture you want to use"}
+                                message={"New URL"}
+                                submitInput={ (inputText) => {this.updateProfilePic(inputText)} }
+                                closeDialog={ () => {this.setState({ visible: false }) }}>
+                            </DialogInput>
                             <TouchableOpacity 
                                 onPress = {event =>{this.viewMedicalRecords()}}>
                             <View>
@@ -195,6 +218,9 @@ const styles = StyleSheet.create({
     },
     userData: {
         height: '60%',
+    },
+    profPic: {
+        paddingBottom: 40,
     },
     avatar: {
         width: 130,
