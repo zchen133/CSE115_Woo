@@ -10,6 +10,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import RequestScreen from './Medical_Request.js'
+import RecordScreen from './MedicalRecordScreen.js'
 var recordCheck = false
 
 
