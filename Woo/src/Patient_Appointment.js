@@ -484,7 +484,7 @@ export default class Patient_AppointmentScreen extends Component {
                         placeholder='(Description)'
                         autoCapitalize="none"
                         style={styles.bottom}
-                        multiline={true}
+                        //multiline={true} SOURCE OF RETURN BUG
                         onChangeText={description => this.setState({ description })}
                         value={this.state.description}
                     />
