@@ -35,6 +35,7 @@ export default class SearchSchedule extends Component {
     async searchEmail(email) {
         events = "\n";
         returnValue = [];
+        var i = 1;
         querySnapshot = await firebase.firestore().collection("users").doc(email).collection("events").get();
         querySnapshot.forEach(function(doc) {
             console.log(doc.data())
@@ -43,20 +44,21 @@ export default class SearchSchedule extends Component {
                 doc.data().description + "\nDoctor: " + doc.data().doctor + "\nHospital: " +
                 doc.data().hospital + "\nat time: " + doc.data().time;
             returnValue.push(
-                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={doc.data().time}>
-                <Block row style = {{paddingHorizontal:30, paddingTop: 10}}>
+                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={i.toString()}>
+                <Block row style = {{paddingHorizontal:30, paddingTop: 10}} key = {i.toString()}>
                   <Text>{appointmentText}</Text>
                 </Block>
               </Block>
             )
+            i++
         });
         if (events === "\n") {
             appointmentText = "NO APPOINTMENTS FOUND OR INVALID EMAIL";
             returnValue.push(
-                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop}>
-                <Block row style = {{paddingHorizontal:30, paddingTop: 30}}>
-                  <Text>{appointmentText}</Text>
-                </Block>
+                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key = {i.toString()}>
+                  <Block row style = {{paddingHorizontal:30, paddingTop: 30}} key = {i.toString()}>
+                    <Text>{appointmentText}</Text>
+                  </Block>
               </Block>
             )
         }
