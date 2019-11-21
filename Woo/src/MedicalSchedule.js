@@ -1,7 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox, ScrollView } from 'react-native';
 import * as firebase from "firebase";
-import { initialEmail } from './Loading.js';
+import { initialEmail, hostpital, department, accountTypeString, first, last } from './Loading.js';
 import CalendarPicker from 'react-native-calendar-picker';
 import Block from './components.js'
 
@@ -75,7 +75,7 @@ export default class Schedule extends Component {
         newDate = this.dayConverter(newDate);
         var events = "\n";
         var returnValue = [];
-        querySnapshot = await firebase.firestore().collection("users").doc(initialEmail).collection("events").get();
+        querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection(accountTypeString).doc(first+' '+last).collection("Appointments").get();
         querySnapshot.forEach((doc) => {
             console.log(doc.id)
             var eventInfo = doc.id.split("_");

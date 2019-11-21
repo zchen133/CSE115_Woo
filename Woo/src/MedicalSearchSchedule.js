@@ -12,7 +12,7 @@ export default class SearchSchedule extends Component {
         super(props);
         this.state = {
             events: [],
-            email: "",
+            email: "null",
         };
         this.onQuery = this.onQuery.bind(this);
         this.searchEmail = this.searchEmail.bind(this);
