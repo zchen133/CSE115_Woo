@@ -10,7 +10,7 @@ var first = "Null";
 var last = "Null"
 var department = "Null"
 var accountTypeString = "Null"
-export { initialEmail, hospital, first, last, department,accountTypeString };
+export { initialEmail, hospital, first, last, department, accountTypeString };
 
 export default class Loading extends Component {
 

@@ -1,7 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox, ScrollView } from 'react-native';
 import * as firebase from "firebase";
-import { initialEmail, hostpital, department, accountTypeString, first, last } from './Loading.js';
+import { initialEmail, hospital, department, accountTypeString, first, last } from './Loading.js';
 import CalendarPicker from 'react-native-calendar-picker';
 import Block from './components.js'
 
@@ -69,37 +69,45 @@ export default class Schedule extends Component {
         return isoDate;
     }
 
+    //async loadEvents()
+
     async loadEvents(date) {
-        var newDate = date.toString().substr(0, date.toString().length - 18);
+        console.log(hospital)
+        console.log(department)
+        console.log(first)
+        console.log(last)
+        console.log(accountTypeString)
+        var newDate = date.toString().substr(0, date.toString().length - 18)
         this.setState({ selectedStartDate: newDate })
-        newDate = this.dayConverter(newDate);
-        var events = "\n";
-        var returnValue = [];
-        querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection(accountTypeString).doc(first+' '+last).collection("Appointments").get();
+        newDate = this.dayConverter(newDate)
+        console.log(newDate)
+        var events = "\n"
+        var returnValue = []
+        //Get every department
+        var i = 1;
+        querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection(accountTypeString).doc(first+' '+last).collection("Appointments").doc(newDate).collection("Time").get();
         querySnapshot.forEach((doc) => {
-            console.log(doc.id)
-            var eventInfo = doc.id.split("_");
-            if (eventInfo[0] === newDate) {
-                events = "found"
-                var appointmentText = "Checked in? " + doc.data().checked + "\nDepartment: " + doc.data().department +
-                    "\nDescription: " + doc.data().description +
-                    "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital +
-                    "\nat time: " + doc.data().time + "\nPatient first name: " + doc.data().first_name +
-                    "\nPatient last name: " + doc.data().last_name;
-                returnValue.push(
-                    <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={doc.data().time}>
-                    <Block row style = {{paddingHorizontal:30, paddingTop: 10}}>
-                      <Text>{appointmentText}</Text>
-                    </Block>
+            console.log(doc)
+            events = "found"
+            var appointmentText = "Checked in? " + doc.data().checked + "\nDepartment: " + doc.data().department +
+                "\nDescription: " + doc.data().description +
+                "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital +
+                "\nat time: " + doc.data().time + "\nPatient first name: " + doc.data().first_name +
+                "\nPatient last name: " + doc.data().last_name
+            returnValue.push(
+                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={i.toString()}>
+                  <Block row style = {{paddingHorizontal:30, paddingTop: 10}} key = {i.toString()}>
+                    <Text>{appointmentText}</Text>
                   </Block>
+                </Block>
                 )
-            }
+            i++
         });
         if (events === "\n") {
             var appointmentText = "NO APPOINTMENTS FOUND OR INVALID EMAIL";
             returnValue.push(
-                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop}>
-                  <Block row style = {{paddingHorizontal:30, paddingTop: 10}}>
+                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key = {i.toString()}>
+                  <Block row style = {{paddingHorizontal:30, paddingTop: 10}} key = {i.toString()}>
                     <Text>{appointmentText}</Text>
                   </Block>
                 </Block>
