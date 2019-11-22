@@ -29,17 +29,23 @@ export default class Loading extends Component {
 
     readUserData = () => {
         var docRef = firebase.firestore().collection("users").doc(initialEmail);
-        return docRef.get().then(function(doc) {
+        return docRef.get().then(function (doc) {
             if (doc.exists) {
                 hospital = doc.get("hospital");
                 first = doc.get("first")
                 last = doc.get("last")
                 return doc.get('accountType');
             } else {
-                //bug, if user manages to get here, infinite loading.
+                firebase
+                    .auth()
+                    .signOut()
+                    .then(
+                        //test = 0,
+                        this.props.navigation.navigate('Login'));
+
                 console.log("No such document ");
             }
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.log("Error getting document:", error);
         });
 
@@ -59,14 +65,14 @@ export default class Loading extends Component {
 
                         if (result == 1) {
                             let that = this;
-                            setTimeout(function() { that.props.navigation.navigate('PatientHomepage') }, 3000);
+                            setTimeout(function () { that.props.navigation.navigate('PatientHomepage') }, 3000);
 
                         } else if (result == 5) {
                             let that = this;
-                            setTimeout(function() { that.props.navigation.navigate('AdminHomepage') }, 3000);
+                            setTimeout(function () { that.props.navigation.navigate('AdminHomepage') }, 3000);
                         } else if (result == 2 || result == 3 || result == 4) {
                             let that = this;
-                            setTimeout(function() { that.props.navigation.navigate('MedicalHomepage') }, 3000);
+                            setTimeout(function () { that.props.navigation.navigate('MedicalHomepage') }, 3000);
                         }
                     })
                 // console.log("test after import:" + test + 'newtest' + newtest + 'email' + user.email);
@@ -92,9 +98,9 @@ export default class Loading extends Component {
             <ImageBackground
                 source={require('../assets/loadingPage.gif')}
                 style={styles.container}
-                        >
-            
-        </ImageBackground>
+            >
+
+            </ImageBackground>
         );
     }
 
