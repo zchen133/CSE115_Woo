@@ -3,6 +3,7 @@ import * as firebase from "firebase";
 import { StyleSheet, Text, View, ActivityIndicator, YellowBox, ImageBackground, sleep } from 'react-native';
 import { test, loginEmail } from './Login.js';
 import { AppLoading } from 'expo';
+import Toast from 'react-native-tiny-toast';
 var newtest;
 var initialEmail = 'Null';
 var hospital = "Null";
@@ -36,6 +37,8 @@ export default class Loading extends Component {
                 last = doc.get("last")
                 return doc.get('accountType');
             } else {
+                console.log("No such document ");
+                Toast.show("This account no longer exists")
                 firebase
                     .auth()
                     .signOut()
@@ -43,7 +46,7 @@ export default class Loading extends Component {
                         //test = 0,
                         this.props.navigation.navigate('Login'));
 
-                console.log("No such document ");
+                
             }
         }).catch(function (error) {
             console.log("Error getting document:", error);
