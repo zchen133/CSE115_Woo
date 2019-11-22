@@ -7,13 +7,13 @@ jobs:
     steps:
       - checkout
     
-      - run: npm install
+      - run: cd ./Woo && npm install
     
       - run:
           name: jest tests
           command: |
             mkdir -p test-results/jest
-            cd ./Woo && yarn run test
+            yarn run test
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
     
