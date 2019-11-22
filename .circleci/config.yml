@@ -1,6 +1,7 @@
 version: 2
 jobs:
   node:
+    working_directory: ./Woo
     docker:
       - image: circleci/node:8
 
