@@ -1,16 +1,25 @@
 version: 2
 jobs:
-  build:
+  node:
     docker:
-      - image: debian:stretch
+        - image: circleci/node:8
 
     steps:
       - checkout
 
       - run:
-          name: Greeting
-          command: echo Hello, world.
-
+          name: install packages
+          command: npm install
       - run:
-          name: Print the Current Time
-          command: date
+          name: jest tests
+          command: |
+              mkdir -p test-results/jest
+              yarn run test
+              environment:
+                  JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+
+workflows:
+    version: 2
+    node-run-tests:
+        jobs:
+            -node
