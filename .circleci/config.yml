@@ -1,7 +1,6 @@
 version: 2
 jobs:
   node:
-    working_directory: ./Woo
     docker:
       - image: circleci/node:8
 
@@ -14,7 +13,7 @@ jobs:
           name: jest tests
           command: |
             mkdir -p test-results/jest
-            yarn run test
+            cd ./Woo && yarn run test
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
     
