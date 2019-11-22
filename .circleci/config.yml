@@ -1,26 +1,24 @@
 version: 2
 jobs:
-    node:
-        docker:
-            - image: circleci/node:8
+  node:
+    docker:
+      - image: circleci/node:8
 
-        steps:
-            - checkout
+    steps:
+      - checkout
     
-            - run:
-                name: install packages
-                command: npm install
+      - run: npm install
     
-            - run:
-                name: jest tests
-                command: |
-                    mkdir -p test-results/jest
-                    yarn run test
-                environment:
-                    JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+      - run:
+          name: jest tests
+          command: |
+            mkdir -p test-results/jest
+            yarn run test
+          environment:
+            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
     
 workflows:
-    version: 2
-    node-run-tests:
-        jobs:
-            -node
+  version: 2
+  node-run-tests:
+      jobs:
+        - node
