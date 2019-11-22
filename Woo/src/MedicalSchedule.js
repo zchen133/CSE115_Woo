@@ -1,10 +1,10 @@
 import React, { Component, ReactNode } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox, ScrollView } from 'react-native';
 import * as firebase from "firebase";
-import { initialEmail, hospital, accountTypeString, first, last } from './Loading.js';
+import { hospital, accountTypeString } from './Loading.js';
 import CalendarPicker from 'react-native-calendar-picker';
 import Block from './components.js'
-
+const Utils = require('./Utils.js')
 
 export default class Schedule extends Component {
 
@@ -13,14 +13,12 @@ export default class Schedule extends Component {
         this.state = {
             selectedStartDate: null,
             events: [],
-            trash: [],
-            trash2: [],
+            noOp: [],
         };
         this.onDateChange = this.onDateChange.bind(this)
         this.startQuery = this.startQuery.bind(this)
         this.getDoctors = this.getDoctors.bind(this)
         this.loadEvents = this.loadEvents.bind(this)
-        this.dayConverter = this.dayConverter.bind(this)
     }
 
     dayConverter(date) {
@@ -74,7 +72,7 @@ export default class Schedule extends Component {
     }
 
     async loadEvents(department, doctorName, date) {
-        var returnValue = []
+        var blockAppointments = []
         var i = 1
         querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection(accountTypeString).doc(doctorName).collection("Appointments").doc(date).collection("Time").get();
         querySnapshot.forEach((doc) => {
@@ -85,7 +83,7 @@ export default class Schedule extends Component {
                     "\nat time: " + doc.data().time + "\nPatient first name: " + doc.data().first_name +
                     "\nPatient last name: " + doc.data().last_name
 
-                returnValue.push(
+                blockAppointments.push(
                     <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={i.toString()}>
                       <Block row style = {{paddingHorizontal:30, paddingTop: 10}} flex = {0.56} key = {i.toString()}>
                         <Text>{appointmentText}</Text>
@@ -95,36 +93,36 @@ export default class Schedule extends Component {
                 i++
         })
 
-        return returnValue
+        return blockAppointments
     }
     async getDoctors(department, date) {
-        returnValue = []
+        blockAppointments = []
         var i = 1;
         try { 
             querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection(accountTypeString).get();
             querySnapshot.forEach((doc) => {
                 console.log(doc.id)
                 this.loadEvents(department, doc.id, date).then((res) => {
-                    returnValue.push(res)
-                    this.setState({events: returnValue})
+                    blockAppointments.push(res)
+                    this.setState({events: blockAppointments})
                 })
             })
         } finally {
             if ( this.state.events.length === 0) {
                 var appointmentText = "NO APPOINTMENTS FOUND FOR THIS DATE";
-                returnValue.push(
+                blockAppointments.push(
                     <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key = {i.toString()}>
-                    <Block row style = {{paddingHorizontal:30, paddingTop: 10}} key = {i.toString()}>
-                        <Text>{appointmentText}</Text>
-                    </Block>
+                        <Block row style = {{paddingHorizontal:30, paddingTop: 10}} key = {i.toString()}>
+                            <Text>{appointmentText}</Text>
+                        </Block>
                     </Block>
                 )
                 this.setState({
-                    events: returnValue
+                    events: blockAppointments
                 })
             }
         }
-        return returnValue;
+        return blockAppointments;
 
     }
 
@@ -141,7 +139,7 @@ export default class Schedule extends Component {
             console.log(doc.id)
             this.getDoctors(doc.id, newDate).then((res) => {
                 //no op
-                this.setState({trash: res})
+                this.setState({noOp: res})
             })
         })
         return returnValue;
@@ -156,7 +154,7 @@ export default class Schedule extends Component {
     onDateChange(date) {
         this.startQuery(date).then((res) => {
             //no op
-            this.setState({ trash: res })
+            this.setState({ noOp: res })
         })
     }
 
