@@ -2,6 +2,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "test": "jest",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -38,7 +39,8 @@
     "react-test-renderer": "^16.8.3"
   },
   "devDependencies": {
-    "babel-preset-expo": "^7.0.0"
+    "babel-preset-expo": "^7.0.0",
+    "jest": "^24.9.0"
   },
   "private": true
 }
