@@ -39,7 +39,7 @@ export default class RequestScreen extends Component {
         this.docRefRequests = firebase.firestore().collection("hospital").doc(hospital).collection("requests");
         new_array = [];
         this.docRefRequests.get().then((querySnapshot) => {
-            querySnapshot.forEach(function(doc) {
+            querySnapshot.forEach(function (doc) {
                 // doc.data() is never undefined for query doc snapshots
                 var id = doc.id
                 var date = doc.id.substr(0, 10)
@@ -125,16 +125,16 @@ export default class RequestScreen extends Component {
             last_name: appointment.last_name,
             email: appointment.userEmail,
             checked: false
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.log("Error removing document ", error);
             alert("error in docRef")
         });
 
         this.docRef = firebase.firestore().collection("hospital").doc(hospital).collection("requests");
-        this.docRef.doc(appointment.id).delete().then(function() {
+        this.docRef.doc(appointment.id).delete().then(function () {
             console.log("document deleted");
             //alert("Deleted")
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.log("Error removing document ", error);
             alert("error in docRef")
         });
@@ -145,7 +145,7 @@ export default class RequestScreen extends Component {
             console.log("document deleted");
             alert("Accepted!")
             this.getAllRequests()
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.log("Error removing document ", error);
             alert("error in userRef")
         });
@@ -156,10 +156,10 @@ export default class RequestScreen extends Component {
 
 
         this.docRef = firebase.firestore().collection("hospital").doc(hospital).collection("requests");
-        this.docRef.doc(appointment.id).delete().then(function() {
+        this.docRef.doc(appointment.id).delete().then(function () {
             console.log("document deleted");
             //alert("Deleted")
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.log("Error removing document ", error);
             alert("error in docRef")
         });
@@ -170,7 +170,7 @@ export default class RequestScreen extends Component {
             console.log("document deleted");
             alert("Deleted!")
             this.getAllRequests()
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.log("Error removing document ", error);
             alert("error in userRef")
         });
@@ -180,43 +180,43 @@ export default class RequestScreen extends Component {
 
     renderList(appointment) {
         return (
-            <Block card shadow color = "#ffffff" style={styles.items}>
-            <Block column flex = { 1}>
-            <Block row >
-               
-                <Block flex = {0.4}>
-                    <Image
-                    source={require('../assets/request.png')}
-                    style={{ flex: 1, height: null, width: null }}
-                    />
-                    </Block>
-                    <Block>
-                {/* <Text style = {{paddingLeft:25}}>{"Time: "+appointment.time+'\n'+"Date: "+appointment.date+'\n'+"Patient Name: "+appointment.hospital+'\n'+"Doctor Name: "}</Text> */}
-                <Text style = {{paddingLeft:15}}>{"Time: "+appointment.time}</Text>
-                <Text style = {{paddingLeft:15}}>{"Date: "+appointment.date}</Text>
-                <Text style = {{paddingLeft:15}}>{"Patient Name: "+appointment.first_name + " "+appointment.last_name}</Text>
-                <Text style = {{paddingLeft:15}}>{"Doctor Name: "+appointment.doctor_name}</Text>
-               </Block>
-                {/* <Button style = {{}}
+            <Block card shadow color="#ffffff" style={styles.items}>
+                <Block column flex={1}>
+                    <Block row >
+
+                        <Block flex={0.4}>
+                            <Image
+                                source={require('../assets/request.png')}
+                                style={{ flex: 1, height: null, width: null }}
+                            />
+                        </Block>
+                        <Block>
+                            {/* <Text style = {{paddingLeft:25}}>{"Time: "+appointment.time+'\n'+"Date: "+appointment.date+'\n'+"Patient Name: "+appointment.hospital+'\n'+"Doctor Name: "}</Text> */}
+                            <Text style={{ paddingLeft: 15 }}>{"Time: " + appointment.time}</Text>
+                            <Text style={{ paddingLeft: 15 }}>{"Date: " + appointment.date}</Text>
+                            <Text style={{ paddingLeft: 15 }}>{"Patient Name: " + appointment.first_name + " " + appointment.last_name}</Text>
+                            <Text style={{ paddingLeft: 15 }}>{"Doctor Name: " + appointment.doctor_name}</Text>
+                        </Block>
+                        {/* <Button style = {{}}
                     title='Accept'
                      />
                  <Button style = {{}}
                     title='Decline'
                     /> */}
-                </Block>
-                <View style={{flexDirection:'row',flex:15,marginTop:10,justifyContent:'space-between', paddingLeft: 20, paddingRight: 20}}>
-                <TouchableOpacity onPress={event =>{this.accept(appointment)}}>
-                <View style={styles.button}>
-                        <Text style={{ fontSize: 15 }}>ACCEPT</Text>
+                    </Block>
+                    <View style={{ flexDirection: 'row', flex: 15, marginTop: 10, justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20 }}>
+                        <TouchableOpacity onPress={event => { this.accept(appointment) }}>
+                            <View style={styles.button}>
+                                <Text style={{ fontSize: 15 }}>ACCEPT</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={event => { this.decline(appointment) }}>
+                            <View style={styles.button}>
+                                <Text style={{ fontSize: 15 }}>DECLINE</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                     </TouchableOpacity>
-                     <TouchableOpacity onPress={event =>{this.decline(appointment)}}>
-                <View style={styles.button}>
-                        <Text style={{ fontSize: 15 }}>DECLINE</Text>
-                    </View>
-                     </TouchableOpacity>
-                </View>
-                {/* <Block row flex = {0.2} style={styles.buttons}>
+                    {/* <Block row flex = {0.2} style={styles.buttons}>
                 <Button style = {{}}
                     title='Accept'
                      />
@@ -224,7 +224,7 @@ export default class RequestScreen extends Component {
                     title='Decline'
                     />
                     </Block> */}
-            </Block>
+                </Block>
             </Block>
         );
     }
@@ -232,30 +232,31 @@ export default class RequestScreen extends Component {
 
         return (
             <Block>
-            <Block flex = {0.9} colomn color = {this.state.requestColor} style = {styles.pageBottom}>
-               
-                    <Text style={{fontSize: 20, marginLeft:100,fontWeight: 'bold' }}>Pending Requests</Text>
-                    
-                    <ScrollView showsVerticalScrollIndicator = {true}>
-                        
-                    {this.state.appointment.map(appointment => (
-            <TouchableOpacity activeOpacity={0.8} key={`${appointment.id}`} 
-                onPress = {event =>{alert(`${appointment.description}`)}}>
-              {
-              this.renderList(appointment)}
-            </TouchableOpacity>
-          ))}
-            </ScrollView>
+                <Block flex={1} colomn color={this.state.requestColor} style={styles.pageBottom}>
+
+                    <Text style={{ fontSize: 20, marginLeft: 100, fontWeight: 'bold', marginBottom: 10 }}>Pending Requests</Text>
+
+                    <ScrollView showsVerticalScrollIndicator={true}>
+
+                        {this.state.appointment.map(appointment => (
+                            <TouchableOpacity activeOpacity={0.8} key={`${appointment.id}`}
+                                onPress={event => { alert(`${appointment.description}`) }}>
+                                {
+                                    this.renderList(appointment)}
+                            </TouchableOpacity>
+                        ))}
+                        <TouchableOpacity
+                            onPress={event => this.getAllRequests()}>
+                            <View style={styles.closeButton}>
+                                <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Refresh</Text>
+                            </View>
+
+                        </TouchableOpacity>
+                    </ScrollView>
                 </Block>
-                <Block flex={0.2}>
-                    <TouchableOpacity 
-                        onPress={event =>this.getAllRequests()}>
-                        <View style={styles.closeButton}>
-                            <Text style={{fontSize: 20, fontWeight: 'bold'}}>Refresh</Text>
-                        </View>
-                        
-                </TouchableOpacity>
-                    </Block>
+
+
+
             </Block>
         );
     }
@@ -276,8 +277,8 @@ const styles = StyleSheet.create({
         zIndex: -1
     },
     items: {
-        alignSelf:'center',
-        width:'90%',
+        alignSelf: 'center',
+        width: '90%',
         padding: 20,
         marginBottom: 15
     },
@@ -286,7 +287,7 @@ const styles = StyleSheet.create({
         marginRight: 20
     },
     closeButton: {
-        marginTop:20,
+        marginTop: 20,
         backgroundColor: 'white',
         height: 70,
         marginHorizontal: 20,

@@ -12,32 +12,32 @@ export default class PrescriptionScreen extends Component {
         super();
         YellowBox.ignoreWarnings(['Setting a timer']);
         this.user = firebase.auth().currentUser
-        
-        
+
+
         this.state = {
             isModalVisible: false,
-            patientExist:false,
-            patientEmail:'null',
+            patientExist: false,
+            patientEmail: 'null',
             quantityList: [{ value: "mg" }, { value: "mL" }, { value: "capsule" }, { value: "tablets" }, { value: "puffs" }],
             timeQuantityList: [{ value: "hours" }, { value: "days" }, { value: "weeks" }],
             selectedQuantity: "null"
         };
     }
     openModal = () => {
-        this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc)=>{
-            if(doc.exists){
-                this.setState({patientExist:true})
-                this.setState({isModalVisible:true})
+        this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc) => {
+            if (doc.exists) {
+                this.setState({ patientExist: true })
+                this.setState({ isModalVisible: true })
             }
-            else{
+            else {
                 Toast.show("patient doesn't exist")
             }
         })
 
-   
+
     };
     submitModal = () => {
-        this.prescriptionRef = firebase.firestore().collection("users").doc(this.state.patientEmail).collection("prescriptions").get().then((doc)=>{
+        this.prescriptionRef = firebase.firestore().collection("users").doc(this.state.patientEmail).collection("prescriptions").get().then((doc) => {
 
         })
         //console.log('reffff'+this.prescriptionRef)
@@ -51,8 +51,8 @@ export default class PrescriptionScreen extends Component {
 
                     <View style={styles.reqAll}>
                         <Image
-                        source={require('../assets/prescription.png')}
-                        style={{ height: 200, width: 200 ,alignSelf: 'center', alignItems:'center',alignContent:'center',marginBottom:20}}>
+                            source={require('../assets/prescription.png')}
+                            style={{ height: 200, width: 200, alignSelf: 'center', alignItems: 'center', alignContent: 'center', marginBottom: 20 }}>
                         </Image>
                         <Text style={{ fontSize: 35, fontWeight: "bold" }}>Prescription</Text>
                         <Text style={{ fontSize: 20 }}>Please enter the email for the patient</Text>
@@ -62,7 +62,7 @@ export default class PrescriptionScreen extends Component {
                             placeholder='Patient Email'
                             autoCapitalize="none"
                             onChangeText={patientEmail => this.setState({ patientEmail })}
-                            
+
 
                         //multiline={true} SOURCE OF RETURN BUG
                         //onChangeText={description => this.setState({ description })}
@@ -78,7 +78,7 @@ export default class PrescriptionScreen extends Component {
                     </TouchableOpacity>
 
                 </Block>
-                <Modal style={{ position:'absolute',marginHorizontal: 20, marginVertical: 90 }} scrollHorizontal={true} avoidKeyboard={false} backdropOpacity={0.3} isVisible={this.state.isModalVisible}>
+                <Modal style={{  marginHorizontal: 20, marginVertical: 90 }} scrollHorizontal={true} avoidKeyboard={false} backdropOpacity={0.3} isVisible={this.state.isModalVisible}>
                     <View style={{ flex: 1, backgroundColor: '#ffffff', borderRadius: 10 }}>
                         <View style={styles.reqAll}>
                             <Text style={{ fontSize: 20, marginTop: 0 }}>Medicine Name</Text>
@@ -91,18 +91,18 @@ export default class PrescriptionScreen extends Component {
                                 style={styles.textInput}
                                 placeholder='description'
                                 autoCapitalize="none" />
-                            <Text style={{ fontSize: 20, marginTop: 30 }}>Dosage</Text>    
+                            <Text style={{ fontSize: 20, marginTop: 30 }}>Dosage</Text>
                             <Block flex={false} row style={{}}>
                                 <TextInput
                                     style={{
                                         width: '10%',
                                         fontSize: 20,
                                         borderBottomWidth: 1,
-                                        marginRight:10
+                                        marginRight: 10
                                     }}
                                     placeholder='amount'
                                     autoCapitalize="none" />
-                              
+
                                 <Dropdown
                                     containerStyle={styles.pickerContainer}
                                     pickerStyle={styles.pickerContent}
@@ -110,14 +110,14 @@ export default class PrescriptionScreen extends Component {
                                     data={this.state.quantityList}
                                     onChangeText={(selected) => (this.setState({ selectedQuantity: selected }))}
                                 />
-                                <Text style = {{alignSelf:"center",marginRight:10}}>every</Text>
+                                <Text style={{ alignSelf: "center", marginRight: 10 }}>every</Text>
                                 <TextInput
                                     style={{
                                         width: '10%',
                                         //height:15,
                                         fontSize: 20,
                                         borderBottomWidth: 1,
-                                        marginRight:10
+                                        marginRight: 10
                                     }}
                                     placeholder='amount'
                                     autoCapitalize="none" />
@@ -135,17 +135,17 @@ export default class PrescriptionScreen extends Component {
                                 placeholder='instruction'
                                 autoCapitalize="none" />
 
-                            
+
                         </View>
                         <TouchableOpacity onPress={this.submitModal}>
-                        
-                        <View style={styles.button}>
-                            <Text style={{ fontSize: 20 }}>Submit</Text>
-                        </View>
-                        
-                    </TouchableOpacity>  
+
+                            <View style={styles.button}>
+                                <Text style={{ fontSize: 20 }}>Submit</Text>
+                            </View>
+
+                        </TouchableOpacity>
                     </View>
-                    
+
                 </Modal>
 
             </Block>
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
         //alignSelf:'flex-end',
         backgroundColor: 'white',
         width: "30%",
-        marginRight:10
+        marginRight: 10
         // borderColor: 'black',
         // borderBottomWidth: 2.5,
         //marginBottom: 30,
@@ -211,12 +211,12 @@ const styles = StyleSheet.create({
     },
     pickerContent: {
         // height: 40,
-    
+
         // alignItems: 'stretch',
         //alignSelf:'flex-end',
         backgroundColor: 'white',
         width: "25%",
-        marginRight:10
+        marginRight: 10
         // borderColor: 'black',
         // borderBottomWidth: 2.5,
         //marginBottom: 20,
