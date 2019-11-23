@@ -4,7 +4,7 @@ import * as firebase from "firebase";
 import { hospital, accountTypeString } from './Loading.js';
 import CalendarPicker from 'react-native-calendar-picker';
 import Block from './components.js'
-const Utils = require('./Utils.js')
+//const Utils = require('./Utils.js')
 
 export default class Schedule extends Component {
 

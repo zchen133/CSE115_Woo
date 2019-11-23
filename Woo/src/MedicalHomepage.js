@@ -51,6 +51,10 @@ class MedicalHomepage extends Component {
                 this.props.navigation.navigate('Login'));
     }
 
+    onPressCalendar = () => {
+        this.props.navigation.navigate('SearchSchedule')
+    }
+
     getAppointmentList() {
         console.log("accountString:::" + this.state.data.accountTypeString)
         if (this.state.data.accountTypeString == 'Doctors') {
@@ -251,9 +255,6 @@ class MedicalHomepage extends Component {
                         <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e', paddingLeft: (width / 2) - 110 }}>Profile Part</Text>
                         
                             
-                                <Button
-                                    title='Sign Out'
-                                        onPress={this.handleSignOut} />
                            
                         {/* <Button
                     title='Just For Test'
@@ -304,11 +305,11 @@ class MedicalHomepage extends Component {
 
                 <ScrollView showsVerticalScrollIndicator={true}>
                 {this.state.isHomepage?(
-                    <Block row style={{alignItems:'center'}}>
+                    <Block row style={{alignSelf:'center'}}>
                 <TouchableOpacity 
-                        onPress={event =>this.getAppointmentList()}>
+                        onPress={event=>this.onPressCalendar()}>
                         <View style={styles.refreshButton}>
-                            <Icon name="ios-refresh" color="#000000" size={24} />
+                            <Icon name="ios-search" color="#000000" size={24} />
                         </View>
                         
                 </TouchableOpacity>
@@ -322,9 +323,9 @@ class MedicalHomepage extends Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                        onPress={event =>this.getAppointmentList()}>
+                        onPress={event =>this.handleSignOut()}>
                         <View style={styles.refreshButton}>
-                            <Icon name="ios-refresh" color="#000000" size={24} />
+                            <Icon name="ios-log-out" color="#000000" size={24} />
                         </View>
                         
                 </TouchableOpacity>
