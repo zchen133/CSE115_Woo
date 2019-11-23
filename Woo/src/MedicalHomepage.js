@@ -304,13 +304,32 @@ class MedicalHomepage extends Component {
 
                 <ScrollView showsVerticalScrollIndicator={true}>
                 {this.state.isHomepage?(
+                    <Block row style={{alignItems:'center'}}>
                 <TouchableOpacity 
                         onPress={event =>this.getAppointmentList()}>
                         <View style={styles.refreshButton}>
                             <Icon name="ios-refresh" color="#000000" size={24} />
                         </View>
                         
-                </TouchableOpacity>): null
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                        onPress={event =>this.getAppointmentList()}>
+                        <View style={styles.refreshButton}>
+                            <Icon name="ios-refresh" color="#000000" size={24} />
+                        </View>
+                        
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                        onPress={event =>this.getAppointmentList()}>
+                        <View style={styles.refreshButton}>
+                            <Icon name="ios-refresh" color="#000000" size={24} />
+                        </View>
+                        
+                </TouchableOpacity>
+                </Block>
+                ): null
                 }
                     {this.state.appointment.map(appointment => (
                         <TouchableOpacity activeOpacity={0.8} key={`${appointment.id}`}
