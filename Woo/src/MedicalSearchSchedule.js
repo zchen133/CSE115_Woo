@@ -180,14 +180,14 @@ export default class SearchSchedule extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#72C3C9',
+        backgroundColor: '#ffffff',
         borderTopWidth: 15,
-        borderColor: '#72C3C9',
+        borderColor: '#ffffff',
     },
     titleText: {
         paddingBottom: 16,
-        borderColor: '#72C3C9',
-        backgroundColor: '#72C3C9',
+        borderColor: '#ffffff',
+        backgroundColor: '#ffffff',
         textAlign: 'center',
         color: '#404d5b',
         fontSize: 20,

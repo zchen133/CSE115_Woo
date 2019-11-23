@@ -186,7 +186,7 @@ export default class RequestScreen extends Component {
                
                 <Block flex = {0.4}>
                     <Image
-                    source={require('../assets/calendar.jpg')}
+                    source={require('../assets/request.png')}
                     style={{ flex: 1, height: null, width: null }}
                     />
                     </Block>

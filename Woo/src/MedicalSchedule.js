@@ -189,9 +189,9 @@ export default class Schedule extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#72C3C9',
+        backgroundColor: '#ffffff',
         borderTopWidth: 15,
-        borderColor: '#72C3C9',
+        borderColor: '#ffffff',
     },
     titleText: {
         fontSize: 20,
@@ -199,6 +199,6 @@ const styles = StyleSheet.create({
         marginBottom: 3,
     },
     scrollView: {
-        backgroundColor: '#72C3C9'
+        backgroundColor: '#ffffff'
     }
 });
