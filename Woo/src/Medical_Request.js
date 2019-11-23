@@ -276,6 +276,8 @@ const styles = StyleSheet.create({
         zIndex: -1
     },
     items: {
+        alignSelf:'center',
+        width:'90%',
         padding: 20,
         marginBottom: 15
     },
@@ -284,7 +286,7 @@ const styles = StyleSheet.create({
         marginRight: 20
     },
     closeButton: {
-
+        marginTop:20,
         backgroundColor: 'white',
         height: 70,
         marginHorizontal: 20,

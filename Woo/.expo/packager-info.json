@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 38660,
-  "expoServerNgrokUrl": "https://eh-xmr.anonymous.woo.exp.direct",
-  "packagerNgrokUrl": "https://packager.eh-xmr.anonymous.woo.exp.direct",
-  "ngrokPid": 38848,
+  "packagerPid": 11456,
+  "expoServerNgrokUrl": "https://km-e57.anonymous.woo.exp.direct",
+  "packagerNgrokUrl": "https://packager.km-e57.anonymous.woo.exp.direct",
+  "ngrokPid": 8492,
   "webpackServerPort": null
 }

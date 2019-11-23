@@ -136,7 +136,7 @@ class PatientHomepage extends Component {
                             />
                         </Block>
                         <Block>
-                            <Text style={{ paddingLeft: 25 }}>{appointment.date + ' ' + appointment.time + '\n' + appointment.hospital + ' - ' + appointment.department + '\n' + appointment.doctor_name}</Text>
+                            <Text style={{ paddingLeft: 25 }}>{appointment.date + ' ' + appointment.time + '\n' + appointment.hospital + ' - ' + appointment.department + '\n' + appointment.doctor_name + '\n'}</Text>
                         </Block>
                     </Block>
                     <View style={{ flexDirection: 'row', flex: 15, marginTop: 10, justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20 }}>
@@ -321,7 +321,9 @@ const styles = StyleSheet.create({
         zIndex: -1
     },
     items: {
+        alignSelf:'center',
         padding: 20,
+        width:'90%',
         marginBottom: 15
     },
     buttons: {

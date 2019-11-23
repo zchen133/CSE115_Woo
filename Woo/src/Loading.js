@@ -8,7 +8,9 @@ var initialEmail = 'Null';
 var hospital = "Null";
 var first = "Null";
 var last = "Null"
-export { initialEmail, hospital, first, last };
+var department = "Null"
+var accountTypeString = "Null"
+export { initialEmail, hospital, first, last, department, accountTypeString };
 
 export default class Loading extends Component {
 
@@ -31,10 +33,12 @@ export default class Loading extends Component {
         var docRef = firebase.firestore().collection("users").doc(initialEmail);
         return docRef.get().then(function(doc) {
             if (doc.exists) {
-                hospital = doc.get("hospital");
+                hospital = doc.get("hospital")
                 first = doc.get("first")
                 last = doc.get("last")
-                return doc.get('accountType');
+                department = doc.get("department")
+                accountTypeString = doc.get("accountTypeString")
+                return doc.get('accountType')
             } else {
                 //bug, if user manages to get here, infinite loading.
                 console.log("No such document ");
