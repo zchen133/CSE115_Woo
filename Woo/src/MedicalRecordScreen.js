@@ -61,7 +61,7 @@ export default class RecordScreen extends Component {
         var dataMedicalDirectives = this.state.MedicalDirectives;
         //var permissionRef = firebase.firestore().collection("users").doc(initialEmail);
 
-        this.docRef.get().then(function (doc) {
+        this.docRef.get().then(function(doc) {
             if (doc.exists) {
                 if (doc.get('accountType') !== '4') {
                     console.log('Incorrect permissions')
@@ -192,11 +192,11 @@ export default class RecordScreen extends Component {
                     /* Grab doctor's hospital and store medical record under user's name */
 
                     var docRef = firebase.firestore().collection("users").doc(initialEmail);
-                    
 
-                    docRef.get().then(function (doc) {
+
+                    docRef.get().then(function(doc) {
                         if (doc.exists) {
-                            
+
                             const patientRef = firebase.firestore().collection("hospital").doc(doc.get('hospital')).collection("Patients")
                             patientRef.doc(dataEmail).set({
                                 email: dataEmail,
