@@ -7,13 +7,15 @@ jobs:
     steps:
       - checkout
     
-      - run: cd ./Woo && npm install
+      - run: 
+          name: Install Packages
+          command: cd ./Woo && npm install
     
       - run:
-          name: jest tests
+          name: Run Jest Tests
           command: |
             mkdir -p test-results/jest
-            echo Hello, World!
+            npm run test
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
     
