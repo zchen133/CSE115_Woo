@@ -4,6 +4,7 @@ import * as firebase from "firebase";
 import Block from './components';
 import Modal from "react-native-modal";
 import { Dropdown } from 'react-native-material-dropdown'
+import Toast from 'react-native-tiny-toast';
 
 export default class PrescriptionScreen extends Component {
 
@@ -11,18 +12,36 @@ export default class PrescriptionScreen extends Component {
         super();
         YellowBox.ignoreWarnings(['Setting a timer']);
         this.user = firebase.auth().currentUser
-
+        
         
         this.state = {
             isModalVisible: false,
+            patientExist:false,
+            patientEmail:'null',
             quantityList: [{ value: "mg" }, { value: "mL" }, { value: "capsule" }, { value: "tablets" }, { value: "puffs" }],
             timeQuantityList: [{ value: "hours" }, { value: "days" }, { value: "weeks" }],
             selectedQuantity: "null"
         };
     }
-    toggleModal = () => {
-        this.docRef = firebase.firestore().collection("users").doc(this.user.email);
-        this.setState({ isModalVisible: !this.state.isModalVisible });
+    openModal = () => {
+        this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc)=>{
+            if(doc.exists){
+                this.setState({patientExist:true})
+                this.setState({isModalVisible:true})
+            }
+            else{
+                Toast.show("patient doesn't exist")
+            }
+        })
+
+   
+    };
+    submitModal = () => {
+        this.prescriptionRef = firebase.firestore().collection("users").doc(this.state.patientEmail).collection("prescriptions").get().then((doc)=>{
+
+        })
+        //console.log('reffff'+this.prescriptionRef)
+        this.setState({ isModalVisible: false });
     };
     render() {
         return (
@@ -42,6 +61,8 @@ export default class PrescriptionScreen extends Component {
                             style={styles.textInput}
                             placeholder='Patient Email'
                             autoCapitalize="none"
+                            onChangeText={patientEmail => this.setState({ patientEmail })}
+                            
 
                         //multiline={true} SOURCE OF RETURN BUG
                         //onChangeText={description => this.setState({ description })}
@@ -50,14 +71,14 @@ export default class PrescriptionScreen extends Component {
 
                     </View>
 
-                    <TouchableOpacity onPress={this.toggleModal}>
+                    <TouchableOpacity onPress={this.openModal}>
                         <View style={styles.button}>
                             <Text style={{ fontSize: 20 }}>Prescription</Text>
                         </View>
                     </TouchableOpacity>
 
                 </Block>
-                <Modal style={{ marginHorizontal: 20, marginVertical: 90 }} backdropOpacity={0.3} isVisible={this.state.isModalVisible}>
+                <Modal style={{ position:'absolute',marginHorizontal: 20, marginVertical: 90 }} scrollHorizontal={true} avoidKeyboard={false} backdropOpacity={0.3} isVisible={this.state.isModalVisible}>
                     <View style={{ flex: 1, backgroundColor: '#ffffff', borderRadius: 10 }}>
                         <View style={styles.reqAll}>
                             <Text style={{ fontSize: 20, marginTop: 0 }}>Medicine Name</Text>
@@ -113,9 +134,18 @@ export default class PrescriptionScreen extends Component {
                                 style={styles.textInput}
                                 placeholder='instruction'
                                 autoCapitalize="none" />
+
+                            
                         </View>
-                        <Button title="Submit" onPress={this.toggleModal} />
+                        <TouchableOpacity onPress={this.submitModal}>
+                        
+                        <View style={styles.button}>
+                            <Text style={{ fontSize: 20 }}>Submit</Text>
+                        </View>
+                        
+                    </TouchableOpacity>  
                     </View>
+                    
                 </Modal>
 
             </Block>
