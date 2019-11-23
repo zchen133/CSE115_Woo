@@ -483,6 +483,7 @@ export default class Patient_AppointmentScreen extends Component {
                     <TextInput
                         placeholder='(Description)'
                         autoCapitalize="none"
+                        
                         style={styles.bottom}
                         //multiline={true} SOURCE OF RETURN BUG
                         onChangeText={description => this.setState({ description })}
@@ -522,12 +523,13 @@ const styles = StyleSheet.create({
 
     },
     reqAll: {
-        borderRadius: 10,
-        width: '75%',
+        borderRadius: 20,
+        width: '90%',
         backgroundColor: 'white',
+        alignSelf:'center',
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: 45,
+        //marginLeft: 45,
         marginBottom: 20
 
     },
@@ -602,12 +604,13 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(0,0,0,0.2)',
     },
     bottom: {
+        
         backgroundColor: 'white',
         marginBottom: 20,
-        marginLeft: 20,
-        marginRight: 20,
+        marginLeft: 10,
+        marginRight: 10,
         height: 100,
-        width: 200,
+        width: 240,
         borderRadius: 25,
         borderWidth: 0.5,
         marginHorizontal: 20,
