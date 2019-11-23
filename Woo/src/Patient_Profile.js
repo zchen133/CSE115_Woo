@@ -4,7 +4,7 @@ import * as firebase from "firebase";
 import EditableText from './EditableTextComponent.js';
 import DatePicker from 'react-native-datepicker'
 import Block from './components.js';
-import DialogInput from 'react-native-dialog-input';
+import Dialog from 'react-native-dialog';
 
 export default class Patient_ProfileScreen extends Component {
 
@@ -69,11 +69,10 @@ export default class Patient_ProfileScreen extends Component {
     getUserData() {
         this.docRef.get().then((doc) => {
             if (doc.exists) {
-                if(doc.data().profilePic == null) {
+                if (doc.data().profilePic == null) {
                     this.docRef.set({ profilePic: 'https://bootdey.com/img/Content/avatar/avatar6.png' }, { merge: true })
                     this.getUserData()
-                }
-                else {
+                } else {
                     let data = doc.data()
                     this.setState({ data: data })
                     console.log(this.state.data)
@@ -176,12 +175,13 @@ export default class Patient_ProfileScreen extends Component {
                                 />
                             </View>
                             <Button title='Change Picture' onPress={() => {this.setState({ visible: true }) } } style={styles.profPic}/>
-                            <DialogInput isDialogVisible={this.state.visible}
-                                title={"Paste a new URL for the picture you want to use"}
-                                message={"New URL"}
-                                submitInput={ (inputText) => {this.updateProfilePic(inputText)} }
-                                closeDialog={ () => {this.setState({ visible: false }) }}>
-                            </DialogInput>
+                            <Dialog.Container visible={this.state.visible}>
+                                <Dialog.Title>Update your Profile Picture</Dialog.Title>
+                                <Dialog.Description>Paste a new URL for the picture you want to use</Dialog.Description>
+                                <Dialog.Input placeholder="URL" autoCapitalize="none" onChangeText={profilePic => this.setState({ profilePic }) } value={this.state.profilePic} />
+                                <Dialog.Button label="Close" onPress={ () => {this.setState({ visible: false }) }} />
+                                <Dialog.Button label="OK" onPress={ () => {this.updateProfilePic(this.state.profilePic)} } />
+                            </Dialog.Container>
                             <TouchableOpacity 
                                 onPress = {event =>{this.viewMedicalRecords()}}>
                             <View>

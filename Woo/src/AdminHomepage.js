@@ -76,12 +76,11 @@ export default class AdminHomepage extends Component {
             Toast.show('Please enter the email and select a department');
             return;
         }
-        if(this.state.hospitalStaff !== ''){
+        if (this.state.hospitalStaff !== '') {
             hospital = this.state.hospitalStaff
-        }
-        else{ 
+        } else {
             Toast.show('Please enter the hospital');
-            return;  
+            return;
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
 
@@ -124,12 +123,11 @@ export default class AdminHomepage extends Component {
             Toast.show('Please enter the email and select a department');
             return;
         }
-        if(this.state.hospital !== ''){
+        if (this.state.hospital !== '') {
             hospital = this.state.hospitalStaff
-        }
-        else{ 
+        } else {
             Toast.show('Please enter the hospital');
-            return;  
+            return;
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
 
@@ -170,12 +168,11 @@ export default class AdminHomepage extends Component {
             Toast.show('Please enter the email and select a department');
             return;
         }
-        if(this.state.hospital !== ''){
+        if (this.state.hospital !== '') {
             hospital = this.state.hospitalStaff
-        }
-        else{ 
+        } else {
             Toast.show('Please enter the hospital');
-            return;  
+            return;
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
 
