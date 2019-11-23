@@ -9,58 +9,137 @@ import Block from './components.js'
 export default class SearchSchedule extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             events: [],
-            email: "",
+            noOp: [],
+            email: "null",
         };
-        this.onQuery = this.onQuery.bind(this);
-        this.searchEmail = this.searchEmail.bind(this);
+        this.onQuery = this.onQuery.bind(this)
+        this.startQuery = this.startQuery.bind(this)
+        this.loadEvents = this.loadEvents.bind(this)
+        this.getDoctors = this.getDoctors.bind(this)
+        this.getDeparments = this.getDeparments.bind(this)
+        this.getDates = this.getDates.bind(this)
     }
 
     onPressRequests = () => {
         this.props.navigation.navigate('MedicalHomepage')
     }
 
+    //Part 0
     onQuery = (email) => {
         console.log('Searching for this user ' + email);
-        this.searchEmail(email).then((res) => {
+        this.startQuery(email).then((res) => {
             this.setState({
-                events: res,
+                noOp: res,
             })
             console.log("Inquiry appointments: " + res);
         })
     }
 
-    async searchEmail(email) {
-        events = "\n";
-        returnValue = [];
-        querySnapshot = await firebase.firestore().collection("users").doc(email).collection("events").get();
-        querySnapshot.forEach(function(doc) {
-            console.log(doc.data())
-            events = "found"
-            appointmentText = "Date: " + doc.data().date + "\nDescription: " +
-                doc.data().description + "\nDoctor: " + doc.data().doctor + "\nHospital: " +
-                doc.data().hospital + "\nat time: " + doc.data().time;
-            returnValue.push(
-                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={doc.data().time}>
-                <Block row style = {{paddingHorizontal:30, paddingTop: 10}}>
-                  <Text>{appointmentText}</Text>
+    //Part 1
+    //Starts query with every hospital
+    async startQuery(email) {
+        this.setState({events: []})
+        var noOpArray = []
+        //Get every hospital
+        querySnapshot = await firebase.firestore().collection("hospital").get();
+        querySnapshot.forEach((doc) => {
+            //console.log("This hospital " + doc.id)
+            this.getDeparments(doc.id, email).then((res) => {
+                //no op
+                this.setState({noOp: res})
+            })
+        })
+        return noOpArray;
+    }
+
+    //Part 2
+    //Gets every department
+    async getDeparments(hospital, email) {
+        noOpArray = []
+            querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").get() //doc(department).collection(accountTypeString).get();
+            querySnapshot.forEach((doc) => {
+                //console.log("This department " + doc.id)
+                this.getDoctors(doc.id, hospital, email).then((res) => {
+                    this.setState({noOp: res})
+                })
+            })
+        return noOpArray;
+    }
+
+    //Part 3
+    //Gets every doctor
+    async getDoctors(department, hospital, email) {
+        noOpArray = []
+        querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection("Doctors").get();
+            querySnapshot.forEach((doc) => {
+                //console.log("This doctor " + doc.id)
+                this.getDates(doc.id, department, hospital, email).then((res) => {
+                    this.setState({noOp: res})
+                })
+            })
+
+            return noOpArray;
+    }
+
+    //Iterates through each day on record
+    //Part 4
+    async getDates(doctorName, department, hospital, email) {
+        blockAppointments = []
+        var i = 1
+        querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection("Doctors").doc(doctorName).collection("Appointments").get();
+        querySnapshot.forEach((doc) => {
+            console.log("This date: " + doc.id)
+            this.loadEvents(doc.id, doctorName, department, hospital, email).then((res) => {
+                blockAppointments.push(res)
+                this.setState({events: blockAppointments})
+            })
+        })
+        if ( this.state.events.length === 0) {
+            var appointmentText = "NO APPOINTMENTS FOUND FOR THIS DATE";
+            blockAppointments.push(
+                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key = {i.toString()}>
+                    <Block row style = {{paddingHorizontal:30, paddingTop: 10}} key = {i.toString()}>
+                        <Text>{appointmentText}</Text>
+                    </Block>
                 </Block>
-              </Block>
             )
-        });
-        if (events === "\n") {
-            appointmentText = "NO APPOINTMENTS FOUND OR INVALID EMAIL";
-            returnValue.push(
-                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop}>
-                <Block row style = {{paddingHorizontal:30, paddingTop: 30}}>
-                  <Text>{appointmentText}</Text>
-                </Block>
-              </Block>
-            )
+            this.setState({
+                events: blockAppointments
+            })
         }
-        return returnValue;
+        return blockAppointments
+    }
+
+
+    // Gets every event for the day
+    // Part 5
+    async loadEvents(date, doctorName, department, hospital, email) {
+        var blockAppointments = []
+        var i = 1
+        querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection("Doctors").doc(doctorName).collection("Appointments").doc(date).collection("Time").get();
+        querySnapshot.forEach((doc) => {
+            console.log(doc.data().time)
+            if ( email === doc.data().email ) {
+                var appointmentText = "Checked in? " + doc.data().checked + "\nDepartment: " + doc.data().department +
+                        "\nDescription: " + doc.data().description +
+                        "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital +
+                        "\nat time: " + doc.data().time + "\nPatient first name: " + doc.data().first_name +
+                        "\nPatient last name: " + doc.data().last_name
+                blockAppointments.push(
+                    <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={i.toString()}>
+                        <Block row style = {{paddingHorizontal:30, paddingTop: 10}} flex = {0.56} key = {i.toString()}>
+                            <Text>{appointmentText}</Text>
+                        </Block>
+                    </Block>
+                    )
+                i++
+                }
+        })
+
+        return blockAppointments
     }
 
     render() {
@@ -101,14 +180,14 @@ export default class SearchSchedule extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#72C3C9',
+        backgroundColor: '#ffffff',
         borderTopWidth: 15,
-        borderColor: '#72C3C9',
+        borderColor: '#ffffff',
     },
     titleText: {
         paddingBottom: 16,
-        borderColor: '#72C3C9',
-        backgroundColor: '#72C3C9',
+        borderColor: '#ffffff',
+        backgroundColor: '#ffffff',
         textAlign: 'center',
         color: '#404d5b',
         fontSize: 20,

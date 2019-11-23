@@ -1,10 +1,10 @@
 {
-  "devToolsPort": 19004,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 15232,
+  "expoServerNgrokUrl": "https://qj-nf9.anonymous.woo.exp.direct",
+  "packagerNgrokUrl": "https://packager.qj-nf9.anonymous.woo.exp.direct",
+  "ngrokPid": 11276,
   "webpackServerPort": null
 }

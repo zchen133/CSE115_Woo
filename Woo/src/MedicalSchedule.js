@@ -1,22 +1,24 @@
 import React, { Component, ReactNode } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox, ScrollView } from 'react-native';
 import * as firebase from "firebase";
-import { initialEmail } from './Loading.js';
+import { hospital, accountTypeString } from './Loading.js';
 import CalendarPicker from 'react-native-calendar-picker';
 import Block from './components.js'
-
+//const Utils = require('./Utils.js')
 
 export default class Schedule extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             selectedStartDate: null,
             events: [],
+            noOp: [],
         };
-        this.onDateChange = this.onDateChange.bind(this);
-        this.loadEvents = this.loadEvents.bind(this);
-        this.dayConverter = this.dayConverter.bind(this);
+        this.onDateChange = this.onDateChange.bind(this)
+        this.startQuery = this.startQuery.bind(this)
+        this.getDoctors = this.getDoctors.bind(this)
+        this.loadEvents = this.loadEvents.bind(this)
     }
 
     dayConverter(date) {
@@ -69,60 +71,96 @@ export default class Schedule extends Component {
         return isoDate;
     }
 
-    async loadEvents(date) {
-        var newDate = date.toString().substr(0, date.toString().length - 18);
-        this.setState({ selectedStartDate: newDate })
-        newDate = this.dayConverter(newDate);
-        var events = "\n";
-        var returnValue = [];
-        querySnapshot = await firebase.firestore().collection("users").doc(initialEmail).collection("events").get();
+    async loadEvents(department, doctorName, date) {
+        var blockAppointments = []
+        var i = 1
+        querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection(accountTypeString).doc(doctorName).collection("Appointments").doc(date).collection("Time").get();
         querySnapshot.forEach((doc) => {
-            console.log(doc.id)
-            var eventInfo = doc.id.split("_");
-            if (eventInfo[0] === newDate) {
-                events = "found"
-                var appointmentText = "Checked in? " + doc.data().checked + "\nDepartment: " + doc.data().department +
+            console.log(doc.data().time)
+            var appointmentText = "Checked in? " + doc.data().checked + "\nDepartment: " + doc.data().department +
                     "\nDescription: " + doc.data().description +
                     "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital +
                     "\nat time: " + doc.data().time + "\nPatient first name: " + doc.data().first_name +
-                    "\nPatient last name: " + doc.data().last_name;
-                returnValue.push(
-                    <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={doc.data().time}>
-                    <Block row style = {{paddingHorizontal:30, paddingTop: 10}}>
-                      <Text>{appointmentText}</Text>
+                    "\nPatient last name: " + doc.data().last_name
+
+                blockAppointments.push(
+                    <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={i.toString()}>
+                      <Block row style = {{paddingHorizontal:30, paddingTop: 10}} flex = {0.56} key = {i.toString()}>
+                        <Text>{appointmentText}</Text>
+                      </Block>
                     </Block>
-                  </Block>
+                    )
+                i++
+        })
+
+        return blockAppointments
+    }
+    async getDoctors(department, date) {
+        blockAppointments = []
+        var i = 1;
+        try { 
+            querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection(accountTypeString).get();
+            querySnapshot.forEach((doc) => {
+                console.log(doc.id)
+                this.loadEvents(department, doc.id, date).then((res) => {
+                    blockAppointments.push(res)
+                    this.setState({events: blockAppointments})
+                })
+            })
+        } finally {
+            if ( this.state.events.length === 0) {
+                var appointmentText = "NO APPOINTMENTS FOUND FOR THIS DATE";
+                blockAppointments.push(
+                    <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key = {i.toString()}>
+                        <Block row style = {{paddingHorizontal:30, paddingTop: 10}} key = {i.toString()}>
+                            <Text>{appointmentText}</Text>
+                        </Block>
+                    </Block>
                 )
+                this.setState({
+                    events: blockAppointments
+                })
             }
-        });
-        if (events === "\n") {
-            var appointmentText = "NO APPOINTMENTS FOUND OR INVALID EMAIL";
-            returnValue.push(
-                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop}>
-                  <Block row style = {{paddingHorizontal:30, paddingTop: 10}}>
-                    <Text>{appointmentText}</Text>
-                  </Block>
-                </Block>
-            )
         }
+        return blockAppointments;
+
+    }
+
+    async startQuery(date) {
+        var newDate = date.toString().substr(0, date.toString().length - 18)
+        this.setState({ selectedStartDate: newDate })
+        this.setState({events: []})
+        newDate = this.dayConverter(newDate)
+        console.log(newDate)
+        var returnValue = []
+        //Get every department
+        querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").get(); 
+        querySnapshot.forEach((doc) => {
+            console.log(doc.id)
+            this.getDoctors(doc.id, newDate).then((res) => {
+                //no op
+                this.setState({noOp: res})
+            })
+        })
         return returnValue;
     }
 
 
     onPressRequests = () => {
-        this.props.navigation.navigate('MedicalHomepage');
+        this.props.navigation.navigate('MedicalHomepage')
     }
 
 
     onDateChange(date) {
-        this.loadEvents(date).then((res) => {
-            this.setState({ events: res })
+        this.startQuery(date).then((res) => {
+            //no op
+            this.setState({ noOp: res })
         })
     }
 
     render() {
-        const { selectedStartDate } = this.state;
-        const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+        const { selectedStartDate } = this.state
+        const startDate = selectedStartDate ? selectedStartDate.toString() : ''
         const { events } = this.state
         return (
             <ScrollView style = {styles.scrollView}>
@@ -151,9 +189,9 @@ export default class Schedule extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#72C3C9',
+        backgroundColor: '#ffffff',
         borderTopWidth: 15,
-        borderColor: '#72C3C9',
+        borderColor: '#ffffff',
     },
     titleText: {
         fontSize: 20,
@@ -161,6 +199,6 @@ const styles = StyleSheet.create({
         marginBottom: 3,
     },
     scrollView: {
-        backgroundColor: '#72C3C9'
+        backgroundColor: '#ffffff'
     }
 });

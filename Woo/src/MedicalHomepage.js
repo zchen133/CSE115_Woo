@@ -11,6 +11,7 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import Icon from 'react-native-vector-icons/Ionicons'
 import RequestScreen from './Medical_Request.js'
 import RecordScreen from './MedicalRecordScreen.js'
+import PrescriptionScreen from './MedicalPrescription.js'
 var recordCheck = false
 
 
@@ -40,6 +41,20 @@ class MedicalHomepage extends Component {
 
         //firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(selected).get()
     }
+
+    handleSignOut = () => {
+        firebase
+            .auth()
+            .signOut()
+            .then(
+                //test = 0,
+                this.props.navigation.navigate('Login'));
+    }
+
+    onPressCalendar = () => {
+        this.props.navigation.navigate('SearchSchedule')
+    }
+
     getAppointmentList() {
         console.log("accountString:::" + this.state.data.accountTypeString)
         if (this.state.data.accountTypeString == 'Doctors') {
@@ -149,8 +164,11 @@ class MedicalHomepage extends Component {
         if (appointment.userEmail == this.state.patientInfo.email && recordCheck != true) {
             recordCheck = true
             return (
+                <TouchableOpacity 
+                        onPress={event => {}}>
                 <Block column card shadow color="#e7eff6" style={styles.items}>
-
+                
+                <Block>
             <Block color="f1f1f1"> 
                 <Text style={styles.title}>Personal Information</Text>
                 </Block>
@@ -199,7 +217,8 @@ class MedicalHomepage extends Component {
                 <Text style={styles.subText}>{this.state.record[5].data}</Text>
                 </Block>
                 
-
+                </Block>
+                
                 <TouchableOpacity 
                         onPress={event => {this.setState({isHomepage:true}),this.setState({record:null}),recordCheck=false}}>
                             <View style={styles.closeButton}>
@@ -210,7 +229,7 @@ class MedicalHomepage extends Component {
 
             
             </Block>
-
+            </TouchableOpacity>
 
             );
 
@@ -232,8 +251,11 @@ class MedicalHomepage extends Component {
                 </Block>
                 <Block card shadow color="#f6f5f5" style={styles.pageTop}>
                     <Block row style={{ paddingHorizontal: 30 }}>
+                        
                         <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e', paddingLeft: (width / 2) - 110 }}>Profile Part</Text>
-
+                        
+                            
+                           
                         {/* <Button
                     title='Just For Test'
                     onPress={this.onPressTest} />*/}
@@ -248,7 +270,7 @@ class MedicalHomepage extends Component {
         if (this.state.record == null || this.state.record.length == 0) {
             return (
                 <Block row card shadow color="#ffffff" style={styles.items}>
-                <Block flex={0.56}>
+                <Block flex={0.7}>
                     <Image
                         source={require('../assets/calendar.jpg')}
                         style={{ flex: 1, height: null, width: null }}
@@ -283,13 +305,32 @@ class MedicalHomepage extends Component {
 
                 <ScrollView showsVerticalScrollIndicator={true}>
                 {this.state.isHomepage?(
+                    <Block row style={{alignSelf:'center'}}>
+                <TouchableOpacity 
+                        onPress={event=>this.onPressCalendar()}>
+                        <View style={styles.refreshButton}>
+                            <Icon name="ios-search" color="#000000" size={24} />
+                        </View>
+                        
+                </TouchableOpacity>
+                
                 <TouchableOpacity 
                         onPress={event =>this.getAppointmentList()}>
                         <View style={styles.refreshButton}>
                             <Icon name="ios-refresh" color="#000000" size={24} />
                         </View>
                         
-                </TouchableOpacity>): null
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                        onPress={event =>this.handleSignOut()}>
+                        <View style={styles.refreshButton}>
+                            <Icon name="ios-log-out" color="#000000" size={24} />
+                        </View>
+                        
+                </TouchableOpacity>
+                </Block>
+                ): null
                 }
                     {this.state.appointment.map(appointment => (
                         <TouchableOpacity activeOpacity={0.8} key={`${appointment.id}`}
@@ -325,26 +366,7 @@ class AppointmentScreen extends Component {
     }
 }
 
-class PrescriptionScreen extends Component {
-    handleSignOut = () => {
-        firebase
-            .auth()
-            .signOut()
-            .then(
-                //test = 0,
-                this.props.navigation.navigate('Login'));
-    }
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text> Prescription Screen Homepage</Text>
-                <Button
-                    title='Sign Out'
-                    onPress={this.handleSignOut} />
-            </View>
-        );
-    }
-}
+
 
 export default createMaterialBottomTabNavigator({
 
@@ -432,6 +454,8 @@ const styles = StyleSheet.create({
         zIndex: -1
     },
     items: {
+        alignSelf:'center',
+        width:'90%',
         padding: 20,
         marginBottom: 15
     },
