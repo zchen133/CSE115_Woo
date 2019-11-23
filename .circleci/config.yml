@@ -15,6 +15,7 @@ jobs:
           name: Run Jest Tests
           command: |
             mkdir -p test-results/jest
+            pwd
             npm run test
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
