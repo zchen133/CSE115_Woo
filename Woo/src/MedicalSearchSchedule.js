@@ -93,23 +93,12 @@ export default class SearchSchedule extends Component {
         querySnapshot.forEach((doc) => {
             console.log("This date: " + doc.id)
             this.loadEvents(doc.id, doctorName, department, hospital, email).then((res) => {
-                blockAppointments.push(res)
-                this.setState({events: blockAppointments})
+                if (typeof res[0] != 'undefined' ) {
+                    blockAppointments.push(res)
+                    this.setState({events: blockAppointments})
+                }
             })
         })
-        if ( this.state.events.length === 0) {
-            var appointmentText = "NO APPOINTMENTS FOUND FOR THIS DATE";
-            blockAppointments.push(
-                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key = {i.toString()}>
-                    <Block row style = {{paddingHorizontal:30, paddingTop: 10}} key = {i.toString()}>
-                        <Text>{appointmentText}</Text>
-                    </Block>
-                </Block>
-            )
-            this.setState({
-                events: blockAppointments
-            })
-        }
         return blockAppointments
     }
 
@@ -144,35 +133,73 @@ export default class SearchSchedule extends Component {
 
     render() {
         const { events } = this.state;
-        return (
-            <ScrollView style = {styles.scrollView}>
-          <View style = {styles.container}>
-              <Text
-                style = {styles.titleText}>Search for a users appointments</Text>
-                <Fumi
-                  label={'Email Address'}
-                  iconClass={FontAwesomeIcon}
-                  iconName={'envelope-square'}
-                  iconColor={'white'}
-                  inputStyle={{ color: '#000000' }}
-                  onChangeText={email => { this.setState({email}) } }
-                /> 
-              <Button
-                style={styles.buttonStyle}
-                onPress = {() => this.onQuery(this.state.email)}
-                title="Get specfic user appointments"
-              />
-              <Button
-                onPress = {() => this.onPressRequests()}
-                title="Go back"
-              />
-              <Text style = {styles.titleText}> Appointments found for user:</Text>
-              <View>
-                {events}
-              </View>
-          </View>
-        </ScrollView>
-        );
+        var appointmentText = "NO APPOINTMENTS FOUND FOR THIS USER"
+        var i = 1
+        if (this.state.events.length === 0 || typeof this.state.events[0] === undefined) {
+            return (
+                <ScrollView style = {styles.scrollView}>
+                <View style = {styles.container}>
+                    <Text
+                        style = {styles.titleText}>Search for a users appointments</Text>
+                        <Fumi
+                        label={'Email Address'}
+                        iconClass={FontAwesomeIcon}
+                        iconName={'envelope-square'}
+                        iconColor={'white'}
+                        inputStyle={{ color: '#000000' }}
+                        onChangeText={email => { this.setState({email}) } }
+                        /> 
+                    <Button
+                        style={styles.buttonStyle}
+                        onPress = {() => this.onQuery(this.state.email)}
+                        title="Get specfic user appointments"
+                    />
+                    <Button
+                        onPress = {() => this.onPressRequests()}
+                        title="Go back"
+                    />
+                    <Text style = {styles.titleText}> Appointments found for user:</Text>
+                    <View>
+                        <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key = {i.toString()}>
+                            <Block row style = {{paddingHorizontal:30, paddingTop: 10}} key = {i.toString()}>
+                                <Text>{appointmentText}</Text>
+                            </Block>
+                        </Block>
+                    </View>
+                </View>
+                </ScrollView>
+            );
+        } else {
+            return (
+                <ScrollView style = {styles.scrollView}>
+                <View style = {styles.container}>
+                    <Text
+                        style = {styles.titleText}>Search for a users appointments</Text>
+                        <Fumi
+                        label={'Email Address'}
+                        iconClass={FontAwesomeIcon}
+                        iconName={'envelope-square'}
+                        iconColor={'white'}
+                        inputStyle={{ color: '#000000' }}
+                        onChangeText={email => { this.setState({email}) } }
+                        /> 
+                    <Button
+                        style={styles.buttonStyle}
+                        onPress = {() => this.onQuery(this.state.email)}
+                        title="Get specfic user appointments"
+                    />
+                    <Button
+                        onPress = {() => this.onPressRequests()}
+                        title="Go back"
+                    />
+                    <Text style = {styles.titleText}> Appointments found for user:</Text>
+                    <View>
+                        {events}
+                    </View>
+                </View>
+                </ScrollView>
+            );
+        }
     }
 }
 
@@ -180,14 +207,14 @@ export default class SearchSchedule extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#72C3C9',
+        backgroundColor: '#ffffff',
         borderTopWidth: 15,
-        borderColor: '#72C3C9',
+        borderColor: '#ffffff',
     },
     titleText: {
         paddingBottom: 16,
-        borderColor: '#72C3C9',
-        backgroundColor: '#72C3C9',
+        borderColor: '#ffffff',
+        backgroundColor: '#ffffff',
         textAlign: 'center',
         color: '#404d5b',
         fontSize: 20,

@@ -32,6 +32,19 @@ class PatientHomepage extends Component {
 
         //firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(selected).get()
     }
+
+    handleSignOut = () => {
+        firebase
+            .auth()
+            .signOut()
+            .then(
+                this.props.navigation.navigate('Login'));
+    }
+
+    onPressRequest = () => {
+        
+    }
+
     getAppointmentList() {
 
         new_array = [];
@@ -176,8 +189,33 @@ class PatientHomepage extends Component {
             <Block flex={0.8} colomn color="#e7eff6" style={styles.pageBottom}>
 
                 <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e', paddingLeft: (width / 2) - 110 }}>Upcoming Appointment </Text>
-
+                
                 <ScrollView showsVerticalScrollIndicator={true}>
+                <Block row style={{alignSelf:'center'}}>
+                <TouchableOpacity 
+                        onPress={event=>this.onPressRequest()}>
+                        <View style={styles.refreshButton}>
+                            <Icon name="ios-add" color="#000000" size={24} />
+                        </View>
+                        
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                        onPress={event =>this.getUserData()}>
+                        <View style={styles.refreshButton}>
+                            <Icon name="ios-refresh" color="#000000" size={24} />
+                        </View>
+                        
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                        onPress={event =>this.handleSignOut()}>
+                        <View style={styles.refreshButton}>
+                            <Icon name="ios-log-out" color="#000000" size={24} />
+                        </View>
+                        
+                </TouchableOpacity>
+                </Block>
                     {this.state.appointment.map(appointment => (
                         <TouchableOpacity activeOpacity={0.8} key={`${appointment.id}`}
                             onPress={event => { alert(`${appointment.time}`) }}>
@@ -313,6 +351,23 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         paddingBottom: 45,
         zIndex: 1
+    },
+    refreshButton: {
+        marginTop: 10,
+        marginBottom: 10,
+        backgroundColor: 'white',
+        height: 50,
+        width: 50,
+        marginHorizontal: 20,
+        borderRadius: 35,
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 5,
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2
+
     },
     pageBottom: {
         marginTop: -50,

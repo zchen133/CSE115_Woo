@@ -51,6 +51,10 @@ class MedicalHomepage extends Component {
                 this.props.navigation.navigate('Login'));
     }
 
+    onPressCalendar = () => {
+        this.props.navigation.navigate('SearchSchedule')
+    }
+
     getAppointmentList() {
         console.log("accountString:::" + this.state.data.accountTypeString)
         if (this.state.data.accountTypeString == 'Doctors') {
@@ -251,9 +255,6 @@ class MedicalHomepage extends Component {
                         <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e', paddingLeft: (width / 2) - 110 }}>Profile Part</Text>
                         
                             
-                                <Button
-                                    title='Sign Out'
-                                        onPress={this.handleSignOut} />
                            
                         {/* <Button
                     title='Just For Test'
@@ -304,13 +305,32 @@ class MedicalHomepage extends Component {
 
                 <ScrollView showsVerticalScrollIndicator={true}>
                 {this.state.isHomepage?(
+                    <Block row style={{alignSelf:'center'}}>
+                <TouchableOpacity 
+                        onPress={event=>this.onPressCalendar()}>
+                        <View style={styles.refreshButton}>
+                            <Icon name="ios-search" color="#000000" size={24} />
+                        </View>
+                        
+                </TouchableOpacity>
+                
                 <TouchableOpacity 
                         onPress={event =>this.getAppointmentList()}>
                         <View style={styles.refreshButton}>
                             <Icon name="ios-refresh" color="#000000" size={24} />
                         </View>
                         
-                </TouchableOpacity>): null
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                        onPress={event =>this.handleSignOut()}>
+                        <View style={styles.refreshButton}>
+                            <Icon name="ios-log-out" color="#000000" size={24} />
+                        </View>
+                        
+                </TouchableOpacity>
+                </Block>
+                ): null
                 }
                     {this.state.appointment.map(appointment => (
                         <TouchableOpacity activeOpacity={0.8} key={`${appointment.id}`}
