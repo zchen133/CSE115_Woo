@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions } from 'react-native';
-import * as firebase from "firebase";
+//import * as firebase from "firebase";
 import { YellowBox } from 'react-native';
 import Toast from 'react-native-tiny-toast';
 import { Dropdown } from 'react-native-material-dropdown'
 var hospital = 'null'
 export { hospital };
+import { config } from '../App.js'
 
 var initialEmail = 'initialEmail';
 
 export default class AdminHomepage extends Component {
     constructor() {
         super();
-        YellowBox.ignoreWarnings(['Setting a timer']);
+        YellowBox.ignoreWarnings(['Setting a timer'])
+        firebase.initializeApp(config)
         this.user = firebase.auth().currentUser
         this.docRef = firebase.firestore().collection("users").doc(this.user.email);
     }

@@ -5,12 +5,15 @@ import Block from './components';
 import Modal from "react-native-modal";
 import { Dropdown } from 'react-native-material-dropdown'
 import Toast from 'react-native-tiny-toast';
+import { config } from '../App.js'
+
 
 export default class PrescriptionScreen extends Component {
 
     constructor() {
         super();
         YellowBox.ignoreWarnings(['Setting a timer']);
+        firebase.initializeApp(config)
         this.user = firebase.auth().currentUser
 
 

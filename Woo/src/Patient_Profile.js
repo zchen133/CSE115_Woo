@@ -5,11 +5,14 @@ import EditableText from './EditableTextComponent.js';
 import DatePicker from 'react-native-datepicker'
 import Block from './components.js';
 import Dialog from 'react-native-dialog';
+import { config } from '../App.js'
+
 
 export default class Patient_ProfileScreen extends Component {
 
     constructor(props) {
         super(props);
+        firebase.initializeApp(config)
         this.user = firebase.auth().currentUser
         this.docRef = firebase.firestore().collection("users").doc(this.user.email);
         this.state = {
