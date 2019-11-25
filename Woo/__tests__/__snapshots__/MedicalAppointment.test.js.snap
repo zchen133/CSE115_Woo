@@ -101,7 +101,7 @@ exports[`MedicalAppointment SnapShot 1`] = `
           <Image
             source={
               Object {
-                "testUri": "../../../assets/appointment_list.png",
+                "process": [Function],
               }
             }
             style={
@@ -183,7 +183,7 @@ exports[`MedicalAppointment SnapShot 1`] = `
           <Image
             source={
               Object {
-                "testUri": "../../../assets/appointment_search.png",
+                "process": [Function],
               }
             }
             style={
