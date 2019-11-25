@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 92772,
-  "expoServerNgrokUrl": "https://a7-pgu.howardng.woo.exp.direct",
-  "packagerNgrokUrl": "https://packager.a7-pgu.howardng.woo.exp.direct",
-  "ngrokPid": 87900,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }

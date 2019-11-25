@@ -20,7 +20,13 @@ export default class PrescriptionScreen extends Component {
             patientEmail: 'null',
             quantityList: [{ value: "mg" }, { value: "mL" }, { value: "capsule" }, { value: "tablets" }, { value: "puffs" }],
             timeQuantityList: [{ value: "hours" }, { value: "days" }, { value: "weeks" }],
-            selectedQuantity: "null"
+            selectedQuantity: "null",
+            selectedTimeQuantity:'null',
+            medicine_name:'',
+            medicine_des:'',
+            medicine_quantity:'',
+            medicine_time:'',
+            medicine_instrution:''
         };
     }
     openModal = () => {
@@ -37,12 +43,30 @@ export default class PrescriptionScreen extends Component {
 
     };
     submitModal = () => {
-        this.prescriptionRef = firebase.firestore().collection("users").doc(this.state.patientEmail).collection("prescriptions").get().then((doc) => {
+        if(this.state.medicine_name!=''){
 
-        })
+        
+        firebase.firestore().collection("users").doc(this.state.patientEmail).collection("prescriptions").doc(this.state.medicine_name).set({
+            
+            medicine_name: this.state.medicine_name,
+            medicine_des: this.state.medicine_des,
+            medicine_quantity: this.state.medicine_quantity,
+            selectedQuantity: this.state.selectedQuantity,
+            medicine_time:this.state.medicine_time,
+            selectedTimeQuantity: this.state.selectedTimeQuantity,
+            medicine_instrution:this.state.medicine_instrution
+            
+        }).then(()=>{
+            this.setState({medicine_name:'',medicine_des:'',medicine_instrution:'',medicine_quantity:'',medicine_time:'',selectedQuantity:'',selectedTimeQuantity:''})
+            this.setState({ isModalVisible: false });
+            Toast.show("Added successfully")
+        })}
+        else{
+            Toast.show("Please enter the medicine name")
+        }
         //console.log('reffff'+this.prescriptionRef)
-        this.setState({ isModalVisible: false });
-    };
+        
+    }
     render() {
         return (
             <Block>
@@ -50,10 +74,12 @@ export default class PrescriptionScreen extends Component {
                 <Block style={{ flex: 1, backgroundColor: '#ffffff', justifyContent: 'flex-end' }} >
 
                     <View style={styles.reqAll}>
+                        
                         <Image
-                            source={require('../assets/prescription.png')}
+                            source={require('../assets/medicine.png')}
                             style={{ height: 200, width: 200, alignSelf: 'center', alignItems: 'center', alignContent: 'center', marginBottom: 20 }}>
                         </Image>
+                        
                         <Text style={{ fontSize: 35, fontWeight: "bold" }}>Prescription</Text>
                         <Text style={{ fontSize: 20 }}>Please enter the email for the patient</Text>
                         <Text style={{ fontSize: 20, marginTop: 30 }}>Email</Text>
@@ -85,12 +111,14 @@ export default class PrescriptionScreen extends Component {
                             <TextInput
                                 style={styles.textInput}
                                 placeholder='medicine name'
-                                autoCapitalize="none" />
+                                autoCapitalize="none" 
+                                onChangeText={medicine_name => this.setState({ medicine_name })}/>
                             <Text style={{ fontSize: 20, marginTop: 30 }}>Medicine Description</Text>
                             <TextInput
                                 style={styles.textInput}
                                 placeholder='description'
-                                autoCapitalize="none" />
+                                autoCapitalize="none" 
+                                onChangeText={medicine_des => this.setState({ medicine_des })}/>
                             <Text style={{ fontSize: 20, marginTop: 30 }}>Dosage</Text>
                             <Block flex={false} row style={{}}>
                                 <TextInput
@@ -101,7 +129,8 @@ export default class PrescriptionScreen extends Component {
                                         marginRight: 10
                                     }}
                                     placeholder='amount'
-                                    autoCapitalize="none" />
+                                    autoCapitalize="none"
+                                    onChangeText={medicine_quantity => this.setState({ medicine_quantity })} />
 
                                 <Dropdown
                                     containerStyle={styles.pickerContainer}
@@ -120,7 +149,8 @@ export default class PrescriptionScreen extends Component {
                                         marginRight: 10
                                     }}
                                     placeholder='amount'
-                                    autoCapitalize="none" />
+                                    autoCapitalize="none"
+                                    onChangeText={medicine_time => this.setState({ medicine_time })} />
                                 <Dropdown
                                     containerStyle={styles.pickerContainer}
                                     pickerStyle={styles.pickerContent}
@@ -133,7 +163,8 @@ export default class PrescriptionScreen extends Component {
                             <TextInput
                                 style={styles.textInput}
                                 placeholder='instruction'
-                                autoCapitalize="none" />
+                                autoCapitalize="none" 
+                                onChangeText={medicine_instrution => this.setState({ medicine_instrution })}/>
 
 
                         </View>
