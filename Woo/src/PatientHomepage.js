@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Alert, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 
 import * as firebase from "firebase";
+import { Notifications} from 'expo';
+import * as Permissions from 'expo-permissions';
+
 const { width, height } = Dimensions.get('window')
 import { SafeAreaView, ThemeColors } from 'react-navigation';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -17,6 +20,9 @@ import Patient_PrescriptionScreen from './Patient_Prescription.js'
 import { initialEmail } from './Loading.js';
 import { FAB } from 'react-native-paper';
 
+const PUSH_REGISTRATION_ENDPOINT = 'http://generated-ngrok-url/token';
+const MESSAGE_ENDPOINT = 'https://generated-ngrok-url/message';
+
 class PatientHomepage extends Component {
     constructor() {
         super();
@@ -24,11 +30,54 @@ class PatientHomepage extends Component {
         this.user = firebase.auth().currentUser
         this.docRef = firebase.firestore().collection("users").doc(this.user.email);
         this.state = {
+            notification: {},
+            expoPushToken: '',
+
             appointment: [{ id: "null", time: "00:00", date: "2000-01-01", checked: false, userEmail: "null", first_name: "null", last_name: "null", doctor_name: "null", hospital: "null", department: "null", description: "null" }]
         }
     }
-    componentDidMount() {
+
+
+    registerForPushNotificationsAsync = async() => {
+        const { status: existingStatus } = await Permissions.getAsync(
+          Permissions.NOTIFICATIONS
+        );
+        let finalStatus = existingStatus;
+      
+        // only ask if permissions have not already been determined, because
+        // iOS won't necessarily prompt the user a second time.
+        if (existingStatus !== 'granted') {
+          // Android remote notification permissions are granted during the app
+          // install, so this will only ask on iOS
+          const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+          finalStatus = status;
+        }
+      
+        // Stop here if the user did not grant permissions
+        if (finalStatus !== 'granted') {
+          return;
+        }
+      
+        // Get the token that uniquely identifies this device
+        let token = await Notifications.getExpoPushTokenAsync();
+      
+        // POST the token to your backend server from where you can retrieve it to send push notifications.
+        //console.log("current user ", this.user)
+        
+        firebase.firestore().collection("users").doc(initialEmail).update({
+            token: token
+        }).then(function(){
+            console.log("Updated Token")
+        }).catch(function(error){
+            console.error("Failure getting document")
+        });
+        
+      }
+    
+    async componentDidMount() {
         this.getUserData()
+        await this.registerForPushNotificationsAsync();
+
 
         //firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(selected).get()
     }
