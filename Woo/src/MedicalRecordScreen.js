@@ -1,27 +1,115 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, Modal, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, ScrollView, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
 import { initialEmail } from './Loading.js';
+import Block from './components';
+import Modal from "react-native-modal";
+import { Dropdown } from 'react-native-material-dropdown'
 import Toast from 'react-native-tiny-toast';
 
 
 
 export default class RecordScreen extends Component {
 
-    state = { Patient: 'Patient', MedicalDirectives: 'MedicalDirectives', TreatmentHistory: 'Treatment History', MedicationHistory: 'Medication History', FamilyMedicalHistory: 'Family Medical History', MedicalHistory: 'Medical History', PersonalInformation: 'Personal Information', email: '', name: '', social: '', address: '', allergies: '', previousDiagnoses: '', heartDisease: '', cancers: '', other: '', herbal: '', alternative: '', otc: '', prescriptions: '', therapyWork: '', therapyFail: '', wishes: '', err: null }
-
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
+        YellowBox.ignoreWarnings(['Setting a timer']);
         this.user = firebase.auth().currentUser
         this.docRef = firebase.firestore().collection("users").doc(this.user.email)
+
+        this.state = {
+            isModalVisible: false,
+            isMedicalHistoryModalVisible: false,
+            isMedicationHistoryModalVisible: false,
+            isTreatmentHistoryModalVisible: false,
+            patientExist: false,
+            patientEmail: 'null',
+            quantityList: [{ value: "mg" }, { value: "mL" }, { value: "capsule" }, { value: "tablets" }, { value: "puffs" }],
+            timeQuantityList: [{ value: "hours" }, { value: "days" }, { value: "weeks" }],
+            selectedQuantity: "null",
+            Patient: 'Patient', MedicalDirectives: 'MedicalDirectives', TreatmentHistory: 'Treatment History', MedicationHistory: 'Medication History', FamilyMedicalHistory: 'Family Medical History', MedicalHistory: 'Medical History', PersonalInformation: 'Personal Information', email: '', name: '', social: '123-456-7890', address: '', allergies: '', previousDiagnoses: '', heartDisease: '', cancers: '', other: '', herbal: '', alternative: '', otc: '', prescriptions: '', therapyWork: '', therapyFail: '', wishes: '', err: null
+        };
+    }
+    openModal = () => {
+        this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc) => {
+            if (doc.exists) {
+                this.setState({ name: doc.get("first") + " " + doc.get("last") })
+                this.setState({ address: doc.get("address") })
+                this.setState({ patientExist: true })
+                this.setState({ isModalVisible: true })
+            }
+            else {
+                Toast.show("patient doesn't exist")
+            }
+        })
     };
 
+    submitModal = () => {
+        this.prescriptionRef = firebase.firestore().collection("users").doc(this.state.patientEmail).collection("prescriptions").get().then((doc) => {
 
+        })
+        //console.log('reffff'+this.prescriptionRef)
+        this.setState({ isModalVisible: false });
+    };
+    openMedicalHistoryModal = () => {
+        this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc) => {
+            if (doc.exists) {
+                this.setState({ email: this.state.patientEmail })
+                this.setState({ name: doc.get("first") + " " + doc.get("last") })
+                this.setState({ address: doc.get("address") })
+                this.setState({ patientExist: true })
+                this.setState({ isMedicalHistoryModalVisible: true })
+            }
+            else {
+                Toast.show("patient doesn't exist")
+            }
+        })
+    };
+    submitMedicalHistoryModal = () => {
+        // this.prescriptionRef = firebase.firestore().collection("users").doc(this.state.patientEmail).collection("prescriptions").get().then((doc) => {
+        this.setState({ isMedicalHistoryModalVisible: false });
+    };
+    openMedicationHistoryModal = () => {
+        this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc) => {
+            if (doc.exists) {
+                this.setState({ email: this.state.patientEmail })
+                this.setState({ name: doc.get("first") + " " + doc.get("last") })
+                this.setState({ address: doc.get("address") })
+                this.setState({ patientExist: true })
+                this.setState({ isMedicationHistoryModalVisible: true })
+            }
+            else {
+                Toast.show("patient doesn't exist")
+            }
+        })
+    };
+    submitMedicationHistoryModal = () => {
+        // this.prescriptionRef = firebase.firestore().collection("users").doc(this.state.patientEmail).collection("prescriptions").get().then((doc) => {
+        this.setState({ isMedicationHistoryModalVisible: false });
+    };
+    openTreatmentHistoryModal = () => {
+        this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc) => {
+            if (doc.exists) {
+                this.setState({ email: this.state.patientEmail })
+                this.setState({ name: doc.get("first") + " " + doc.get("last") })
+                this.setState({ address: doc.get("address") })
+                this.setState({ patientExist: true })
+                this.setState({ isTreatmentHistoryModalVisible: true })
+            }
+            else {
+                Toast.show("patient doesn't exist")
+            }
+        })
+    };
+    submitTreatmentHistoryModal = () => {
+        // this.prescriptionRef = firebase.firestore().collection("users").doc(this.state.patientEmail).collection("prescriptions").get().then((doc) => {
+        this.setState({ isTreatmentHistoryModalVisible: false });
+    };
     clearfields = () => {
         this.setState({ email: '' })
         this.setState({ name: '' })
-        this.setState({ social: '' })
+        this.setState({ social: '123-456-7890' })
         this.setState({ address: '' })
         this.setState({ allergies: '' })
         this.setState({ previousDiagnoses: '' })
@@ -61,7 +149,7 @@ export default class RecordScreen extends Component {
         var dataMedicalDirectives = this.state.MedicalDirectives;
         //var permissionRef = firebase.firestore().collection("users").doc(initialEmail);
 
-        this.docRef.get().then(function(doc) {
+        this.docRef.get().then((doc) => {
             if (doc.exists) {
                 if (doc.get('accountType') !== '4') {
                     console.log('Incorrect permissions')
@@ -234,240 +322,237 @@ export default class RecordScreen extends Component {
                             })
                         }
                     })
+                    this.clearfields();
                     Toast.show('Record Stored');
                 }
             }
         })
     }
 
-
     render() {
-
         return (
-            <View style={{ flex: 1, backgroundColor: '#ffffff', justifyContent: 'flex-end' }} >
-                <View style={{ ...StyleSheet.absoluteFill }}>
-                    <Image
-                        source={require('../assets/nb.jpg')}
-                        style={{ flex: 1, height: null, width: null }}
-                        blurRadius={5}
-                    />
-                </View>
-                <SafeAreaView>
-                    <ScrollView>
-                    <Text numberOfLines={1} style={styles.recordFields}>
-                            {this.state.Patient}
-                        </Text>
+            <Block>
+
+                <Block style={{ flex: 1, backgroundColor: '#ffffff', justifyContent: 'flex-end' }} >
+
+                    <View style={styles.mainScreen}>
+                        <Image
+                            source={require('../assets/prescription.png')}
+                            style={{ height: 200, width: 200, alignSelf: 'center', alignItems: 'center', alignContent: 'center', marginBottom: 20 }}>
+                        </Image>
+                        <Text style={{ fontSize: 35, fontWeight: "bold" }}>Medical Record</Text>
+                        <Text style={{ fontSize: 20 }}>Please enter the email for the patient</Text>
+                        <Text style={{ fontSize: 20, marginTop: 30 }}>Email</Text>
                         <TextInput
+                            style={styles.textInput}
                             placeholder='Patient Email'
                             autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={email => this.setState({ email })}
-                            value={this.state.email}
+                            onChangeText={patientEmail => this.setState({ patientEmail })}
+
+
+                        //multiline={true} SOURCE OF RETURN BUG
+                        //onChangeText={description => this.setState({ description })}
+                        //value={this.state.description}
                         />
 
-                        <Text numberOfLines={1} style={styles.recordFields}>
-                            {this.state.PersonalInformation}
-                        </Text>
+                    </View>
 
-                        <TextInput
-                            placeholder='Name'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={name => this.setState({ name })}
-                            value={this.state.name}
-                        />
-                        <TextInput
-                            placeholder='Social Security Number'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={social => this.setState({ social })}
-                            value={this.state.social}
-                        />
-                        <TextInput
-                            placeholder='Address'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            multiline={false}
-                            onChangeText={address => this.setState({ address })}
-                            value={this.state.address}
-                        />
+                    <TouchableOpacity onPress={this.openMedicalHistoryModal}>
+                        <View style={styles.button}>
+                            <Text style={{ fontSize: 20 }}>Medical History</Text>
+                        </View>
+                    </TouchableOpacity>
+                    {/* <TouchableOpacity onPress={this.submitModal}>
+                            <View style={styles.button}>
+                                <Text style={{ fontSize: 20 }}>Family Medical History</Text>
+                            </View>
+                        </TouchableOpacity> */}
+                    <TouchableOpacity onPress={this.openMedicationHistoryModal}>
+                        <View style={styles.button}>
+                            <Text style={{ fontSize: 20 }}>Medication History</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.openTreatmentHistoryModal}>
+                        <View style={styles.button}>
+                            <Text style={{ fontSize: 20 }}>Treatment History</Text>
+                        </View>
+                    </TouchableOpacity>
+                    {/* <TouchableOpacity onPress={this.submitModal}>
+                            <View style={styles.button}>
+                                <Text style={{ fontSize: 20 }}>Medical Directives</Text>
+                            </View>
+                        </TouchableOpacity> */}
+                    <TouchableOpacity onPress={this.handleRecordInput}>
+                        <View style={styles.button}>
+                            <Text style={{ fontSize: 20 }}>Submit</Text>
+                        </View>
+                    </TouchableOpacity>
 
-                        <Text numberOfLines={1} style={styles.recordFields}>
-                            {this.state.MedicalHistory}
-                        </Text>
+                </Block>
 
-                        <TextInput
-                            placeholder='Allergies'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={allergies => this.setState({ allergies })}
-                            value={this.state.allergies}
-                        />
-
-                        <TextInput
-                            placeholder='Previous Diagnoses'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={previousDiagnoses => this.setState({ previousDiagnoses })}
-                            value={this.state.previousDiagnoses}
-                        />
-
-
-                        <Text numberOfLines={1} style={styles.recordFields}>
-                            {this.state.FamilyMedicalHistory}
-                        </Text>
-
-                        <TextInput
-                            placeholder='Heart Disease'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={heartDisease => this.setState({ heartDisease })}
-                            value={this.state.heartDisease}
-                        />
-
-                        <TextInput
-                            placeholder='Cancers'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={cancers => this.setState({ cancers })}
-                            value={this.state.cancers}
-                        />
-
-                        <TextInput
-                            placeholder='Other'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={other => this.setState({ other })}
-                            value={this.state.other}
-                        />
-
-                        <Text numberOfLines={1} style={styles.recordFields}>
-                            {this.state.MedicationHistory}
-                        </Text>
-
-                        <TextInput
-                            placeholder='Herbal'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={herbal => this.setState({ herbal })}
-                            value={this.state.herbal}
-                        />
-
-                        <TextInput
-                            placeholder='Alternative'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={alternative => this.setState({ alternative })}
-                            value={this.state.alternative}
-                        />
-
-                        <TextInput
-                            placeholder='OTC'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={otc => this.setState({ otc })}
-                            value={this.state.otc}
-                        />
-
-                        <TextInput
-                            placeholder='Prescriptions'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={prescriptions => this.setState({ prescriptions })}
-                            value={this.state.prescriptions}
-                        />
-
-                        <Text numberOfLines={1} style={styles.recordFields}>
-                            {this.state.TreatmentHistory}
-                        </Text>
-
-                        <TextInput
-                            placeholder='Working Therapy'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={therapyWork => this.setState({ therapyWork })}
-                            value={this.state.therapyWork}
-                        />
-
-                        <TextInput
-                            placeholder='Failing Therapy'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={therapyFail => this.setState({ therapyFail })}
-                            value={this.state.therapyFail}
-                        />
-
-                        <Text numberOfLines={1} style={styles.recordFields}>
-                            {this.state.MedicalDirectives}
-                        </Text>
-
-                        <TextInput
-                            placeholder='Wishes'
-                            autoCapitalize="none"
-                            style={styles.input}
-                            onChangeText={wishes => this.setState({ wishes })}
-                            value={this.state.wishes}
-                        />
-                        <TouchableOpacity onPress={this.handleRecordInput}>
-                            <Animated.View style={styles.button}>
-                                <Text style={{ fontSize: 20 }}>Input Record</Text>
-                            </Animated.View>
+                <Modal style={{ marginHorizontal: 20, marginVertical: 90 }} scrollHorizontal={true} avoidKeyboard={false} backdropOpacity={0.3} isVisible={this.state.isMedicalHistoryModalVisible}>
+                    <View style={{ flex: 1, backgroundColor: '#ffffff', borderRadius: 10 }}>
+                        <View style={styles.model}>
+                            <Text style={{ fontSize: 20, marginTop: 0 }}>Allergies</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='Allergies'
+                                autoCapitalize="none"
+                                value={this.state.allergies}
+                                onChangeText={allergies => this.setState({ allergies })} />
+                            <Text style={{ fontSize: 20, marginTop: 20 }}>Previous Diagnoses</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='Previous Diagnoses'
+                                autoCapitalize="none"
+                                value={this.state.previousDiagnoses}
+                                onChangeText={previousDiagnoses => this.setState({ previousDiagnoses })} />
+                            <Text style={{ fontSize: 20, marginTop: 20 }}>Family History - Heart Disease</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='Heart Disease'
+                                autoCapitalize="none"
+                                value={this.state.heartDisease}
+                                onChangeText={heartDisease => this.setState({ heartDisease })} />
+                            <Text style={{ fontSize: 20, marginTop: 20 }}>Family History - Cancers</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='Cancers'
+                                autoCapitalize="none"
+                                value={this.state.cancers}
+                                onChangeText={cancers => this.setState({ cancers })} />
+                            <Text style={{ fontSize: 20, marginTop: 20 }}>Family History - Other Disease</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='Previous Diagnoses'
+                                autoCapitalize="none"
+                                value={this.state.other}
+                                onChangeText={other => this.setState({ other })} />
+                        </View>
+                        <TouchableOpacity onPress={this.submitMedicalHistoryModal}>
+                            <View style={styles.button}>
+                                <Text style={{ fontSize: 20 }}>Save</Text>
+                            </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.clearfields}>
-                            <Animated.View style={styles.closeButton}>
-                                <Text style={{ fontSize: 15 }}>Clear</Text>
-                            </Animated.View>
+                    </View>
+                </Modal>
+
+                <Modal style={{ marginHorizontal: 20, marginVertical: 90 }} scrollHorizontal={true} avoidKeyboard={false} backdropOpacity={0.3} isVisible={this.state.isMedicationHistoryModalVisible}>
+                    <View style={{ flex: 1, backgroundColor: '#ffffff', borderRadius: 10 }}>
+                        <View style={styles.model}>
+                            <Text style={{ fontSize: 20, marginTop: 0 }}>Herbal</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='Herbal'
+                                autoCapitalize="none"
+                                value={this.state.herbal}
+                                onChangeText={herbal => this.setState({ herbal })} />
+                            <Text style={{ fontSize: 20, marginTop: 30 }}>Alternative</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='Alternative'
+                                autoCapitalize="none"
+                                value={this.state.alternative}
+                                onChangeText={alternative => this.setState({ alternative })} />
+                            <Text style={{ fontSize: 20, marginTop: 30 }}>OTC</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='OTC'
+                                autoCapitalize="none"
+                                value={this.state.otc}
+                                onChangeText={otc => this.setState({ otc })} />
+                            <Text style={{ fontSize: 20, marginTop: 30 }}>Prescriptions</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='Prescriptions'
+                                autoCapitalize="none"
+                                value={this.state.prescriptions}
+                                onChangeText={prescriptions => this.setState({ prescriptions })} />
+                        </View>
+                        <TouchableOpacity onPress={this.submitMedicationHistoryModal}>
+                            <View style={styles.button}>
+                                <Text style={{ fontSize: 20 }}>Save</Text>
+                            </View>
                         </TouchableOpacity>
-                    </ScrollView>
-                </SafeAreaView>
-            </View >
+                    </View>
+                </Modal>
+
+                <Modal style={{ marginHorizontal: 20, marginVertical: 90 }} scrollHorizontal={true} avoidKeyboard={false} backdropOpacity={0.3} isVisible={this.state.isTreatmentHistoryModalVisible}>
+                    <View style={{ flex: 1, backgroundColor: '#ffffff', borderRadius: 10 }}>
+                        <View style={styles.model}>
+                            <Text style={{ fontSize: 20, marginTop: 0 }}>Working Therapy</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='Working Therapy'
+                                autoCapitalize="none"
+                                value={this.state.therapyWork}
+                                onChangeText={therapyWork => this.setState({ therapyWork })} />
+                            <Text style={{ fontSize: 20, marginTop: 30 }}>Failing Therapy</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='Failing Therapy'
+                                autoCapitalize="none"
+                                value={this.state.therapyFail}
+                                onChangeText={therapyFail => this.setState({ therapyFail })} />
+                            <Text style={{ fontSize: 20, marginTop: 30 }}>Medical Directives</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='Wishes'
+                                autoCapitalize="none"
+                                value={this.state.wishes}
+                                onChangeText={wishes => this.setState({ wishes })} />
+                        </View>
+                        <TouchableOpacity onPress={this.submitTreatmentHistoryModal}>
+                            <View style={styles.button}>
+                                <Text style={{ fontSize: 20 }}>Save</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
+
+            </Block>
         );
     }
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: '#72C3C9',
-    },
-    modal: {
-        backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    req: {
-        borderRadius: 10,
-        width: '75%',
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginLeft: 45,
-        marginBottom: 20
-
-    },
-    input: {
-        // height: 40,
-        // alignItems: 'stretch',
-        backgroundColor: 'white',
+    mainScreen: {
+        borderRadius: 20,
+        height: '63%',
         width: '90%',
-        // borderColor: 'black',
-        // borderBottomWidth: 2.5,
-        marginBottom: 20,
-        marginLeft: 50,
-        marginRight: 50,
-        //paddingVertical:10,
-        // paddingHorizontal: 10,
+        backgroundColor: 'white',
+        alignSelf: 'center',
+        alignItems: 'flex-start',
+        //justifyContent: 'center',
+        //marginLeft: 45,
+        paddingTop: 30
+    },
+    model: {
+        borderRadius: 20,
+        height: '90%',
+        width: '90%',
+        backgroundColor: 'white',
+        alignSelf: 'center',
+        alignItems: 'flex-start',
+        //justifyContent: 'center',
+        //marginLeft: 45,
+        paddingTop: 30
+
     },
     button: {
         backgroundColor: 'white',
         height: 50,
-        width: 250,
+        width: "90%",
         marginHorizontal: 20,
-        borderRadius: 35,
-        marginLeft: 62,
-        marginRight: 50,
+        borderRadius: 10,
+        //marginLeft: 50,
+        //marginRight: 50,
+        alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
         marginVertical: 5,
@@ -475,88 +560,43 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 2, height: 2 },
         shadowColor: 'black',
         shadowOpacity: 0.2,
-
-    },
-    closeButton: {
-        marginBottom: 10,
-        height: 40,
-        width: 40,
-        backgroundColor: 'white',
-        borderRadius: 40,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-        left: width / 2 - 20,
-        shadowOffset: { width: 2, height: 2 },
-        shadowColor: 'black',
-        shadowOpacity: 0.2
-    },
-    input: {
-        backgroundColor: 'white',
-        width: '75%',
-        marginBottom: 20,
-        marginLeft: 50,
-        marginRight: 50,
-        height: 35,
-        borderRadius: 25,
-        borderWidth: 0.5,
-        marginHorizontal: 20,
-        paddingLeft: 10,
-        marginVertical: 5,
-        borderColor: 'rgba(0,0,0,0.2)',
-    },
-    bottom: {
-        backgroundColor: 'white',
-        marginBottom: 20,
-        marginLeft: 50,
-        marginRight: 50,
-        height: 100,
-        borderRadius: 25,
-        borderWidth: 0.5,
-        marginHorizontal: 20,
-        paddingLeft: 10,
-        marginVertical: 5,
-        borderColor: 'rgba(0,0,0,0.2)',
-    },
-    recordFields: {
-        backgroundColor: 'black',
-        color: 'white',
-        textAlign: 'center',
-        fontWeight: 'bold',
+    }, textInput: {
+        width: '90%',
         fontSize: 20,
-        marginBottom: 10
-    }
-});
+        borderBottomWidth: 1
 
-const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-        fontSize: 16,
-        marginBottom: 20,
-        marginLeft: 50,
-        marginRight: 50,
-        height: 35,
-        borderRadius: 25,
-        borderWidth: 0.5,
-        marginHorizontal: 20,
-        paddingLeft: 10,
-        marginVertical: 5,
-        borderColor: 'rgba(0,0,0,0.2)',
-        backgroundColor: 'white',
-        color: 'black',
+        // marginTop:30
     },
-    inputAndroid: {
-        fontSize: 16,
-        marginBottom: 20,
-        marginLeft: 50,
-        marginRight: 50,
-        height: 35,
-        borderRadius: 25,
-        borderWidth: 0.5,
-        marginHorizontal: 20,
-        paddingLeft: 10,
-        marginVertical: 5,
-        borderColor: 'rgba(0,0,0,0.2)',
+    pickerContainer: {
+        // height: 40,
+        // alignItems: 'stretch',
+        //alignSelf:'flex-end',
         backgroundColor: 'white',
-        color: 'black',
+        width: "30%",
+        marginRight: 10
+        // borderColor: 'black',
+        // borderBottomWidth: 2.5,
+        //marginBottom: 30,
+        //marginLeft: 50,
+        //marginRight: 50,
+        //paddingVertical:10,
+        // paddingHorizontal: 10,
     },
-});
+    pickerContent: {
+        // height: 40,
+
+        // alignItems: 'stretch',
+        //alignSelf:'flex-end',
+        backgroundColor: 'white',
+        width: "25%",
+        marginRight: 10
+        // borderColor: 'black',
+        // borderBottomWidth: 2.5,
+        //marginBottom: 20,
+        //marginLeft: 50,
+        //marginRight: 50,
+        //paddingVertical:10,
+        // paddingHorizontal: 10,
+    }
+
+})

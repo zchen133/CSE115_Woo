@@ -25,6 +25,7 @@ class MedicalHomepage extends Component {
 
         this.docRef = firebase.firestore().collection("users").doc(this.user.email);
         this.state = {
+            appointmentNotFound:false,
             isHomepage: true,
             refreshTime: 0,
             patientInfo: "null",
@@ -77,9 +78,16 @@ class MedicalHomepage extends Component {
                     var app = { id: id, time: time, date: date, checked: checked, userEmail: userEmail, department: department, description: description, doctor_name: doctor_name, first_name: first_name, last_name: last_name }
 
                     new_array.push(app);
-                });
+                })
                 this.setState({ appointment: new_array })
-                //console.log(doc.id)
+                if(this.state.appointment.length==0){
+                    this.setState({appointmentNotFound:true})
+                }
+                else{
+                    this.setState({appointmentNotFound:false})
+                }
+                
+                console.log("get id"+this.state.appointmentNotFound)
             })
 
         }
@@ -267,6 +275,9 @@ class MedicalHomepage extends Component {
         );
     }
     renderList(appointment) {
+        console.log('appointment length'+this.state.appointmentNotFound)
+        
+            console.log('inside'+appointment.id)
         if (this.state.record == null || this.state.record.length == 0) {
             return (
                 <Block row card shadow color="#ffffff" style={styles.items}>
@@ -288,6 +299,9 @@ class MedicalHomepage extends Component {
                 this.renderRecord(appointment)
             );
         }
+    
+    
+    
     }
 
     test() {
@@ -332,12 +346,23 @@ class MedicalHomepage extends Component {
                 </Block>
                 ): null
                 }
-                    {this.state.appointment.map(appointment => (
-                        <TouchableOpacity activeOpacity={0.8} key={`${appointment.id}`}
+                {this.state.appointment.length>0?(
+                    this.state.appointment.map(appointment => (
+                        <TouchableOpacity activeOpacity={0.8} key={`${appointment.id+appointment.date}`}
                             onPress={event => {this.getPatientInfo(`${appointment.userEmail}`)}}>
                             {this.renderList(appointment)}
                         </TouchableOpacity>
-                    ))}
+                    ))
+                    ):(
+                        <Block style={{alignItems:'center',alignSelf:'center',justifyContent:'center',marginTop:50}}>
+                        <Image
+                        source={require('../assets/nurse.png')}
+                        style={{ flex: 1, height: 200, width: 200 }}
+                    /> 
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e' }}>Appointment Not Found</Text>
+                    </Block>
+                    )}
+                
                 </ScrollView>
 
                 
