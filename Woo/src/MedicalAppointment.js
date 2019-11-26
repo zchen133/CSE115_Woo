@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from 'react';
-import { StyleSheet, TouchableOpacity,Icon,Text, View, Button, TextInput, Image, Animated, Dimensions, TouchableHighlight, YellowBox, ScrollView } from 'react-native';
+import { StyleSheet, TouchableOpacity, Icon, Text, View, Button, TextInput, Image, Animated, Dimensions, TouchableHighlight, YellowBox, ScrollView } from 'react-native';
 import * as firebase from "firebase";
 import { Calendar, Agenda } from 'react-native-calendars';
 import Block from './components';
@@ -21,8 +21,8 @@ export default class MedicalAppointment extends Component {
 
     render() {
         return (
-           
-                <Block style = {styles.container}>
+
+            <Block style = {styles.container}>
                     <ScrollView>
                 <TouchableOpacity 
                         onPress={event=>this.onPressSchedules()}>
@@ -52,18 +52,18 @@ export default class MedicalAppointment extends Component {
                 </TouchableOpacity>
                 </ScrollView>
                 </Block>
-            
+
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        alignSelf:'center',
+        alignSelf: 'center',
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:'#ffffff',
+        backgroundColor: '#ffffff',
         paddingLeft: 40,
         paddingRight: 40,
         marginTop: 50,

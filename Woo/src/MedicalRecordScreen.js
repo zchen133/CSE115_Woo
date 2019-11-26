@@ -282,7 +282,7 @@ export default class RecordScreen extends Component {
                     var docRef = firebase.firestore().collection("users").doc(initialEmail);
 
 
-                    docRef.get().then(function (doc) {
+                    docRef.get().then(function(doc) {
                         if (doc.exists) {
 
                             const patientRef = firebase.firestore().collection("hospital").doc(doc.get('hospital')).collection("Patients")
@@ -598,4 +598,5 @@ const styles = StyleSheet.create({
         //paddingVertical:10,
         // paddingHorizontal: 10,
     }
+
 })
