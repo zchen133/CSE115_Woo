@@ -32,7 +32,7 @@ class PatientHomepage extends Component {
         this.state = {
             notification: {},
             expoPushToken: '',
-
+            nowDate: new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(),
             appointment: [{ id: "null", time: "00:00", date: "2000-01-01", checked: false, userEmail: "null", first_name: "null", last_name: "null", doctor_name: "null", hospital: "null", department: "null", description: "null" }]
         }
     }
@@ -81,12 +81,25 @@ class PatientHomepage extends Component {
 
         //firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(selected).get()
     }
+
+    handleSignOut = () => {
+        firebase
+            .auth()
+            .signOut()
+            .then(
+                this.props.navigation.navigate('Login'));
+    }
+
+    onPressRequest = () => {
+        
+    }
+
     getAppointmentList() {
 
         new_array = [];
         firebase.firestore().collection("users").doc(this.user.email).collection("events").get().then((querySnapshot) => {
-            querySnapshot.forEach(function(doc) {
-                console.log(doc.id)
+            querySnapshot.forEach((doc) =>{
+                //console.log(doc.id)
 
                 var id = doc.id
                 var date = doc.get("date")
@@ -100,8 +113,32 @@ class PatientHomepage extends Component {
                 var checked = doc.get("checked")
                 var hospital = doc.get("hospital")
                 var app = { id: id, time: time, date: date, checked: checked, userEmail: userEmail, hospital: hospital, department: department, description: description, doctor_name: doctor_name, first_name: first_name, last_name: last_name }
+                console.log('nowDate'+this.state.nowDate)
+                console.log('docDate'+date)
+                console.log('nowmonth'+this.state.nowDate.substring(5,7))
+                console.log('docdate'+date.substring(8,10))
 
-                new_array.push(app);
+                if(Number(date.substring(0,4))>Number(this.state.nowDate.substring(0,4))){
+                    new_array.push(app);
+                }
+                else if(Number(date.substring(0,4))==Number(this.state.nowDate.substring(0,4))){
+
+                    if(Number(date.substring(5,7))>Number(this.state.nowDate.substring(5,7))){
+                        new_array.push(app);
+                    }
+                    else if(Number(date.substring(5,7))==Number(this.state.nowDate.substring(5,7))){
+
+                        if(Number(date.substring(8,10))>=Number(this.state.nowDate.substring(8,10))){
+                            new_array.push(app);
+                        }
+                        else{
+                            console.log('Invaild date'+date)
+                        }
+                    }
+                    
+                }
+                
+               
             });
             this.setState({ appointment: new_array })
             //console.log(doc.id)
@@ -185,7 +222,7 @@ class PatientHomepage extends Component {
                             />
                         </Block>
                         <Block>
-                            <Text style={{ paddingLeft: 25 }}>{appointment.date + ' ' + appointment.time + '\n' + appointment.hospital + ' - ' + appointment.department + '\n' + appointment.doctor_name}</Text>
+                            <Text style={{ paddingLeft: 25 }}>{appointment.date + ' ' + appointment.time + '\n' + appointment.hospital + ' - ' + appointment.department + '\n' + appointment.doctor_name + '\n'}</Text>
                         </Block>
                     </Block>
                     <View style={{ flexDirection: 'row', flex: 15, marginTop: 10, justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20 }}>
@@ -225,14 +262,49 @@ class PatientHomepage extends Component {
             <Block flex={0.8} colomn color="#e7eff6" style={styles.pageBottom}>
 
                 <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e', paddingLeft: (width / 2) - 110 }}>Upcoming Appointment </Text>
-
+                
                 <ScrollView showsVerticalScrollIndicator={true}>
-                    {this.state.appointment.map(appointment => (
+                <Block row style={{alignSelf:'center'}}>
+                <TouchableOpacity 
+                        onPress={event=>this.onPressRequest()}>
+                        <View style={styles.refreshButton}>
+                            <Icon name="ios-add" color="#000000" size={24} />
+                        </View>
+                        
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                        onPress={event =>this.getUserData()}>
+                        <View style={styles.refreshButton}>
+                            <Icon name="ios-refresh" color="#000000" size={24} />
+                        </View>
+                        
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                        onPress={event =>this.handleSignOut()}>
+                        <View style={styles.refreshButton}>
+                            <Icon name="ios-log-out" color="#000000" size={24} />
+                        </View>
+                        
+                </TouchableOpacity>
+                </Block>
+                {this.state.appointment.length>0?(
+                    this.state.appointment.map(appointment => (
                         <TouchableOpacity activeOpacity={0.8} key={`${appointment.id}`}
                             onPress={event => { alert(`${appointment.time}`) }}>
                             {this.renderList(appointment)}
                         </TouchableOpacity>
-                    ))}
+                    ))
+                ):(
+                    <Block style={{alignItems:'center',alignSelf:'center',justifyContent:'center',marginTop:50}}>
+                    <Image
+                    source={require('../assets/nurse.png')}
+                    style={{ flex: 1, height: 200, width: 200 }}
+                /> 
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e' }}>Appointment Not Found</Text>
+                </Block>
+                )}
 
 
                 </ScrollView>
@@ -363,6 +435,23 @@ const styles = StyleSheet.create({
         paddingBottom: 45,
         zIndex: 1
     },
+    refreshButton: {
+        marginTop: 10,
+        marginBottom: 10,
+        backgroundColor: 'white',
+        height: 50,
+        width: 50,
+        marginHorizontal: 20,
+        borderRadius: 35,
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 5,
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2
+
+    },
     pageBottom: {
         marginTop: -50,
         paddingTop: 50,
@@ -370,7 +459,9 @@ const styles = StyleSheet.create({
         zIndex: -1
     },
     items: {
+        alignSelf:'center',
         padding: 20,
+        width:'90%',
         marginBottom: 15
     },
     buttons: {

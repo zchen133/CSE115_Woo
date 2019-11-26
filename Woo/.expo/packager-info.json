@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 4300,
+  "expoServerNgrokUrl": "https://2e-9hr.arhartwe.woo.exp.direct",
+  "packagerNgrokUrl": "https://packager.2e-9hr.arhartwe.woo.exp.direct",
+  "ngrokPid": 5184,
   "webpackServerPort": null
 }

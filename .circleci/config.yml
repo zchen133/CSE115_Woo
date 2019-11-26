@@ -1,0 +1,27 @@
+version: 2
+jobs:
+  node:
+    docker:
+      - image: circleci/node:8
+
+    steps:
+      - checkout
+    
+      - run: 
+          name: Install Packages
+          command: cd ./Woo && npm install
+    
+      - run:
+          name: Run Jest Tests
+          command: |
+            cd ./Woo
+            mkdir -p test-results/jest
+            npm run test
+          environment:
+            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+    
+workflows:
+  version: 2
+  node-run-tests:
+      jobs:
+        - node

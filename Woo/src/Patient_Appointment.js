@@ -299,40 +299,39 @@ export default class Patient_AppointmentScreen extends Component {
     }
 
     handleAppointmentRequest = () => {
-
-        /* Same logic can be used to query all receptionists with the same hospital as user requesting event time */
-      //  const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests");
-        const hospitalQuery = userRef.where("hospital", "==", this.state.hospital)
-        .where("accountType", "==", "2")
+/*
+        
+        const hospitalQuery = staffRef.where("hospital", "==", this.state.hospital)
+            .where("accountType", "==", "1")
             .get()
             .then(function (querySnapshot) {
                 querySnapshot.forEach(function (doc) {
-                    console.log(doc.id)
-           /*         
-                    let response = fetch('https://exp.host/--/api/v2/push/send', {
-                        method: 'POST',
-                        headers: {
-                            Accept: 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            to: doc.get("token"),
-                            sound: 'default',
-                            title: 'Woo App',
-                            body: 'Event Request'
-                        })
-                    })
-*/
+                    console.log(doc.get("token"))
+
+
+
                 });
             })
             .catch(function (error) {
                 console.log("Error getting documents: ", error);
             });
-
+*/
         /* Sending push notification */
 
 
-
+        let response = fetch('https://exp.host/--/api/v2/push/send', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                to: 'ExponentPushToken[fgbh5nJQB5pnthDa5VmxYV]',
+                sound: 'default',
+                title: 'Woo App',
+                body: 'Event Request'
+            })
+        })
 
 
         //var accepted = true;
@@ -341,25 +340,26 @@ export default class Patient_AppointmentScreen extends Component {
         console.log('hospital:', this.state.hospital);
 
         console.log(this.state.date + '_' + this.state.time + '_' + initialEmail)
-
-
-        if (this.state.date == '') {
-            console.log('No date given');
-            Toast.show('Please enter appointment date');
-            return;
-        }
-
-        if (this.state.time == '') {
-            console.log('No time selected');
-            Toast.show('Please enter appointment time');
-            return;
-        }
-
-        if (this.state.hospital == '') {
-            console.log('No hospital given');
-            Toast.show('Please enter hospital');
-            return;
-        }
+        
+        
+                if (this.state.date == '') {
+                    console.log('No date given');
+                    Toast.show('Please enter appointment date');
+                    return;
+                }
+        
+                if (this.state.time == '') {
+                    console.log('No time selected');
+                    Toast.show('Please enter appointment time');
+                    return;
+                }
+        
+                if (this.state.hospital == '') {
+                    console.log('No hospital given');
+                    Toast.show('Please enter hospital');
+                    return;
+                }
+                
         const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests").doc(this.state.date + '_' + this.state.time + '_' + initialEmail);
         userRef.get()
             .then((querySnapshot) => {
@@ -506,6 +506,7 @@ export default class Patient_AppointmentScreen extends Component {
                     <TextInput
                         placeholder='(Description)'
                         autoCapitalize="none"
+
                         style={styles.bottom}
                         //multiline={true} SOURCE OF RETURN BUG
                         onChangeText={description => this.setState({ description })}
@@ -545,13 +546,15 @@ const styles = StyleSheet.create({
 
     },
     reqAll: {
-        borderRadius: 10,
-        width: '75%',
+        borderRadius: 20,
+        width: '90%',
         backgroundColor: 'white',
+        alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: 45,
-        marginBottom: 20
+        //marginLeft: 45,
+        marginBottom: 20,
+        marginTop: 220,
 
     },
     pickerContainer: {
@@ -625,12 +628,13 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(0,0,0,0.2)',
     },
     bottom: {
+
         backgroundColor: 'white',
         marginBottom: 20,
-        marginLeft: 20,
-        marginRight: 20,
+        marginLeft: 10,
+        marginRight: 10,
         height: 100,
-        width: 200,
+        width: 240,
         borderRadius: 25,
         borderWidth: 0.5,
         marginHorizontal: 20,
