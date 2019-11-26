@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, SafeAreaView, Text, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
-import { config } from '../App.js'
 
 
 export default class MedicalRecords extends Component {
     constructor(props) {
         super(props);
-        firebase.initializeApp(config)
         this.user = firebase.auth().currentUser
         this.docRef = firebase.firestore().collection("users").doc(this.user.email);
         this.records = firebase.firestore().collection("users").doc(this.user.email).collection("records")
