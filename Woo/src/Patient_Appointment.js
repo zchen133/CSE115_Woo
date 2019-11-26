@@ -526,7 +526,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         width: '90%',
         backgroundColor: 'white',
-        alignSelf:'center',
+        alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
         //marginLeft: 45,
@@ -604,7 +604,7 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(0,0,0,0.2)',
     },
     bottom: {
-        
+
         backgroundColor: 'white',
         marginBottom: 20,
         marginLeft: 10,

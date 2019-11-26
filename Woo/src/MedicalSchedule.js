@@ -78,19 +78,19 @@ export default class Schedule extends Component {
         querySnapshot.forEach((doc) => {
             console.log(doc.data().time)
             var appointmentText = "Checked in? " + doc.data().checked + "\nDepartment: " + doc.data().department +
-                    "\nDescription: " + doc.data().description +
-                    "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital +
-                    "\nat time: " + doc.data().time + "\nPatient first name: " + doc.data().first_name +
-                    "\nPatient last name: " + doc.data().last_name
+                "\nDescription: " + doc.data().description +
+                "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital +
+                "\nat time: " + doc.data().time + "\nPatient first name: " + doc.data().first_name +
+                "\nPatient last name: " + doc.data().last_name
 
-                blockAppointments.push(
-                    <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={i.toString()}>
+            blockAppointments.push(
+                <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={i.toString()}>
                       <Block row style = {{paddingHorizontal:30, paddingTop: 10}} flex = {0.56} key = {i.toString()}>
                         <Text>{appointmentText}</Text>
                       </Block>
                     </Block>
-                    )
-                i++
+            )
+            i++
         })
 
         return blockAppointments
@@ -98,17 +98,17 @@ export default class Schedule extends Component {
     async getDoctors(department, date) {
         blockAppointments = []
         var i = 1;
-        try { 
+        try {
             querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection(accountTypeString).get();
             querySnapshot.forEach((doc) => {
                 console.log(doc.id)
                 this.loadEvents(department, doc.id, date).then((res) => {
                     blockAppointments.push(res)
-                    this.setState({events: blockAppointments})
+                    this.setState({ events: blockAppointments })
                 })
             })
         } finally {
-            if ( this.state.events.length === 0) {
+            if (this.state.events.length === 0) {
                 var appointmentText = "NO APPOINTMENTS FOUND FOR THIS DATE";
                 blockAppointments.push(
                     <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key = {i.toString()}>
@@ -129,17 +129,17 @@ export default class Schedule extends Component {
     async startQuery(date) {
         var newDate = date.toString().substr(0, date.toString().length - 18)
         this.setState({ selectedStartDate: newDate })
-        this.setState({events: []})
+        this.setState({ events: [] })
         newDate = this.dayConverter(newDate)
         console.log(newDate)
         var returnValue = []
         //Get every department
-        querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").get(); 
+        querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").get();
         querySnapshot.forEach((doc) => {
             console.log(doc.id)
             this.getDoctors(doc.id, newDate).then((res) => {
                 //no op
-                this.setState({noOp: res})
+                this.setState({ noOp: res })
             })
         })
         return returnValue;

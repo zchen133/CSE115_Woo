@@ -12,7 +12,7 @@ export default class PrescriptionScreen extends Component {
         YellowBox.ignoreWarnings(['Setting a timer']);
         this.user = firebase.auth().currentUser
 
-        
+
         this.state = {
             isModalVisible: false,
             quantityList: [{ value: "mg" }, { value: "mL" }, { value: "capsule" }, { value: "tablets" }, { value: "puffs" }],
@@ -157,7 +157,8 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 2, height: 2 },
         shadowColor: 'black',
         shadowOpacity: 0.2,
-    }, textInput: {
+    },
+    textInput: {
         width: '90%',
         fontSize: 20,
         borderBottomWidth: 1
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
         //alignSelf:'flex-end',
         backgroundColor: 'white',
         width: "30%",
-        marginRight:10
+        marginRight: 10
         // borderColor: 'black',
         // borderBottomWidth: 2.5,
         //marginBottom: 30,
@@ -181,12 +182,12 @@ const styles = StyleSheet.create({
     },
     pickerContent: {
         // height: 40,
-    
+
         // alignItems: 'stretch',
         //alignSelf:'flex-end',
         backgroundColor: 'white',
         width: "25%",
-        marginRight:10
+        marginRight: 10
         // borderColor: 'black',
         // borderBottomWidth: 2.5,
         //marginBottom: 20,
