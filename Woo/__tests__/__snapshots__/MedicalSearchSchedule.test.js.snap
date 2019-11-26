@@ -1,0 +1,319 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Medical Search Schedule SnapShot 1`] = `
+<RCTScrollView
+  collapsable={false}
+  onGestureHandlerEvent={[Function]}
+  onGestureHandlerStateChange={[Function]}
+  style={
+    Object {
+      "backgroundColor": "#72C3C9",
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#ffffff",
+          "borderColor": "#ffffff",
+          "borderTopWidth": 15,
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "backgroundColor": "#ffffff",
+            "borderColor": "#ffffff",
+            "color": "#404d5b",
+            "fontSize": 20,
+            "fontWeight": "bold",
+            "opacity": 0.8,
+            "paddingBottom": 16,
+            "textAlign": "center",
+          }
+        }
+      >
+        Search for a users appointments
+      </Text>
+      <View
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "overflow": "hidden",
+              "paddingTop": 16,
+            },
+            undefined,
+            Object {
+              "height": 64,
+            },
+          ]
+        }
+      >
+        <Text />
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#f0f0f0",
+                "position": "absolute",
+                "top": 8,
+                "width": 1,
+              },
+              Object {
+                "height": 48,
+                "left": 48,
+              },
+            ]
+          }
+        />
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "height": 48,
+              "left": 56,
+              "position": "absolute",
+              "top": 24,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "rgba(105, 105, 105, 1)",
+                "fontSize": 16,
+                "fontWeight": "bold",
+              }
+            }
+          >
+            Email Address
+          </Text>
+        </View>
+        <TextInput
+          allowFontScaling={true}
+          animationDuration={300}
+          height={48}
+          iconClass={[Function]}
+          iconColor="white"
+          iconName="envelope-square"
+          iconSize={20}
+          iconWidth={40}
+          inputPadding={16}
+          inputStyle={
+            Object {
+              "color": "#000000",
+            }
+          }
+          label="Email Address"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          passiveIconColor="#a3a3a3"
+          rejectResponderTermination={true}
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "flex": 1,
+                "fontSize": 18,
+                "padding": 7,
+                "paddingLeft": 0,
+              },
+              Object {
+                "color": "white",
+                "marginLeft": 56,
+              },
+              Object {
+                "color": "#000000",
+              },
+            ]
+          }
+          underlineColorAndroid="transparent"
+        />
+      </View>
+      <View
+        accessibilityRole="button"
+        accessibilityStates={Array []}
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {},
+            ]
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "#007AFF",
+                  "fontSize": 18,
+                  "padding": 8,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            Get specfic user appointments
+          </Text>
+        </View>
+      </View>
+      <View
+        accessibilityRole="button"
+        accessibilityStates={Array []}
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {},
+            ]
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "#007AFF",
+                  "fontSize": 18,
+                  "padding": 8,
+                  "textAlign": "center",
+                },
+              ]
+            }
+          >
+            Go back
+          </Text>
+        </View>
+      </View>
+      <Text
+        style={
+          Object {
+            "backgroundColor": "#ffffff",
+            "borderColor": "#ffffff",
+            "color": "#404d5b",
+            "fontSize": 20,
+            "fontWeight": "bold",
+            "opacity": 0.8,
+            "paddingBottom": 16,
+            "textAlign": "center",
+          }
+        }
+      >
+         Appointments found for user:
+      </Text>
+      <View>
+        <View
+          style={
+            Array [
+              Object {
+                "flex": 1,
+              },
+              undefined,
+              false,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              Object {
+                "borderRadius": 10,
+              },
+              Object {
+                "shadowColor": "#000000",
+                "shadowOffset": Object {
+                  "height": 4,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.1,
+                "shadowRadius": 10,
+              },
+              undefined,
+              undefined,
+              Object {
+                "backgroundColor": "#f6f5f5",
+              },
+              Object {
+                "paddingBottom": 45,
+                "paddingTop": 30,
+                "zIndex": 1,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                },
+                undefined,
+                false,
+                Object {
+                  "flexDirection": "row",
+                },
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                Object {
+                  "paddingHorizontal": 30,
+                  "paddingTop": 10,
+                },
+              ]
+            }
+          >
+            <Text>
+              NO APPOINTMENTS FOUND FOR THIS USER
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;

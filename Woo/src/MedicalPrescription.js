@@ -6,6 +6,7 @@ import Modal from "react-native-modal";
 import { Dropdown } from 'react-native-material-dropdown'
 import Toast from 'react-native-tiny-toast';
 
+
 export default class PrescriptionScreen extends Component {
 
     constructor() {
