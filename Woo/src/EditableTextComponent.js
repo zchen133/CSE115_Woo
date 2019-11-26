@@ -97,7 +97,7 @@ class EditableText extends React.Component {
 
 EditableText.propTypes = {
     isTextEditable: PropTypes.bool,
-    text: PropTypes.string.isRequired,
+    text: PropTypes.string,
     sendText: PropTypes.func.isRequired,
     textProps: PropTypes.shape(),
     textInputProps: PropTypes.shape(),

@@ -218,7 +218,8 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 2, height: 2 },
         shadowColor: 'black',
         shadowOpacity: 0.2,
-    }, textInput: {
+    },
+    textInput: {
         width: '90%',
         fontSize: 20,
         borderBottomWidth: 1

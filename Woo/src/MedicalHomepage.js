@@ -479,8 +479,8 @@ const styles = StyleSheet.create({
         zIndex: -1
     },
     items: {
-        alignSelf:'center',
-        width:'90%',
+        alignSelf: 'center',
+        width: '90%',
         padding: 20,
         marginBottom: 15
     },

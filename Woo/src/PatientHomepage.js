@@ -91,7 +91,7 @@ class PatientHomepage extends Component {
     }
 
     onPressRequest = () => {
-        
+
     }
 
     getAppointmentList() {
@@ -459,9 +459,9 @@ const styles = StyleSheet.create({
         zIndex: -1
     },
     items: {
-        alignSelf:'center',
+        alignSelf: 'center',
         padding: 20,
-        width:'90%',
+        width: '90%',
         marginBottom: 15
     },
     buttons: {
