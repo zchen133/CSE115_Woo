@@ -4,7 +4,7 @@
     "start": "expo start",
     "test": "jest --watch --coverage=false --changedSince=origin/master",
     "testDebug": "jest -o --watch --coverage=false",
-    "testFinal": "jest", 
+    "testFinal": "jest",
     "updateSnapshots": "jest -u --coverage=false",
     "android": "expo start --android",
     "ios": "expo start --ios",

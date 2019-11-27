@@ -210,6 +210,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         borderTopWidth: 15,
         borderColor: '#ffffff',
+        marginTop:25,
     },
     titleText: {
         fontSize: 20,

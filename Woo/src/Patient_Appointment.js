@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Modal, Text, View, Button, Picker, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
+import { StyleSheet,ScrollView, Modal, Text, View, Button, Picker, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
 import { initialEmail } from './Loading.js';
@@ -389,7 +389,7 @@ export default class Patient_AppointmentScreen extends Component {
                     />
                 </View>
                 <View style={styles.reqAll}>
-
+                {/* <ScrollView showsVerticalScrollIndicator={true}> */}
                     <Dropdown
                         containerStyle={styles.pickerContainer}
                         pickerStyle={styles.pickerContent}
@@ -485,7 +485,8 @@ export default class Patient_AppointmentScreen extends Component {
                         placeholder='(Description)'
                         autoCapitalize="none"
                         
-                        style={styles.bottom}
+                        style={{width:'80%',height:'20%',borderRadius: 10,
+                        borderWidth: 0.5,borderColor: 'rgba(0,0,0,0.2)'}}
                         //multiline={true} SOURCE OF RETURN BUG
                         onChangeText={description => this.setState({ description })}
                         value={this.state.description}
@@ -495,8 +496,9 @@ export default class Patient_AppointmentScreen extends Component {
                             <Text style={{ fontSize: 20 }}>Request Appointment</Text>
                         </View>
                     </TouchableOpacity>
-
+                    {/* </ScrollView> */}
                 </View>
+               
             </View>
         );
     }

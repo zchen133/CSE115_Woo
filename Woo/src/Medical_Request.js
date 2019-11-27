@@ -240,7 +240,7 @@ export default class RequestScreen extends Component {
 
                         {this.state.appointment.map(appointment => (
                             <TouchableOpacity activeOpacity={0.8} key={`${appointment.id}`}
-                                onPress={event => { alert(`${appointment.description}`) }}>
+                                onPress={event => { alert(`${"Description: "+appointment.description}`) }}>
                                 {
                                     this.renderList(appointment)}
                             </TouchableOpacity>
