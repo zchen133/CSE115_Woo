@@ -304,15 +304,15 @@ export default createMaterialBottomTabNavigator({
             )
         }
     },
-    Checkin: {
-        screen: Patient_CheckinScreen,
-        navigationOptions: {
-            tabBarLabel: 'Check-In',
-            tabBarIcon: ({ tintColor }) => (
-                <Icon name="ios-checkmark-circle" color={tintColor} size={24} />
-            )
-        }
-    },
+    // Checkin: {
+    //     screen: Patient_CheckinScreen,
+    //     navigationOptions: {
+    //         tabBarLabel: 'Check-In',
+    //         tabBarIcon: ({ tintColor }) => (
+    //             <Icon name="ios-checkmark-circle" color={tintColor} size={24} />
+    //         )
+    //     }
+    // },
     Prescription: {
         screen: Patient_PrescriptionScreen,
         navigationOptions: {
@@ -325,7 +325,7 @@ export default createMaterialBottomTabNavigator({
 
 }, {
     initialRouteName: 'Home',
-    order: ['Profile', 'Appointment', 'Home', 'Checkin', 'Prescription'],
+    order: ['Home', 'Appointment', 'Prescription', 'Profile',],
     activeTinColor: 'white',
     shifting: true,
     barStyle: { backgroundColor: 'white' }

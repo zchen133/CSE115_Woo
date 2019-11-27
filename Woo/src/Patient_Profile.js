@@ -169,6 +169,7 @@ export default class Patient_ProfileScreen extends Component {
                             <View style={styles.editableTextBorder}>
                                 <Text style={styles.text}>{'Address: '}</Text>
                                 <EditableText text={this.state.data.address}
+                                    
                                     sendText={(address) => this.updateAddress(address)}
                                     textProps={(styles.editableText)}
                                     textInputProps={(styles.editableText)}

@@ -393,6 +393,7 @@ export default class Patient_AppointmentScreen extends Component {
                     <Dropdown
                         containerStyle={styles.pickerContainer}
                         pickerStyle={styles.pickerContent}
+                        
                         label="Hospital"
                         data={this.state.hospitalList}
                         onChangeText={(selected) => this.getDepartmentList(selected)}
@@ -550,10 +551,11 @@ const styles = StyleSheet.create({
         // height: 40,
         // alignItems: 'stretch',
         backgroundColor: 'white',
-        width: "65%",
+        marginTop:50,
+        width: "75%",
         // borderColor: 'black',
         // borderBottomWidth: 2.5,
-        marginBottom: 20,
+        //marginBottom: 20,
         //marginLeft: 50,
         //marginRight: 50,
         //paddingVertical:10,
