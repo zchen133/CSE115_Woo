@@ -6,6 +6,7 @@ import DatePicker from 'react-native-datepicker'
 import Block from './components.js';
 import Dialog from 'react-native-dialog';
 
+
 export default class Patient_ProfileScreen extends Component {
 
     constructor(props) {
@@ -105,7 +106,8 @@ export default class Patient_ProfileScreen extends Component {
                         <ScrollView style={styles.scroll}>
                             <View style={styles.editableTextBorder}>
                                 <Text style={styles.text}>{'First Name: '}</Text>
-                                <EditableText text={this.state.data.first}
+                                <EditableText 
+                                    text={this.state.data.first}
                                     sendText={(firstName) => this.updateFirstName(firstName)}
                                     textProps={(styles.editableText)}
                                     textInputProps={(styles.editableText)}

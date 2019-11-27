@@ -6,6 +6,7 @@ import Modal from "react-native-modal";
 import { Dropdown } from 'react-native-material-dropdown'
 import Toast from 'react-native-tiny-toast';
 
+
 export default class PrescriptionScreen extends Component {
 
     constructor() {
@@ -232,7 +233,8 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 2, height: 2 },
         shadowColor: 'black',
         shadowOpacity: 0.2,
-    }, textInput: {
+    },
+    textInput: {
         width: '90%',
         fontSize: 20,
         borderBottomWidth: 1
