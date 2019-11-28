@@ -84,7 +84,7 @@ export default class Schedule extends Component {
                 "\nPatient last name: " + doc.data().last_name
 
             blockAppointments.push(
-                <Block card shadow color="#f6f5f5" style={styles.pageTop} key={i.toString()}>
+                <Block card shadow color="#f6f5f5" style={{ height: 200, width: '90%', marginTop: 50, backgroundColor: '#c9d6df',alignSelf:'center' }} key={i.toString()}>
                     <Block row style={{ paddingHorizontal: 30, paddingTop: 10 }} flex={0.56} key={i.toString()}>
                         <Text>{appointmentText}</Text>
                     </Block>
@@ -175,7 +175,7 @@ export default class Schedule extends Component {
                             <Text
                                 style={styles.titleText}>Appointments: </Text>
                             <View>
-                                <Block card shadow color="#f6f5f5" style={styles.pageTop} key={i.toString()}>
+                            <Block card shadow color="#f6f5f5" style={{ height: 200, width: '90%', marginTop: 50, backgroundColor: '#c9d6df',alignSelf:'center' }} key={i.toString()}>
                                     <Block row style={{ paddingHorizontal: 30, paddingTop: 10 }} key={i.toString()}>
                                         <Text>{appointmentText}</Text>
                                     </Block>

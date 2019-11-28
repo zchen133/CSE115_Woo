@@ -13,7 +13,7 @@ var appointments = [];
 export default class Patient_AppointmentScreen extends Component {
 
 
-    state = { departmentList: [{ value: "Null" }], doctorList: [{ value: "Please Select A Department" }], availableTimeList: [{ value: "Null" }], hospitalList: [{ value: "Null" }], date: '', time: '', hospital: '', doctor: '', department: '', description: '', hospital: '', appointments: '', err: null }
+    state = { departmentList: [], doctorList: [], availableTimeList: [], hospitalList: [{ value: "Null" }], date: '', time: '', hospital: '', doctor: '', department: '', description: '', hospital: '', appointments: '', err: null }
     constructor(props) {
         super(props);
         this.docRef = firebase.firestore().collection("hospital");

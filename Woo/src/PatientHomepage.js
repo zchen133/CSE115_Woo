@@ -180,7 +180,7 @@ class PatientHomepage extends Component {
                     <View style={{ flexDirection: 'row', flex: 15, marginTop: 10, justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20 }}>
                         <TouchableOpacity onPress={event => { }}>
                             <View style={styles.button}>
-                                <Text style={{ fontSize: 15 }}>CHECK-IN</Text>
+                                <Text style={{ fontSize: 15 ,fontWeight:"bold"}}>CHECK-IN</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={event => {
@@ -200,7 +200,7 @@ class PatientHomepage extends Component {
                             );
                         }}>
                             <View style={styles.button}>
-                                <Text style={{ fontSize: 15 }}>CANCEL</Text>
+                                <Text style={{ fontSize: 15 ,fontWeight:"bold" }}>CANCEL</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
