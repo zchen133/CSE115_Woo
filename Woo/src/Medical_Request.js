@@ -207,12 +207,12 @@ export default class RequestScreen extends Component {
                     <View style={{ flexDirection: 'row', flex: 15, marginTop: 10, justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20 }}>
                         <TouchableOpacity onPress={event => { this.accept(appointment) }}>
                             <View style={styles.button}>
-                                <Text style={{ fontSize: 15 }}>ACCEPT</Text>
+                                <Text style={{ fontSize: 15,fontWeight:"bold" }}>ACCEPT</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={event => { this.decline(appointment) }}>
                             <View style={styles.button}>
-                                <Text style={{ fontSize: 15 }}>DECLINE</Text>
+                                <Text style={{ fontSize: 15,fontWeight:"bold" }}>DECLINE</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -254,9 +254,6 @@ export default class RequestScreen extends Component {
                         </TouchableOpacity>
                     </ScrollView>
                 </Block>
-
-
-
             </Block>
         );
     }
