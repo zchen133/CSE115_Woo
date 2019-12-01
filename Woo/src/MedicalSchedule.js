@@ -78,36 +78,36 @@ export default class Schedule extends Component {
         querySnapshot.forEach((doc) => {
             //console.log(doc.data().time)
             var appointmentText = "Checked in? " + doc.data().checked + "\nDepartment: " + doc.data().department +
-                    "\nDescription: " + doc.data().description +
-                    "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital +
-                    "\nat time: " + doc.data().time + "\nPatient first name: " + doc.data().first_name +
-                    "\nPatient last name: " + doc.data().last_name
+                "\nDescription: " + doc.data().description +
+                "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital +
+                "\nat time: " + doc.data().time + "\nPatient first name: " + doc.data().first_name +
+                "\nPatient last name: " + doc.data().last_name
 
-                blockAppointments.push(
-                    <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key ={i.toString()}>
-                      <Block row style = {{paddingHorizontal:30, paddingTop: 10}} flex = {0.56} key = {i.toString()}>
+            blockAppointments.push(
+                <Block card shadow color="#f6f5f5" style={{ height: 200, width: '90%', marginTop: 50, backgroundColor: '#c9d6df',alignSelf:'center' }} key={i.toString()}>
+                    <Block row style={{ paddingHorizontal: 30, paddingTop: 10 }} flex={0.56} key={i.toString()}>
                         <Text>{appointmentText}</Text>
-                      </Block>
                     </Block>
-                    )
-                i++
+                </Block>
+            )
+            i++
         })
 
         return blockAppointments
     }
     async getDoctors(department, date) {
         blockAppointments = []
-            querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection(accountTypeString).get();
-            querySnapshot.forEach((doc) => {
-                //console.log(doc.id)
-                this.loadEvents(department, doc.id, date).then((res) => {
-                    if (typeof res[0] != 'undefined' ) {
-                        console.log(typeof res[0]);
-                        blockAppointments.push(res)
-                        this.setState({events: blockAppointments})
-                    } 
-                })
+        querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection(accountTypeString).get();
+        querySnapshot.forEach((doc) => {
+            //console.log(doc.id)
+            this.loadEvents(department, doc.id, date).then((res) => {
+                if (typeof res[0] != 'undefined') {
+                    console.log(typeof res[0]);
+                    blockAppointments.push(res)
+                    this.setState({ events: blockAppointments })
+                }
             })
+        })
         return blockAppointments;
 
     }
@@ -115,17 +115,17 @@ export default class Schedule extends Component {
     async startQuery(date) {
         var newDate = date.toString().substr(0, date.toString().length - 18)
         this.setState({ selectedStartDate: newDate })
-        this.setState({events: []})
+        this.setState({ events: [] })
         newDate = this.dayConverter(newDate)
         //console.log(newDate)
         var returnValue = []
         //Get every department
-        querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").get(); 
+        querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").get();
         querySnapshot.forEach((doc) => {
             //console.log(doc.id)
             this.getDoctors(doc.id, newDate).then((res) => {
                 //no op
-                this.setState({noOp: res})
+                this.setState({ noOp: res })
             })
         })
         return returnValue;
@@ -149,56 +149,72 @@ export default class Schedule extends Component {
         const startDate = selectedStartDate ? selectedStartDate.toString() : ''
         var i = 1
         var appointmentText = "NO APPOINTMENTS FOUND FOR THIS DATE";
-        const {events} = this.state
+        const { events } = this.state
         if (this.state.events.length === 0 || typeof this.state.events[0] === undefined) {
             //console.log(typeof this.state.events[0])
             return (
-                <ScrollView style = {styles.scrollView}>
-            <View style={styles.container}>
-                <CalendarPicker
-                onDateChange={this.onDateChange}
-                />  
-                <View>
-                <Button 
+                <ScrollView style={styles.scrollView}>
+                    <View style={styles.container}>
+                        <CalendarPicker
+                            onDateChange={this.onDateChange}
+                        />
+                        
+                            <TouchableOpacity onPress={this.onPressRequests}>
+
+                                <View style={styles.button}>
+                                    <Text style={{ fontSize: 20, color: '#404d5b' }}>Go Back</Text>
+                                </View>
+
+                            </TouchableOpacity>
+                            {/* <Button 
                     title = 'Go back'
-                    onPress={this.onPressRequests} />
-                <Text
-                    style={styles.titleText}>SELECTED DATE: { startDate }</Text>
-                <Text
-                style={styles.titleText}>Appointments: </Text>
-                <View>
-                    <Block  card shadow color = "#f6f5f5" style = {styles.pageTop} key = {i.toString()}>
-                        <Block row style = {{paddingHorizontal:30, paddingTop: 10}} key = {i.toString()}>
-                            <Text>{appointmentText}</Text>
-                        </Block>
-                    </Block>
-                </View> 
-            </View>
-            </View>
-            </ScrollView>
+                    onPress={this.onPressRequests} /> */}
+                    <View style={{ alignItems: 'center' }}>
+                            <Text
+                                style={styles.titleText}>SELECTED DATE: {startDate}</Text>
+                            <Text
+                                style={styles.titleText}>Appointments: </Text>
+                            <View>
+                            <Block card shadow color="#f6f5f5" style={{ height: 200, width: '90%', marginTop: 50, backgroundColor: '#c9d6df',alignSelf:'center' }} key={i.toString()}>
+                                    <Block row style={{ paddingHorizontal: 30, paddingTop: 10 }} key={i.toString()}>
+                                        <Text>{appointmentText}</Text>
+                                    </Block>
+                                </Block>
+                            </View>
+                        </View>
+                    </View>
+                </ScrollView>
             );
         } else {
             //console.log(this.state.events[0])
-            return(
-            <ScrollView style = {styles.scrollView}>
-            <View style={styles.container}>
-                <CalendarPicker
-                onDateChange={this.onDateChange}
-                />  
-                <View>
-                <Button 
-                    title = 'Go back'
-                    onPress={this.onPressRequests} />
-                <Text
-                    style={styles.titleText}>SELECTED DATE: { startDate }</Text>
-                <Text
-                style={styles.titleText}>Appointments: </Text>
-                <View>
-                    {events}
-                </View> 
-            </View>
-            </View>
-            </ScrollView>
+            return (
+                <ScrollView style={styles.scrollView}>
+                    <View style={styles.container}>
+                        <CalendarPicker
+                            onDateChange={this.onDateChange}
+                        />
+                            <TouchableOpacity onPress={this.onPressRequests}>
+
+                                <View style={styles.button}>
+                                    <Text style={{ fontSize: 20, color: '#404d5b' }}>Go Back</Text>
+                                </View>
+
+                            </TouchableOpacity>
+                            <View style={{ alignItems: 'center' }}>
+                            {/* <Button
+                                title='Go back'
+                                onPress={this.onPressRequests} /> */}
+                            <Text
+                                style={styles.titleText}>SELECTED DATE: {startDate}</Text>
+                            <Text
+                                style={styles.titleText}>Appointments: </Text>
+                            </View>
+                            <View>
+                                {events}
+                            </View>
+                        
+                    </View>
+                </ScrollView>
             );
         }
     }
@@ -206,10 +222,11 @@ export default class Schedule extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        //flex: 1,
         backgroundColor: '#ffffff',
         borderTopWidth: 15,
         borderColor: '#ffffff',
+        marginTop: 25,
     },
     titleText: {
         fontSize: 20,
@@ -218,5 +235,22 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         backgroundColor: '#ffffff'
+    },
+    button: {
+        backgroundColor: 'white',
+        height: 50,
+        width: "90%",
+        marginHorizontal: 20,
+        borderRadius: 10,
+        //marginLeft: 50,
+        //marginRight: 50,
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 5,
+        marginBottom: 10,
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
     }
 });

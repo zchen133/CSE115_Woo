@@ -88,7 +88,7 @@ class PatientHomepage extends Component {
     }
 
     onPressRequest = () => {
-        
+
     }
 
     getAppointmentList() {
@@ -225,7 +225,7 @@ class PatientHomepage extends Component {
                     <View style={{ flexDirection: 'row', flex: 15, marginTop: 10, justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20 }}>
                         <TouchableOpacity onPress={event => { }}>
                             <View style={styles.button}>
-                                <Text style={{ fontSize: 15 }}>CHECK-IN</Text>
+                                <Text style={{ fontSize: 15 ,fontWeight:"bold"}}>CHECK-IN</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={event => {
@@ -245,7 +245,7 @@ class PatientHomepage extends Component {
                             );
                         }}>
                             <View style={styles.button}>
-                                <Text style={{ fontSize: 15 }}>CANCEL</Text>
+                                <Text style={{ fontSize: 15 ,fontWeight:"bold" }}>CANCEL</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -349,15 +349,15 @@ export default createMaterialBottomTabNavigator({
             )
         }
     },
-    Checkin: {
-        screen: Patient_CheckinScreen,
-        navigationOptions: {
-            tabBarLabel: 'Check-In',
-            tabBarIcon: ({ tintColor }) => (
-                <Icon name="ios-checkmark-circle" color={tintColor} size={24} />
-            )
-        }
-    },
+    // Checkin: {
+    //     screen: Patient_CheckinScreen,
+    //     navigationOptions: {
+    //         tabBarLabel: 'Check-In',
+    //         tabBarIcon: ({ tintColor }) => (
+    //             <Icon name="ios-checkmark-circle" color={tintColor} size={24} />
+    //         )
+    //     }
+    // },
     Prescription: {
         screen: Patient_PrescriptionScreen,
         navigationOptions: {
@@ -370,7 +370,7 @@ export default createMaterialBottomTabNavigator({
 
 }, {
     initialRouteName: 'Home',
-    order: ['Profile', 'Appointment', 'Home', 'Checkin', 'Prescription'],
+    order: ['Home', 'Appointment', 'Prescription', 'Profile',],
     activeTinColor: 'white',
     shifting: true,
     barStyle: { backgroundColor: 'white' }
@@ -456,9 +456,9 @@ const styles = StyleSheet.create({
         zIndex: -1
     },
     items: {
-        alignSelf:'center',
+        alignSelf: 'center',
         padding: 20,
-        width:'90%',
+        width: '90%',
         marginBottom: 15
     },
     buttons: {

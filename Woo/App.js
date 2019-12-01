@@ -21,7 +21,7 @@ import MedicalRecords from './src/MedicalRecords';
 import { Asset } from 'expo-asset'
 import { AppLoading } from 'expo'
 
-
+export { config }
 var config = {
     apiKey: "AIzaSyC7m3ww22OXsKOiV11C4AG5wWCZyYHgsoo",
     authDomain: "woo-firebase.firebaseapp.com",
