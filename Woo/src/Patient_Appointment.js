@@ -300,6 +300,7 @@ export default class Patient_AppointmentScreen extends Component {
 
     handleAppointmentRequest = () => {
 
+        /* Sending push notification */
         const staffRef = firebase.firestore().collection("users")
         const hospitalQuery = staffRef.where("hospital", "==", this.state.hospital)
             .where("accountType", "==", "2")
@@ -317,7 +318,7 @@ export default class Patient_AppointmentScreen extends Component {
                             to: doc.get('token'),
                             sound: 'default',
                             title: 'Woo App',
-                            body: 'Event Request'
+                            body: 'Appointment Request'
                         })
                     })
 
@@ -328,13 +329,8 @@ export default class Patient_AppointmentScreen extends Component {
                 console.log("Error getting documents: ", error);
             });
 
-        /* Sending push notification */
+        
 
-
-
-
-
-        //var accepted = true;
         console.log('date:', this.state.date);
         console.log('time:', this.state.time);
         console.log('hospital:', this.state.hospital);
