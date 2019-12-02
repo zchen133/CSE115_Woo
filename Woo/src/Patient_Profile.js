@@ -5,6 +5,7 @@ import EditableText from './EditableTextComponent.js';
 import DatePicker from 'react-native-datepicker'
 import Block from './components.js';
 import Dialog from 'react-native-dialog';
+import Toast from 'react-native-tiny-toast'
 
 
 export default class Patient_ProfileScreen extends Component {
@@ -16,9 +17,8 @@ export default class Patient_ProfileScreen extends Component {
         this.state = {
             data: null,
             visible: false,
-            //name:"Name",
-
         };
+
         this.updateFirstName = this.updateFirstName.bind(this)
         this.updateLastName = this.updateLastName.bind(this)
         this.updateAge = this.updateAge.bind(this)
@@ -34,25 +34,65 @@ export default class Patient_ProfileScreen extends Component {
     }
 
     updateAddress(input) {
+        if(input == null) {
+            Toast.show("Please enter your address")
+            return
+        }
+        if(input.length == 0) {
+            Toast.show("Please enter your address")
+            return
+        }
         this.docRef.set({ address: input }, { merge: true });
         this.getUserData()
     }
 
     updateGender(input) {
+        if(input == null) {
+            Toast.show("Please enter your gender")
+            return
+        }
+        if(input.length == 0) {
+            Toast.show("Please enter your gender")
+            return
+        }
         this.docRef.set({ gender: input }, { merge: true });
         this.getUserData()
     }
 
     updateAge(input) {
+        if(input == null) {
+            Toast.show("Please enter your age")
+            return
+        }
+        if(input.length == 0) {
+            Toast.show("Please enter your age")
+            return
+        }
         this.docRef.set({ age: input }, { merge: true });
         this.getUserData()
     }
 
     updateFirstName(input) {
+        if(input == null) {
+            Toast.show("Please enter your first name")
+            return
+        }
+        if(input.length == 0) {
+            Toast.show("Please enter your first name")
+            return
+        }
         this.docRef.set({ first: input }, { merge: true });
         this.getUserData()
     }
     updateLastName(input) {
+        if(input == null) {
+            Toast.show("Please enter your last name")
+            return
+        }
+        if(input.length == 0) {
+            Toast.show("Please enter your last name")
+            return
+        }
         this.docRef.set({ last: input }, { merge: true });
         this.getUserData()
     }
@@ -62,6 +102,14 @@ export default class Patient_ProfileScreen extends Component {
     }
 
     updateProfilePic(input) {
+        if(input == null) {
+            Toast.show("Please enter an image URL")
+            return
+        }
+        if(input.length == 0) {
+            Toast.show("Please enter an image URL")
+            return
+        }
         this.docRef.set({ profilePic: input }, { merge: true });
         this.getUserData()
         this.setState({ visible: false })
