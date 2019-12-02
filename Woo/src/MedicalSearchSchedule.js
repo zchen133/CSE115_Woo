@@ -146,6 +146,7 @@ export default class SearchSchedule extends Component {
                             iconClass={FontAwesomeIcon}
                             iconName={'envelope-square'}
                             iconColor={'white'}
+                            autoCapitalize={'none'}
                             style={{ borderTopWidth: 0.5, borderBottomWidth: 0.5, borderColor: 'rgba(0,0,0,0.2)' }}
                             inputStyle={{ color: '#000000' }}
                             onChangeText={email => { this.setState({ email }) }}

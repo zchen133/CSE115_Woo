@@ -212,6 +212,7 @@ class WooApp extends Component {
                             </TapGestureHandler>
                             <TextInput
                                 placeholder="EMAIL"
+                                autoCapitalize="none"
                                 editable={this.textInputEditable}
                                 style={styles.textInput}
                                 placeholderTextColor="black"

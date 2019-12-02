@@ -24,12 +24,14 @@ class PatientHomepage extends Component {
         this.user = firebase.auth().currentUser
         this.docRef = firebase.firestore().collection("users").doc(this.user.email);
         this.state = {
+            data:{first:"new",last:"user"},
             nowDate: new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(),
             appointment: [{ id: "null", time: "00:00", date: "2000-01-01", checked: false, userEmail: "null", first_name: "null", last_name: "null", doctor_name: "null", hospital: "null", department: "null", description: "null" }]
         }
     }
     componentDidMount() {
         this.getUserData()
+        //console.log(this.state.data)
 
         //firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(selected).get()
     }
@@ -101,7 +103,9 @@ class PatientHomepage extends Component {
         this.docRef.get().then((doc) => {
             if (doc.exists) {
                 let data = doc.data()
+                
                 this.setState({ data: data })
+                //console.log("??",this.state.data.first)
                 this.getAppointmentList()
             } else {
                 this.setState({ data: null })
@@ -151,9 +155,9 @@ class PatientHomepage extends Component {
                     </Block>
                 </Block>
                 <Block card shadow color="#f6f5f5" style={styles.pageTop}>
-                    <Block row style={{ paddingHorizontal: 30 }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e', paddingLeft: (width / 2) - 110 }}>Profile Part</Text>
-
+                    <Block style={{ paddingHorizontal: 30 }}>
+                        <Text style={{ fontSize: 25, fontWeight: 'bold', color: '#40514e' }}>{'Hi, '+ this.state.data.first + ' ' + this.state.data.last} </Text>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e',marginTop:15 }}>{'You have '+this.state.appointment.length + ' upcoming appointment(s)'} </Text>
 
                     </Block>
 
@@ -213,7 +217,7 @@ class PatientHomepage extends Component {
         return (
             <Block flex={0.8} colomn color="#e7eff6" style={styles.pageBottom}>
 
-                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e', paddingLeft: (width / 2) - 110 }}>Upcoming Appointment </Text>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e', paddingLeft: (width / 2) - 110 ,paddingTop:10}}>Upcoming Appointment </Text>
                 
                 <ScrollView showsVerticalScrollIndicator={true}>
                 <Block row style={{alignSelf:'center'}}>

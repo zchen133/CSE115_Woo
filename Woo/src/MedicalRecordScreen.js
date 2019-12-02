@@ -390,19 +390,19 @@ export default class RecordScreen extends Component {
 
                 </Block>
 
-                <Modal style={{ marginHorizontal: 20, marginVertical: 90 }} 
-                scrollHorizontal={true} 
-                avoidKeyboard={false} 
-                backdropOpacity={0.3} 
-                onSwipeComplete={() => this.setState({ isMedicalHistoryModalVisible: false })}
-                swipeDirection='right'
-                isVisible={this.state.isMedicalHistoryModalVisible}
-                animationIn="zoomInDown"
-                animationOut="zoomOutUp"
-                animationInTiming={600}
-                animationOutTiming={600}
-                backdropTransitionInTiming={600}
-                backdropTransitionOutTiming={600}>
+                <Modal style={{ marginHorizontal: 20, marginVertical: 90 }}
+                    scrollHorizontal={true}
+                    avoidKeyboard={false}
+                    backdropOpacity={0.3}
+                    onSwipeComplete={() => this.setState({ isMedicalHistoryModalVisible: false })}
+                    swipeDirection='right'
+                    isVisible={this.state.isMedicalHistoryModalVisible}
+                    animationIn="zoomInDown"
+                    animationOut="zoomOutUp"
+                    animationInTiming={600}
+                    animationOutTiming={600}
+                    backdropTransitionInTiming={600}
+                    backdropTransitionOutTiming={600}>
                     <View style={{ flex: 1, backgroundColor: '#ffffff', borderRadius: 10 }}>
                         <View style={styles.model}>
                             <Text style={{ fontSize: 20, marginTop: 0 }}>Allergies</Text>
@@ -501,19 +501,19 @@ export default class RecordScreen extends Component {
                     </View>
                 </Modal>
 
-                <Modal style={{ marginHorizontal: 20, marginVertical: 90 }} 
-                scrollHorizontal={true} 
-                avoidKeyboard={false} 
-                backdropOpacity={0.3}
-                onSwipeComplete={() => this.setState({ isTreatmentHistoryModalVisible: false })}
-                swipeDirection='right'
-                isVisible={this.state.isTreatmentHistoryModalVisible}
-                animationIn="zoomInDown"
-                animationOut="zoomOutUp"
-                animationInTiming={600}
-                animationOutTiming={600}
-                backdropTransitionInTiming={600}
-                backdropTransitionOutTiming={600}>
+                <Modal style={{ marginHorizontal: 20, marginVertical: 90 }}
+                    scrollHorizontal={true}
+                    avoidKeyboard={false}
+                    backdropOpacity={0.3}
+                    onSwipeComplete={() => this.setState({ isTreatmentHistoryModalVisible: false })}
+                    swipeDirection='right'
+                    isVisible={this.state.isTreatmentHistoryModalVisible}
+                    animationIn="zoomInDown"
+                    animationOut="zoomOutUp"
+                    animationInTiming={600}
+                    animationOutTiming={600}
+                    backdropTransitionInTiming={600}
+                    backdropTransitionOutTiming={600}>
                     <View style={{ flex: 1, backgroundColor: '#ffffff', borderRadius: 10 }}>
                         <View style={styles.model}>
                             <Text style={{ fontSize: 20, marginTop: 0 }}>Working Therapy</Text>
