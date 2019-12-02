@@ -1,38 +1,34 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, ImageBackground, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
-import * as firebase from "firebase";
+import React, { Component } from 'react'
+import { StyleSheet, Text, ImageBackground, View, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native'
+import * as firebase from "firebase"
 const { width, height } = Dimensions.get('window')
 import Block from './components.js'
 import Patient_Profile from './Patient_Profile'
-import { SafeAreaView } from 'react-navigation';
-import { ScrollView } from 'react-native-gesture-handler';
-//var appointment
+import { SafeAreaView } from 'react-navigation'
+import { ScrollView } from 'react-native-gesture-handler'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import RequestScreen from './Medical_Request.js'
 import RecordScreen from './MedicalRecordScreen.js'
 import PrescriptionScreen from './MedicalPrescription.js'
+import MedicalAppointment from './MedicalAppointment.js'
 var recordCheck = false
-
-
-import MedicalAppointment from './MedicalAppointment.js';
 
 class MedicalHomepage extends Component {
     constructor() {
         super();
-        YellowBox.ignoreWarnings(['Setting a timer']);
+        YellowBox.ignoreWarnings(['Setting a timer'])
         this.user = firebase.auth().currentUser
-
-        this.docRef = firebase.firestore().collection("users").doc(this.user.email);
+        this.docRef = firebase.firestore().collection("users").doc(this.user.email)
         this.state = {
-            appointmentNotFound:false,
+            appointmentNotFound: false,
             isHomepage: true,
             refreshTime: 0,
             patientInfo: "null",
             record: null,
             checkedColor: '',
             data: '',
-            nowDate: new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(),
+            nowDate: new Date().getFullYear() + "-" + (new Date().getMonth() < 9 ? '0' : '') + (new Date().getMonth() + 1) + "-" + (new Date().getDate() < 10 ? '0' : '') + new Date().getDate(),
             appointment: [{ id: "null", time: "00:00", date: "2000-01-01", checked: false, userEmail: "null", first_name: "null", last_name: "null", doctor_name: "null", department: "null", description: "null" }],
         }
     }
@@ -40,7 +36,6 @@ class MedicalHomepage extends Component {
     componentDidMount() {
         this.getUserData()
 
-        //firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(selected).get()
     }
 
     handleSignOut = () => {
@@ -48,8 +43,7 @@ class MedicalHomepage extends Component {
             .auth()
             .signOut()
             .then(
-                //test = 0,
-                this.props.navigation.navigate('Login'));
+            this.props.navigation.navigate('Login'));
     }
 
     onPressCalendar = () => {
@@ -59,11 +53,11 @@ class MedicalHomepage extends Component {
     getAppointmentList() {
         console.log("accountString:::" + this.state.data.accountTypeString)
         if (this.state.data.accountTypeString == 'Doctors') {
-            console.log("hospital::::" + this.state.data.department)
+            console.log("Date::::" + this.state.nowDate)
             new_array = [];
             firebase.firestore().collection("hospital").doc(this.state.data.hospital).collection("Departments").doc(this.state.data.department).collection(this.state.data.accountTypeString).doc(this.state.data.first + ' ' + this.state.data.last).collection("Appointments").doc(this.state.nowDate).collection("Time").get().then((querySnapshot) => {
-                querySnapshot.forEach(function(doc) {
-                    console.log(doc.id)
+                querySnapshot.forEach(function (doc) {
+                    console.log("doc id", doc.id)
 
                     var id = doc.id
                     var date = doc.get("date")
@@ -80,14 +74,14 @@ class MedicalHomepage extends Component {
                     new_array.push(app);
                 })
                 this.setState({ appointment: new_array })
-                if(this.state.appointment.length==0){
-                    this.setState({appointmentNotFound:true})
+                console.log("doc appointment ", this.state.appointment)
+                if (this.state.appointment.length == 0) {
+                    this.setState({ appointmentNotFound: true })
                 }
-                else{
-                    this.setState({appointmentNotFound:false})
+                else {
+                    this.setState({ appointmentNotFound: false })
                 }
-                
-                console.log("get id"+this.state.appointmentNotFound)
+                console.log("get id" + this.state.appointmentNotFound)
             })
 
         }
@@ -115,7 +109,6 @@ class MedicalHomepage extends Component {
             if (doc.exists) {
                 let data = doc.data()
                 this.setState({ patientInfo: data })
-                //console.log(this.state.data.accountTypeString)
                 this.getPatientRecord(emailAddress)
             } else {
                 this.setState({ patientInfo: null })
@@ -130,13 +123,11 @@ class MedicalHomepage extends Component {
     }
 
     getPatientRecord(emailAddress) {
-        //this.records = firebase.firestore().collection("users").doc(emailAddress).collection("records")
-        var new_array = [];
 
-        //alert(emailAddress)
+        var new_array = [];
         firebase.firestore().collection("users").doc(emailAddress).collection("records").get().then((querySnapshot) => {
 
-            querySnapshot.forEach(function(doc) {
+            querySnapshot.forEach(function (doc) {
                 if (doc.exists) {
                     console.log("exist")
 
@@ -146,17 +137,14 @@ class MedicalHomepage extends Component {
                     for (const key in data) {
                         dataToString += key + ': ' + data[key] + '\n'
                     }
-
                     var app = { id: id, data: dataToString }
                     console.log("data:::" + dataToString)
                     new_array.push(app);
                 }
             })
-            //this.setState({record:new_array})
-            console.log("record:::" + this.state.record)
 
             if (new_array != null && new_array.length != 0) {
-                //console.log("here???")
+
                 this.setState({ isHomepage: false })
                 this.setState({ record: new_array })
             } else {
@@ -172,72 +160,72 @@ class MedicalHomepage extends Component {
         if (appointment.userEmail == this.state.patientInfo.email && recordCheck != true) {
             recordCheck = true
             return (
-                <TouchableOpacity 
-                        onPress={event => {}}>
-                <Block column card shadow color="#e7eff6" style={styles.items}>
-                
-                <Block>
-            <Block color="f1f1f1"> 
-                <Text style={styles.title}>Personal Information</Text>
-                </Block>
+                <TouchableOpacity
+                    onPress={event => { }}>
+                    <Block column card shadow color="#e7eff6" style={styles.items}>
+
+                        <Block>
+                            <Block color="f1f1f1">
+                                <Text style={styles.title}>Personal Information</Text>
+                            </Block>
 
 
 
-                <Block color="#ffffff" style={{borderColor:'black',borderBottomWidth:1,borderTopWidth:1}} >
-                <Text style={styles.subText}>{"Patient Name: "+this.state.patientInfo.first + ' ' + this.state.patientInfo.last}</Text>
-                <Text style={styles.subText}>{"Patient email: "+this.state.patientInfo.email}</Text>
-                <Text style={styles.subText}>{"Patient gender: "+this.state.patientInfo.gender}</Text>
-                <Text style={styles.subText}>{"Patient age: "+this.state.patientInfo.age}</Text>
-                <Text style={styles.subText}>{"Address: "+this.state.patientInfo.address}</Text> 
-            </Block>
-            <Block color="f1f1f1"> 
-                <Text style={styles.title}>Family Medical History</Text>
-                </Block>
-                <Block color="#ffffff" style={{borderColor:'black',borderBottomWidth:1,borderTopWidth:1}}>
-                <Text style={styles.subText}>{this.state.record[0].data}</Text>
-                </Block>
+                            <Block color="#ffffff" style={{ borderColor: 'black', borderBottomWidth: 1, borderTopWidth: 1 }} >
+                                <Text style={styles.subText}>{"Patient Name: " + this.state.patientInfo.first + ' ' + this.state.patientInfo.last}</Text>
+                                <Text style={styles.subText}>{"Patient email: " + this.state.patientInfo.email}</Text>
+                                <Text style={styles.subText}>{"Patient gender: " + this.state.patientInfo.gender}</Text>
+                                <Text style={styles.subText}>{"Patient age: " + this.state.patientInfo.age}</Text>
+                                <Text style={styles.subText}>{"Address: " + this.state.patientInfo.address}</Text>
+                            </Block>
+                            <Block color="f1f1f1">
+                                <Text style={styles.title}>Family Medical History</Text>
+                            </Block>
+                            <Block color="#ffffff" style={{ borderColor: 'black', borderBottomWidth: 1, borderTopWidth: 1 }}>
+                                <Text style={styles.subText}>{this.state.record[0].data}</Text>
+                            </Block>
 
-                <Block color="f1f1f1"> 
-                <Text style={styles.title}>Medical History</Text>
-                </Block>
-                <Block color="#ffffff" style={{borderColor:'black',borderBottomWidth:1,borderTopWidth:1}}>
-                <Text style={styles.subText}>{this.state.record[1].data}</Text>
-                </Block>
+                            <Block color="f1f1f1">
+                                <Text style={styles.title}>Medical History</Text>
+                            </Block>
+                            <Block color="#ffffff" style={{ borderColor: 'black', borderBottomWidth: 1, borderTopWidth: 1 }}>
+                                <Text style={styles.subText}>{this.state.record[1].data}</Text>
+                            </Block>
 
-                <Block color="f1f1f1"> 
-                <Text style={styles.title}>MedicalDirectives</Text>
-                </Block>
-                <Block color="#ffffff" style={{borderColor:'black',borderBottomWidth:1,borderTopWidth:1}}>
-                <Text style={styles.subText}>{this.state.record[2].data}</Text>
-                </Block>
+                            <Block color="f1f1f1">
+                                <Text style={styles.title}>MedicalDirectives</Text>
+                            </Block>
+                            <Block color="#ffffff" style={{ borderColor: 'black', borderBottomWidth: 1, borderTopWidth: 1 }}>
+                                <Text style={styles.subText}>{this.state.record[2].data}</Text>
+                            </Block>
 
-                <Block color="f1f1f1"> 
-                <Text style={styles.title}>Medication History</Text>
-                </Block>
-                <Block color="#ffffff" style={{borderColor:'black',borderBottomWidth:1,borderTopWidth:1}}>
-                <Text style={styles.subText}>{this.state.record[3].data}</Text>
-                </Block>
+                            <Block color="f1f1f1">
+                                <Text style={styles.title}>Medication History</Text>
+                            </Block>
+                            <Block color="#ffffff" style={{ borderColor: 'black', borderBottomWidth: 1, borderTopWidth: 1 }}>
+                                <Text style={styles.subText}>{this.state.record[3].data}</Text>
+                            </Block>
 
-                <Block color="f1f1f1"> 
-                <Text style={styles.title}>Treatment History</Text>
-                </Block>
-                <Block color="#ffffff" style={{borderColor:'black',borderBottomWidth:1,borderTopWidth:1}}>
-                <Text style={styles.subText}>{this.state.record[5].data}</Text>
-                </Block>
-                
-                </Block>
-                
-                <TouchableOpacity 
-                        onPress={event => {this.setState({isHomepage:true}),this.setState({record:null}),recordCheck=false}}>
+                            <Block color="f1f1f1">
+                                <Text style={styles.title}>Treatment History</Text>
+                            </Block>
+                            <Block color="#ffffff" style={{ borderColor: 'black', borderBottomWidth: 1, borderTopWidth: 1 }}>
+                                <Text style={styles.subText}>{this.state.record[5].data}</Text>
+                            </Block>
+
+                        </Block>
+
+                        <TouchableOpacity
+                            onPress={event => { this.setState({ isHomepage: true }), this.setState({ record: null }), recordCheck = false }}>
                             <View style={styles.closeButton}>
-                            <Text style={{fontSize: 20, fontWeight: 'bold'}}>Back</Text>
+                                <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Back</Text>
                             </View>
-                        
+
                         </TouchableOpacity>
 
-            
-            </Block>
-            </TouchableOpacity>
+
+                    </Block>
+                </TouchableOpacity>
 
             );
 
@@ -259,15 +247,9 @@ class MedicalHomepage extends Component {
                 </Block>
                 <Block card shadow color="#f6f5f5" style={styles.pageTop}>
                     <Block style={{ paddingHorizontal: 30 }}>
-                        <Text style={{ fontSize: 25, fontWeight: 'bold', color: '#40514e' }}>{'Hi, '+ this.state.data.first + ' ' + this.state.data.last} </Text>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e',marginTop:15 }}>{'You have '+this.state.appointment.length + ' upcoming appointment(s) for today'} </Text>
-                        
-                        
-                            
-                           
-                        {/* <Button
-                    title='Just For Test'
-                    onPress={this.onPressTest} />*/}
+                        <Text style={{ fontSize: 25, fontWeight: 'bold', color: '#40514e' }}>{'Hi, ' + this.state.data.first + ' ' + this.state.data.last} </Text>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e', marginTop: 15 }}>{'You have ' + this.state.appointment.length + ' upcoming appointment(s) for today'} </Text>
+
                     </Block>
 
                 </Block>
@@ -276,33 +258,26 @@ class MedicalHomepage extends Component {
         );
     }
     renderList(appointment) {
-        console.log('appointment length'+this.state.appointmentNotFound)
-        
-            console.log('inside'+appointment.id)
+        console.log('appointment length' + this.state.appointmentNotFound)
+
+        console.log('inside' + appointment.id)
         if (this.state.record == null || this.state.record.length == 0) {
             return (
                 <Block row card shadow color="#ffffff" style={styles.items}>
-                <Block flex={0.7}>
-                    <Image
-                        source={require('../assets/calendar.jpg')}
-                        style={{ flex: 1, height: null, width: null }}
-                    />
+                    <Block flex={0.7}>
+                        <Image
+                            source={require('../assets/calendar.jpg')}
+                            style={{ flex: 1, height: null, width: null }}
+                        />
+                    </Block>
+                    <Text style={{ paddingLeft: 25 }}>{"Time: " + appointment.time + '\n' + "Date: " + appointment.date + '\n' + "Patient Name: " + appointment.first_name + " " + appointment.last_name + '\n'}</Text>
                 </Block>
-                
-                <Text style={{ paddingLeft: 25 }}>{"Time: "+appointment.time + '\n' + "Date: "+appointment.date + '\n' + "Patient Name: "+appointment.first_name+" "+appointment.last_name+'\n'}</Text>
-                
-
-                
-            </Block>
             );
         } else {
             return (
                 this.renderRecord(appointment)
             );
         }
-    
-    
-    
     }
 
     test() {
@@ -314,59 +289,56 @@ class MedicalHomepage extends Component {
         return (
             <Block flex={0.8} colomn color="#e7eff6" style={styles.pageBottom}>
 
-                <Text style={{ fontSize: 20, fontWeight: 'bold',alignSelf:'center' }}>Appointment for today</Text>
-
-                
-
+                <Text style={{ fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>Appointment for today</Text>
                 <ScrollView showsVerticalScrollIndicator={true}>
-                {this.state.isHomepage?(
-                    <Block row style={{alignSelf:'center'}}>
-                <TouchableOpacity 
-                        onPress={event=>this.onPressCalendar()}>
-                        <View style={styles.refreshButton}>
-                            <Icon name="ios-search" color="#000000" size={24} />
-                        </View>
-                        
-                </TouchableOpacity>
-                
-                <TouchableOpacity 
-                        onPress={event =>this.getAppointmentList()}>
-                        <View style={styles.refreshButton}>
-                            <Icon name="ios-refresh" color="#000000" size={24} />
-                        </View>
-                        
-                </TouchableOpacity>
+                    {this.state.isHomepage ? (
+                        <Block row style={{ alignSelf: 'center' }}>
+                            <TouchableOpacity
+                                onPress={event => this.onPressCalendar()}>
+                                <View style={styles.refreshButton}>
+                                    <Icon name="ios-search" color="#000000" size={24} />
+                                </View>
 
-                <TouchableOpacity 
-                        onPress={event =>this.handleSignOut()}>
-                        <View style={styles.refreshButton}>
-                            <Icon name="ios-log-out" color="#000000" size={24} />
-                        </View>
-                        
-                </TouchableOpacity>
-                </Block>
-                ): null
-                }
-                {this.state.appointment.length>0?(
-                    this.state.appointment.map(appointment => (
-                        <TouchableOpacity activeOpacity={0.8} key={`${appointment.id+appointment.date}`}
-                            onPress={event => {this.getPatientInfo(`${appointment.userEmail}`)}}>
-                            {this.renderList(appointment)}
-                        </TouchableOpacity>
-                    ))
-                    ):(
-                        <Block style={{alignItems:'center',alignSelf:'center',justifyContent:'center',marginTop:50}}>
-                        <Image
-                        source={require('../assets/nurse.png')}
-                        style={{ flex: 1, height: 200, width: 200 }}
-                    /> 
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e' }}>Appointment Not Found</Text>
-                    </Block>
-                    )}
-                
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={event => this.getAppointmentList()}>
+                                <View style={styles.refreshButton}>
+                                    <Icon name="ios-refresh" color="#000000" size={24} />
+                                </View>
+
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={event => this.handleSignOut()}>
+                                <View style={styles.refreshButton}>
+                                    <Icon name="ios-log-out" color="#000000" size={24} />
+                                </View>
+
+                            </TouchableOpacity>
+                        </Block>
+                    ) : null
+                    }
+                    {this.state.appointment.length > 0 ? (
+                        this.state.appointment.map(appointment => (
+                            <TouchableOpacity activeOpacity={0.8} key={`${appointment.id + appointment.date}`}
+                                onPress={event => { this.getPatientInfo(`${appointment.userEmail}`) }}>
+                                {this.renderList(appointment)}
+                            </TouchableOpacity>
+                        ))
+                    ) : (
+                            <Block style={{ alignItems: 'center', alignSelf: 'center', justifyContent: 'center', marginTop: 50 }}>
+                                <Image
+                                    source={require('../assets/nurse.png')}
+                                    style={{ flex: 1, height: 200, width: 200 }}
+                                />
+                                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e' }}>Appointment Not Found</Text>
+                            </Block>
+                        )}
+
                 </ScrollView>
 
-                
+
 
             </Block>
         );
