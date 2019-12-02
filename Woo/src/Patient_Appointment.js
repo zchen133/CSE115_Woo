@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Modal, Text, View, Button, Picker, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
+import { StyleSheet,ScrollView, Modal, Text, View, Button, Picker, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
 import { initialEmail } from './Loading.js';
@@ -13,7 +13,7 @@ var appointments = [];
 export default class Patient_AppointmentScreen extends Component {
 
 
-    state = { departmentList: [{ value: "Null" }], doctorList: [{ value: "Please Select A Department" }], availableTimeList: [{ value: "Null" }], hospitalList: [{ value: "Null" }], date: '', time: '', hospital: '', doctor: '', department: '', description: '', hospital: '', appointments: '', err: null }
+    state = { departmentList: [], doctorList: [], availableTimeList: [], hospitalList: [{ value: "Null" }], date: '', time: '', hospital: '', doctor: '', department: '', description: '', hospital: '', appointments: '', err: null }
     constructor(props) {
         super(props);
         this.docRef = firebase.firestore().collection("hospital");
@@ -406,10 +406,11 @@ export default class Patient_AppointmentScreen extends Component {
                     />
                 </View>
                 <View style={styles.reqAll}>
-
+                {/* <ScrollView showsVerticalScrollIndicator={true}> */}
                     <Dropdown
                         containerStyle={styles.pickerContainer}
                         pickerStyle={styles.pickerContent}
+                        
                         label="Hospital"
                         data={this.state.hospitalList}
                         onChangeText={(selected) => this.getDepartmentList(selected)}
@@ -502,8 +503,9 @@ export default class Patient_AppointmentScreen extends Component {
                     <TextInput
                         placeholder='(Description)'
                         autoCapitalize="none"
-
-                        style={styles.bottom}
+                        
+                        style={{width:'80%',height:'20%',borderRadius: 10,
+                        borderWidth: 0.5,borderColor: 'rgba(0,0,0,0.2)'}}
                         //multiline={true} SOURCE OF RETURN BUG
                         onChangeText={description => this.setState({ description })}
                         value={this.state.description}
@@ -513,8 +515,9 @@ export default class Patient_AppointmentScreen extends Component {
                             <Text style={{ fontSize: 20 }}>Request Appointment</Text>
                         </View>
                     </TouchableOpacity>
-
+                    {/* </ScrollView> */}
                 </View>
+               
             </View>
         );
     }
@@ -570,10 +573,11 @@ const styles = StyleSheet.create({
         // height: 40,
         // alignItems: 'stretch',
         backgroundColor: 'white',
-        width: "65%",
+        marginTop:50,
+        width: "75%",
         // borderColor: 'black',
         // borderBottomWidth: 2.5,
-        marginBottom: 20,
+        //marginBottom: 20,
         //marginLeft: 50,
         //marginRight: 50,
         //paddingVertical:10,

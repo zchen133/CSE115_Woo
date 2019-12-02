@@ -12,7 +12,7 @@ var initialEmail = 'initialEmail';
 export default class AdminHomepage extends Component {
     constructor() {
         super();
-        YellowBox.ignoreWarnings(['Setting a timer']);
+        YellowBox.ignoreWarnings(['Setting a timer'])
         this.user = firebase.auth().currentUser
         this.docRef = firebase.firestore().collection("users").doc(this.user.email);
     }

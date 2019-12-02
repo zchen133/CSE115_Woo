@@ -2,9 +2,16 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
+<<<<<<< HEAD
   "packagerPid": 4756,
   "expoServerNgrokUrl": "https://zd-iqs.arhartwe.woo.exp.direct",
   "packagerNgrokUrl": "https://packager.zd-iqs.arhartwe.woo.exp.direct",
   "ngrokPid": 1692,
+=======
+  "packagerPid": 12408,
+  "expoServerNgrokUrl": "https://a7-pgu.howardng.woo.exp.direct",
+  "packagerNgrokUrl": "https://packager.a7-pgu.howardng.woo.exp.direct",
+  "ngrokPid": 11156,
+>>>>>>> 621e1a87e4bbe480ff2fd573655f8450bfb9ceb2
   "webpackServerPort": null
 }
