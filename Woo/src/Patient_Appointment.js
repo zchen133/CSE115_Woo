@@ -553,7 +553,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         //marginLeft: 45,
         marginBottom: 20,
-        marginTop: 220,
 
     },
     pickerContainer: {
