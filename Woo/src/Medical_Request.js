@@ -35,7 +35,6 @@ export default class RequestScreen extends Component {
     getAllRequests = () => {
 
         //depart_set = new Set([]);
-        console.log("hospital is " + hospital)
         this.docRefRequests = firebase.firestore().collection("hospital").doc(hospital).collection("requests");
         new_array = [];
         this.docRefRequests.get().then((querySnapshot) => {
@@ -51,25 +50,12 @@ export default class RequestScreen extends Component {
                 var first_name = doc.get("first_name")
                 var last_name = doc.get("last_name")
                 var app = { id: id, time: time, date: date, userEmail: userEmail, department: department, description: description, doctor_name: doctor_name, first_name: first_name, last_name: last_name }
-                console.log("date", date);
-                console.log("time", time)
-                console.log("userEmail", userEmail)
-                console.log("doctor name", doctor_name)
                 new_array.push(app);
 
-                console.log("app", app.time);
             });
-            // if(new_array.length <1){
-            //     this.setState({requestColor:"#000000"})
-            // }
-            //appointment=new_array 
             this.setState({ appointment: new_array })
-            //console.log("appointment:"+this.state.appointment);
 
         });
-        //console.log("result new    array:"+new_array);
-        //this.setState({appointment:new_array})
-        //this.setState({departmentList:new_array})
     }
 
     getUserData() {
@@ -77,14 +63,11 @@ export default class RequestScreen extends Component {
             if (doc.exists) {
                 let data = doc.data()
                 this.setState({ data: data })
-                console.log(data)
             } else {
                 this.setState({ data: null })
-                console.log('No such document')
             }
         }).catch((err) => {
             this.setState({ data: null })
-            console.log('Error: ', err)
         })
     }
 
@@ -93,7 +76,6 @@ export default class RequestScreen extends Component {
           /* Send notification to user of accepted request */
           const acceptRef = firebase.firestore().collection("users").doc(appointment.userEmail).get()
           .then(function (doc) {
-                  console.log("GETTING USER TOKEN: ", doc.get("token"))
                   let response = fetch('https://exp.host/--/api/v2/push/send', {
                       method: 'POST',
                       headers: {
@@ -109,7 +91,6 @@ export default class RequestScreen extends Component {
                   })      
           })
           .catch(function (error) {
-              console.log("Error getting documents: ", error);
           });
           
 
@@ -137,7 +118,6 @@ export default class RequestScreen extends Component {
         })
 
         this.userEventsRef = firebase.firestore().collection("users").doc(appointment.userEmail).collection("events");
-        console.log("??????" + hospital)
         this.userEventsRef.doc(appointment.date + "_" + appointment.time + "_" + hospital).set({
             date: appointment.date,
             time: appointment.time,
@@ -150,27 +130,20 @@ export default class RequestScreen extends Component {
             email: appointment.userEmail,
             checked: false
         }).catch(function (error) {
-            console.log("Error removing document ", error);
             alert("error in docRef")
         });
 
         this.docRef = firebase.firestore().collection("hospital").doc(hospital).collection("requests");
         this.docRef.doc(appointment.id).delete().then(function () {
-            console.log("document deleted");
-            //alert("Deleted")
         }).catch(function (error) {
-            console.log("Error removing document ", error);
             alert("error in docRef")
         });
 
         this.userRef = firebase.firestore().collection("users").doc(appointment.userEmail).collection("requests");
-        //console.log("userEmaillll",appointment.id)
         this.userRef.doc(appointment.id).delete().then(() => {
-            console.log("document deleted");
             alert("Accepted!")
             this.getAllRequests()
         }).catch(function (error) {
-            console.log("Error removing document ", error);
             alert("error in userRef")
         });
         
@@ -183,7 +156,6 @@ export default class RequestScreen extends Component {
             /* Send notification to user of declined request */
          const acceptRef = firebase.firestore().collection("users").doc(appointment.userEmail).get()
          .then(function (doc) {
-                 console.log(doc.get("token"))
                  let response = fetch('https://exp.host/--/api/v2/push/send', {
                      method: 'POST',
                      headers: {
@@ -199,26 +171,20 @@ export default class RequestScreen extends Component {
                  })      
          })
          .catch(function (error) {
-             console.log("Error getting documents: ", error);
          });
 
         this.docRef = firebase.firestore().collection("hospital").doc(hospital).collection("requests");
         this.docRef.doc(appointment.id).delete().then(function () {
-            console.log("document deleted");
             //alert("Deleted")
         }).catch(function (error) {
-            console.log("Error removing document ", error);
             alert("error in docRef")
         });
 
         this.userRef = firebase.firestore().collection("users").doc(appointment.userEmail).collection("requests");
-        //console.log("userEmaillll",appointment.id)
         this.userRef.doc(appointment.id).delete().then(() => {
-            console.log("document deleted");
             alert("Deleted!")
             this.getAllRequests()
         }).catch(function (error) {
-            console.log("Error removing document ", error);
             alert("error in userRef")
         });
 

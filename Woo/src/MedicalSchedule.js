@@ -76,7 +76,6 @@ export default class Schedule extends Component {
         var i = 1
         querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection(accountTypeString).doc(doctorName).collection("Appointments").doc(date).collection("Time").get();
         querySnapshot.forEach((doc) => {
-            //console.log(doc.data().time)
             var appointmentText = "Checked in? " + doc.data().checked + "\nDepartment: " + doc.data().department +
                 "\nDescription: " + doc.data().description +
                 "\nDoctor: " + doc.data().doctor + "\nHospital: " + doc.data().hospital +
@@ -99,10 +98,8 @@ export default class Schedule extends Component {
         blockAppointments = []
         querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection(accountTypeString).get();
         querySnapshot.forEach((doc) => {
-            //console.log(doc.id)
             this.loadEvents(department, doc.id, date).then((res) => {
                 if (typeof res[0] != 'undefined') {
-                    console.log(typeof res[0]);
                     blockAppointments.push(res)
                     this.setState({ events: blockAppointments })
                 }
@@ -117,12 +114,10 @@ export default class Schedule extends Component {
         this.setState({ selectedStartDate: newDate })
         this.setState({ events: [] })
         newDate = this.dayConverter(newDate)
-        //console.log(newDate)
         var returnValue = []
         //Get every department
         querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").get();
         querySnapshot.forEach((doc) => {
-            //console.log(doc.id)
             this.getDoctors(doc.id, newDate).then((res) => {
                 //no op
                 this.setState({ noOp: res })
@@ -151,7 +146,6 @@ export default class Schedule extends Component {
         var appointmentText = "NO APPOINTMENTS FOUND FOR THIS DATE";
         const { events } = this.state
         if (this.state.events.length === 0 || typeof this.state.events[0] === undefined) {
-            //console.log(typeof this.state.events[0])
             return (
                 <ScrollView style={styles.scrollView}>
                     <View style={styles.container}>
@@ -186,7 +180,6 @@ export default class Schedule extends Component {
                 </ScrollView>
             );
         } else {
-            //console.log(this.state.events[0])
             return (
                 <ScrollView style={styles.scrollView}>
                     <View style={styles.container}>

@@ -38,11 +38,9 @@ export default class MedicalRecords extends Component {
                 this.setState({ data: data })
             } else {
                 this.setState({ data: null })
-                console.log('No such document')
             }
         }).catch((err) => {
             this.setState({ data: null })
-            console.log('Error: ', err)
         })
     }
 
@@ -57,11 +55,9 @@ export default class MedicalRecords extends Component {
                 }
                 return total
             } else {
-                console.log('No Family Medical History')
                 return ""
             }
         }).catch((err) => {
-            console.log('Error: ', err)
             return ""
         })
         this.setState({ familyHistory: history })
@@ -78,11 +74,9 @@ export default class MedicalRecords extends Component {
                 }
                 return total
             } else {
-                console.log('No Medical History')
                 return ""
             }
         }).catch((err) => {
-            console.log('Error: ', err)
             return ""
         })
         this.setState({ medicalHistory: history })
@@ -99,11 +93,9 @@ export default class MedicalRecords extends Component {
                 }
                 return total
             } else {
-                console.log('No Medication History')
                 return ""
             }
         }).catch((err) => {
-            console.log('Error: ', err)
             return ""
         })
         this.setState({ medicationHistory: history })
@@ -120,11 +112,9 @@ export default class MedicalRecords extends Component {
                 }
                 return total
             } else {
-                console.log('No Treatment History')
                 return ""
             }
         }).catch((err) => {
-            console.log('Error: ', err)
             return ""
         })
         this.setState({ treatmentHistory: history })

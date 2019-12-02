@@ -29,12 +29,10 @@ export default class SearchSchedule extends Component {
 
     //Part 0
     onQuery = (email) => {
-        console.log('Searching for this user ' + email);
         this.startQuery(email).then((res) => {
             this.setState({
                 noOp: res,
             })
-            console.log("Inquiry appointments: " + res);
         })
     }
 
@@ -46,7 +44,6 @@ export default class SearchSchedule extends Component {
         //Get every hospital
         querySnapshot = await firebase.firestore().collection("hospital").get();
         querySnapshot.forEach((doc) => {
-            //console.log("This hospital " + doc.id)
             this.getDeparments(doc.id, email).then((res) => {
                 //no op
                 this.setState({ noOp: res })
@@ -61,7 +58,6 @@ export default class SearchSchedule extends Component {
         noOpArray = []
         querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").get() //doc(department).collection(accountTypeString).get();
         querySnapshot.forEach((doc) => {
-            //console.log("This department " + doc.id)
             this.getDoctors(doc.id, hospital, email).then((res) => {
                 this.setState({ noOp: res })
             })
@@ -75,7 +71,6 @@ export default class SearchSchedule extends Component {
         noOpArray = []
         querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection("Doctors").get();
         querySnapshot.forEach((doc) => {
-            //console.log("This doctor " + doc.id)
             this.getDates(doc.id, department, hospital, email).then((res) => {
                 this.setState({ noOp: res })
             })
@@ -91,7 +86,6 @@ export default class SearchSchedule extends Component {
         var i = 1
         querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection("Doctors").doc(doctorName).collection("Appointments").get();
         querySnapshot.forEach((doc) => {
-            console.log("This date: " + doc.id)
             this.loadEvents(doc.id, doctorName, department, hospital, email).then((res) => {
                 if (typeof res[0] != 'undefined') {
                     blockAppointments.push(res)
@@ -110,7 +104,6 @@ export default class SearchSchedule extends Component {
         var i = 1
         querySnapshot = await firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(department).collection("Doctors").doc(doctorName).collection("Appointments").doc(date).collection("Time").get();
         querySnapshot.forEach((doc) => {
-            console.log(doc.data().time)
             if (email === doc.data().email) {
                 var appointmentText = "Checked in? " + doc.data().checked + "\nDepartment: " + doc.data().department +
                     "\nDescription: " + doc.data().description +

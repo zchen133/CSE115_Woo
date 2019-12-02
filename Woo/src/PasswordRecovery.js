@@ -10,18 +10,15 @@ export default class Recovery extends Component {
 
     sendEmail = () => {
         if (this.state.email == '') {
-            console.log('No email selected');
             Toast.show('Please enter your email');
             return;
         }
 
-        console.log('Sending email...' + this.state.email);
 
         firebase
             .auth()
             .sendPasswordResetEmail(this.state.email)
             .catch(error => { this.setState({ err: error.message }), Toast.show(error.message) });
-        console.log(this.state.err);
 
 
     }

@@ -40,17 +40,12 @@ export default class Patient_AppointmentScreen extends Component {
             querySnapshot.forEach(function (doc) {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.id
-                console.log("sa:", doc.id);
                 depart_set.add(doc.id);
 
-                console.log("smg");
             });
-            console.log("smg");
-
             depart_set.forEach(function (val) {
                 new_array.push({ value: val })
                 //new_array["value"] = val;
-                console.log("new_array: ", new_array);
             })
         });
         this.setState({ hospitalList: new_array })
@@ -69,21 +64,15 @@ export default class Patient_AppointmentScreen extends Component {
             querySnapshot.forEach(function (doc) {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.id
-                console.log("sa:", doc.id);
                 depart_set.add(doc.id);
 
-                console.log("smg");
             });
-            console.log("smg");
 
             depart_set.forEach(function (val) {
                 new_array.push({ value: val })
-                //new_array["value"] = val;
-                console.log("new_array: ", new_array);
             })
         });
         this.setState({ departmentList: new_array })
-        //this.setState({doctorList:new_array})
     }
     getDoctorList = (selected) => {
         this.setState({ department: selected });
@@ -102,36 +91,16 @@ export default class Patient_AppointmentScreen extends Component {
             querySnapshot.forEach(function (doc) {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.id
-                console.log("sa:", doc.id);
                 depart_set.add(doc.id);
-
-                console.log("smg");
             });
-            console.log("smg");
-
             depart_set.forEach(function (val) {
                 new_array.push({ value: val })
                 //new_array["value"] = val;
-                console.log("new_array: ", new_array);
             })
         });
         this.setState({ doctorList: new_array })
         //this.setState({doctorList:new_array})
-        console.log("selected:", selected)
     }
-    // getUserData = () => {
-    //     this.docRef.get().then(function(querySnapshot) {
-    //         querySnapshot.forEach(function(doc) {
-    //             // doc.data() is never undefined for query doc snapshots
-    //             let data = doc.id
-    //             console.log(doc.id);
-    //             //this.setState({ departmentList: ["addad"] });
-    //             //this.setState({department:[data]})
-    //             console.log("smg");
-    //         });
-    //     });
-
-    // }
 
     getAvailableTimeListCal = () => {
         all_time = new Set(["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00"]);
@@ -139,11 +108,9 @@ export default class Patient_AppointmentScreen extends Component {
         new_array = [];
         firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(this.state.selectedDate).collection("Time").get().then(function (querySnapshot) {
             querySnapshot.forEach(function (doc) {
-                console.log("sa:", doc.id);
                 unavailable_time.add(doc.id);
 
             });
-            console.log("date exist");
             var available_time = new Set([...all_time].filter(x => !unavailable_time.has(x)));
             available_time.forEach(function (val) {
                 new_array.push({ value: val });
@@ -171,13 +138,8 @@ export default class Patient_AppointmentScreen extends Component {
         all_time = new Set(["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00"]);
         unavailable_time = new Set([])
         new_array = [];
-        console.log("selected depart:", this.state.selectedDepartment)
-        console.log("selected doctor:", this.state.selectedDoctor)
-        console.log("selected date: ", this.state.selectedDate)
-        console.log("date: ", this.state.date)
         firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(selected).get().then((querySnapshot) => {
             if (querySnapshot.exists) {
-                console.log("Yes such document!");
                 this.getAvailableTimeListCal()
                 //ParentClass.prototype.this.getAvailableTimeListCal().call();
             } else {
@@ -186,7 +148,6 @@ export default class Patient_AppointmentScreen extends Component {
                     new_array.push({ value: val });
                 });
                 this.setState({ availableTimeList: new_array })
-                console.log("No such document!");
             }
 
         });
@@ -207,7 +168,6 @@ export default class Patient_AppointmentScreen extends Component {
         this.setState({ description: '' })
     }
     logSetElements(value1, value2, set) {
-        console.log("s[" + value1 + "] = " + value2);
     }
 
     // sleep = (milliseconds) => {
@@ -216,28 +176,20 @@ export default class Patient_AppointmentScreen extends Component {
     handleAppointmentRequestOld = () => {
 
         var accepted = true;
-        console.log('date:', this.state.date);
-        console.log('time:', this.state.time);
-        console.log('hospital:', this.state.hospital);
-
         if (this.state.date == '') {
-            console.log('No date given');
             Toast.show('Please enter appointment date');
             return;
         }
 
         if (this.state.time == '') {
-            console.log('No time selected');
             Toast.show('Please enter appointment time');
             return;
         }
 
         if (this.state.hospital == '') {
-            console.log('No hospital given');
             Toast.show('Please enter hospital');
             return;
         }
-        console.log(accepted)
 
         const eventrefPatient = firebase.firestore().collection("users").doc(initialEmail).collection("requests");
         eventrefPatient.doc(this.state.date + '_' + this.state.time + '_' + initialEmail).set({
@@ -252,13 +204,11 @@ export default class Patient_AppointmentScreen extends Component {
             email: initialEmail
 
         })
-        console.log(this.state.date + '_' + this.state.time + '_' + initialEmail)
         const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests").doc(this.state.date + '_' + this.state.time + '_' + initialEmail);
         userRef.get()
             .then(function (querySnapshot) {
                 if (querySnapshot.exists) {
                     accepted = false;
-                    console.log("duihao", accepted)
                 }
             })
 
@@ -279,7 +229,6 @@ export default class Patient_AppointmentScreen extends Component {
                 last_name: last,
                 email: initialEmail
             })
-            //console.log("date is",this.state.date)
         }
 
         if (!(accepted)) {
@@ -287,9 +236,7 @@ export default class Patient_AppointmentScreen extends Component {
             Toast.show('Request Denied');
             const eventref = firebase.firestore().collection("users").doc(initialEmail).collection("requests");
             eventref.doc(this.state.date + '_' + this.state.time + '_' + initialEmail).delete().then(function () {
-                console.log("document deleted");
             }).catch(function (error) {
-                console.log("Error removing document ", error);
             });
 
 
@@ -307,7 +254,6 @@ export default class Patient_AppointmentScreen extends Component {
             .get()
             .then(function (querySnapshot) {
                 querySnapshot.forEach(function (doc) {
-                    console.log(doc.get("token"))
                     let response = fetch('https://exp.host/--/api/v2/push/send', {
                         method: 'POST',
                         headers: {
@@ -326,32 +272,18 @@ export default class Patient_AppointmentScreen extends Component {
                 });
             })
             .catch(function (error) {
-                console.log("Error getting documents: ", error);
             });
-
-        
-
-        console.log('date:', this.state.date);
-        console.log('time:', this.state.time);
-        console.log('hospital:', this.state.hospital);
-
-        console.log(this.state.date + '_' + this.state.time + '_' + initialEmail)
-        
-        
                 if (this.state.date == '') {
-                    console.log('No date given');
                     Toast.show('Please enter appointment date');
                     return;
                 }
         
                 if (this.state.time == '') {
-                    console.log('No time selected');
                     Toast.show('Please enter appointment time');
                     return;
                 }
         
                 if (this.state.hospital == '') {
-                    console.log('No hospital given');
                     Toast.show('Please enter hospital');
                     return;
                 }

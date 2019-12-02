@@ -66,7 +66,6 @@ export default class PrescriptionScreen extends Component {
         else {
             Toast.show("Please enter the medicine name")
         }
-        //console.log('reffff'+this.prescriptionRef)
 
     }
     render() {

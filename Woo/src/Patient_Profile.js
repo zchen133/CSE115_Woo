@@ -124,15 +124,12 @@ export default class Patient_ProfileScreen extends Component {
                 } else {
                     let data = doc.data()
                     this.setState({ data: data })
-                    console.log(this.state.data)
                 }
             } else {
                 this.setState({ data: null })
-                console.log('No such document')
             }
         }).catch((err) => {
             this.setState({ data: null })
-            console.log('Error: ', err)
         })
     }
 
