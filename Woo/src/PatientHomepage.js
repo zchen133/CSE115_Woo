@@ -20,9 +20,6 @@ import Patient_PrescriptionScreen from './Patient_Prescription.js'
 import { initialEmail } from './Loading.js';
 import { FAB } from 'react-native-paper';
 
-const PUSH_REGISTRATION_ENDPOINT = 'http://generated-ngrok-url/token';
-const MESSAGE_ENDPOINT = 'https://generated-ngrok-url/message';
-
 class PatientHomepage extends Component {
     constructor() {
         super();
@@ -68,6 +65,7 @@ class PatientHomepage extends Component {
             token: token
         }).then(function(){
             console.log("Updated Token")
+            console.log(token)
         }).catch(function(error){
             console.error("Failure getting document")
         });
@@ -77,7 +75,6 @@ class PatientHomepage extends Component {
     async componentDidMount() {
         this.getUserData()
         await this.registerForPushNotificationsAsync();
-
 
         //firebase.firestore().collection("hospital").doc("Slug Hospital").collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(selected).get()
     }

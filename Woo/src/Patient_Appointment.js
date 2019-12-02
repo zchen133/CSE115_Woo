@@ -299,15 +299,28 @@ export default class Patient_AppointmentScreen extends Component {
     }
 
     handleAppointmentRequest = () => {
-/*
-        
+
+        /* Sending push notification */
+        const staffRef = firebase.firestore().collection("users")
         const hospitalQuery = staffRef.where("hospital", "==", this.state.hospital)
-            .where("accountType", "==", "1")
+            .where("accountType", "==", "2")
             .get()
             .then(function (querySnapshot) {
                 querySnapshot.forEach(function (doc) {
                     console.log(doc.get("token"))
-
+                    let response = fetch('https://exp.host/--/api/v2/push/send', {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            to: doc.get('token'),
+                            sound: 'default',
+                            title: 'Woo App',
+                            body: 'Appointment Request'
+                        })
+                    })
 
 
                 });
@@ -315,26 +328,9 @@ export default class Patient_AppointmentScreen extends Component {
             .catch(function (error) {
                 console.log("Error getting documents: ", error);
             });
-*/
-        /* Sending push notification */
 
+        
 
-        let response = fetch('https://exp.host/--/api/v2/push/send', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                to: 'ExponentPushToken[fgbh5nJQB5pnthDa5VmxYV]',
-                sound: 'default',
-                title: 'Woo App',
-                body: 'Event Request'
-            })
-        })
-
-
-        //var accepted = true;
         console.log('date:', this.state.date);
         console.log('time:', this.state.time);
         console.log('hospital:', this.state.hospital);
@@ -359,7 +355,7 @@ export default class Patient_AppointmentScreen extends Component {
                     Toast.show('Please enter hospital');
                     return;
                 }
-                
+               
         const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests").doc(this.state.date + '_' + this.state.time + '_' + initialEmail);
         userRef.get()
             .then((querySnapshot) => {
