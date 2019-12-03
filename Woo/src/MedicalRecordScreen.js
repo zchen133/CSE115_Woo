@@ -49,7 +49,6 @@ export default class RecordScreen extends Component {
         this.prescriptionRef = firebase.firestore().collection("users").doc(this.state.patientEmail).collection("prescriptions").get().then((doc) => {
 
         })
-        //console.log('reffff'+this.prescriptionRef)
         this.setState({ isModalVisible: false });
     };
     openMedicalHistoryModal = () => {
@@ -170,90 +169,73 @@ export default class RecordScreen extends Component {
         this.docRef.get().then((doc) => {
             if (doc.exists) {
                 if (doc.get('accountType') !== '4') {
-                    console.log('Incorrect permissions')
                     Toast.show('You are not permitted to edit medical records')
                 } else {
 
                     if (dataEmail == '') {
-                        console.log('No email given');
                         Toast.show('Please enter email');
                         return;
                     }
                     if (dataName == '') {
-                        console.log('No name given');
                         Toast.show('Please enter name');
                         return;
                     }
 
                     if (dataSocial == '') {
-                        console.log('No Social SSN given');
                         Toast.show('Please enter Social Security Number');
                         return;
                     }
 
                     if (dataAddress == '') {
-                        console.log('No address given');
                         Toast.show('Please enter address');
                         return;
                     }
                     if (dataAllergies == '') {
-                        console.log('No allergies given');
                         Toast.show('Please enter allergy info');
                         return;
                     }
 
                     if (datapreviousDiagnoses == '') {
-                        console.log('No previous Diagnoses given');
                         Toast.show('Please enter previous diagnoses');
                         return;
                     }
                     if (dataHeartDisease == '') {
-                        console.log('No heart disease given');
                         Toast.show('Please enter heart disease information');
                         return;
                     }
                     if (dataCancers == '') {
-                        console.log('No cancer info given');
                         Toast.show('Please enter cancer information');
                         return;
                     }
                     if (dataOther == '') {
-                        console.log('No other given');
                         Toast.show('Please fill empty fields');
                         return;
                     }
                     if (dataHerbal == '') {
-                        console.log('No herbal given');
                         Toast.show('Please enter herbal information');
                         return;
                     }
                     if (dataAlternative == '') {
-                        console.log('No alternative given');
                         Toast.show('Please enter alternative medicine information');
                         return;
                     }
                     if (dataOTC == '') {
-                        console.log('No otc given');
                         Toast.show('Please enter over-the-counter information');
                         return;
                     }
                     if (dataPrescription == '') {
-                        console.log('No prescriptions given');
                         Toast.show('Please enter prescription information');
                         return;
                     }
                     if (dataTherapyWork == '') {
-                        console.log('No working therapy given');
                         Toast.show('Please enter working therapy');
                         return;
                     }
                     if (dataTherapyFail == '') {
-                        console.log('No failing therapy given');
                         Toast.show('Please enter failing therapy');
                         return;
                     }
                     if (dataWishes == '') {
-                        console.log('No wishes given');
                         Toast.show('Please fill blank fields');
                         return;
                     }

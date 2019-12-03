@@ -13,43 +13,36 @@ export default class Signup extends Component {
 
         // TODO: Show errors on screen
         if (this.state.firstName == '') {
-            console.log('No firstname selected');
             Toast.show('Please enter your first name');
             return;
         }
         if (this.state.lastName == '') {
-            console.log('No lastname selected');
             Toast.show('Please enter your last name');
             return;
         }
 
         if (this.state.email == '') {
-            console.log('No email selected');
             Toast.show('Please enter your email');
             return;
         }
 
         if (this.state.password == '') {
-            console.log('No email selected');
             Toast.show('Please enter your password');
             return;
         }
 
         if (this.state.password.length < 6) {
-            console.log('Password must be longer than 6 characters.');
             Toast.show('Password must be longer than 6 characters.');
             return;
         }
 
         if (this.state.password != this.state.confirmPass) {
-            console.log('Passwords don\'t match');
             Toast.show('Passwords don\'t match')
             return;
         }
 
 
 
-        console.log("Attempt to Signup");
         firebase
             .auth()
             .createUserWithEmailAndPassword(this.state.email, this.state.password)

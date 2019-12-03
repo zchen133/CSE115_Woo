@@ -10,7 +10,6 @@ export default class Home extends Component {
             .then(this.props.navigation.navigate('Login'));
     }
     render() {
-        console.log("in home")
         return (
             <View style={styles.container}>
                 <Button

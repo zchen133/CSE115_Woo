@@ -22,7 +22,6 @@ export default class Patient_PrescriptionScreen extends Component {
         new_array = [];
         firebase.firestore().collection("users").doc(initialEmail).collection("prescriptions").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                //console.log(doc.id)
 
                 var id = doc.id
                 var medicine_des = doc.get("medicine_des")
@@ -41,7 +40,6 @@ export default class Patient_PrescriptionScreen extends Component {
                 new_array.push(app);
             });
             this.setState({ prescription: new_array })
-            //console.log(doc.id)
         })
 
 
