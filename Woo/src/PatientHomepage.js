@@ -292,7 +292,7 @@ class PatientHomepage extends Component {
                 {this.state.appointment.length>0?(
                     this.state.appointment.map(appointment => (
                         <TouchableOpacity activeOpacity={0.8} key={`${appointment.id}`}
-                            onPress={event => { alert(`${appointment.time}`) }}>
+                            onPress={event => { }}>
                             {this.renderList(appointment)}
                         </TouchableOpacity>
                     ))
@@ -352,15 +352,7 @@ export default createMaterialBottomTabNavigator({
             )
         }
     },
-    // Checkin: {
-    //     screen: Patient_CheckinScreen,
-    //     navigationOptions: {
-    //         tabBarLabel: 'Check-In',
-    //         tabBarIcon: ({ tintColor }) => (
-    //             <Icon name="ios-checkmark-circle" color={tintColor} size={24} />
-    //         )
-    //     }
-    // },
+
     Prescription: {
         screen: Patient_PrescriptionScreen,
         navigationOptions: {

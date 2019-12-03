@@ -493,13 +493,7 @@ export default class Patient_AppointmentScreen extends Component {
                             }}
                     />
 
-                    {/* <TextInput
-                    placeholder='Requested Doctor (Optional)'
-                    autoCapitalize="none"
-                    style={styles.input}
-                    onChangeText={doctor => this.setState({ doctor })}
-                    value={this.state.doctor}
-                /> */}
+                    
                     <TextInput
                         placeholder='(Description)'
                         autoCapitalize="none"

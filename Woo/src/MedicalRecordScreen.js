@@ -55,11 +55,17 @@ export default class RecordScreen extends Component {
     openMedicalHistoryModal = () => {
         this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc) => {
             if (doc.exists) {
-                this.setState({ email: this.state.patientEmail })
-                this.setState({ name: doc.get("first") + " " + doc.get("last") })
-                this.setState({ address: doc.get("address") })
-                this.setState({ patientExist: true })
-                this.setState({ isMedicalHistoryModalVisible: true })
+                if(doc.get("accountType")==1){
+                    this.setState({ email: this.state.patientEmail })
+                    this.setState({ name: doc.get("first") + " " + doc.get("last") })
+                    this.setState({ address: doc.get("address") })
+                    this.setState({ patientExist: true })
+                    this.setState({ isMedicalHistoryModalVisible: true })
+                }
+                else{
+                    Toast.show("It's not a patient account")
+                }
+                
             }
             else {
                 Toast.show("patient doesn't exist")
@@ -73,11 +79,17 @@ export default class RecordScreen extends Component {
     openMedicationHistoryModal = () => {
         this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc) => {
             if (doc.exists) {
-                this.setState({ email: this.state.patientEmail })
-                this.setState({ name: doc.get("first") + " " + doc.get("last") })
-                this.setState({ address: doc.get("address") })
-                this.setState({ patientExist: true })
-                this.setState({ isMedicationHistoryModalVisible: true })
+                if(doc.get("accountType")==1){
+                    this.setState({ email: this.state.patientEmail })
+                    this.setState({ name: doc.get("first") + " " + doc.get("last") })
+                    this.setState({ address: doc.get("address") })
+                    this.setState({ patientExist: true })
+                    this.setState({ isMedicationHistoryModalVisible: true })
+                }
+                else{
+                    Toast.show("It's not a patient account")
+                }
+                
             }
             else {
                 Toast.show("patient doesn't exist")
@@ -91,11 +103,17 @@ export default class RecordScreen extends Component {
     openTreatmentHistoryModal = () => {
         this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc) => {
             if (doc.exists) {
-                this.setState({ email: this.state.patientEmail })
-                this.setState({ name: doc.get("first") + " " + doc.get("last") })
-                this.setState({ address: doc.get("address") })
-                this.setState({ patientExist: true })
-                this.setState({ isTreatmentHistoryModalVisible: true })
+                if(doc.get("accountType")==1){
+                    this.setState({ email: this.state.patientEmail })
+                    this.setState({ name: doc.get("first") + " " + doc.get("last") })
+                    this.setState({ address: doc.get("address") })
+                    this.setState({ patientExist: true })
+                    this.setState({ isTreatmentHistoryModalVisible: true })
+                }
+                else{
+                    Toast.show("It's not a patient account")
+                }
+                
             }
             else {
                 Toast.show("patient doesn't exist")

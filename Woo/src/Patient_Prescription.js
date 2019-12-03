@@ -74,14 +74,29 @@ export default class Patient_PrescriptionScreen extends Component {
                 <Text style={{ fontSize: 35, fontWeight: "bold" }}>Prescription</Text>
 
                 <ScrollView showsVerticalScrollIndicator={true}>
-                    {this.state.prescription.map(prescription => (
+                    
+
+                
+
+                {this.state.prescription.length>0?(
+                    this.state.prescription.map(prescription => (
                         <TouchableOpacity activeOpacity={0.8} key={`${prescription.medicine_name}`}
-                            onPress={event => { }}>
+                            onPress={event => {}}>
                             {this.renderList(prescription)}
                         </TouchableOpacity>
-                    ))}
+                    ))
+                ):(
+                    <Block style={{alignItems:'center',alignSelf:'center',justifyContent:'center',marginTop:50}}>
+                    <Image
+                    source={require('../assets/nurse.png')}
+                    style={{ flex: 1, height: 200, width: 200 }}
+                /> 
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e' }}>Prescription Not Found</Text>
+                </Block>
+                )}
 
                 </ScrollView>
+
             </Block>
         );
     }

@@ -63,7 +63,7 @@ export default class Signup extends Component {
                     accountTypeString: "Patients",
                     gender: "Male",
                     age: "0",
-                    birthday: "01-01-0000",
+                    birthday: "01-01-2000",
                     address: "No address on file",
                 })
 
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
         borderRadius: 35,
         marginLeft: 50,
         marginRight: 50,
+        alignSelf:'center',
         alignItems: 'center',
         justifyContent: 'center',
         marginVertical: 5,

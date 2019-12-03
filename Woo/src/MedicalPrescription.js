@@ -33,8 +33,15 @@ export default class PrescriptionScreen extends Component {
     openModal = () => {
         this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc) => {
             if (doc.exists) {
+                if(doc.get("accountType")==1){
+
+                
                 this.setState({ patientExist: true })
                 this.setState({ isModalVisible: true })
+            }
+            else{
+                Toast.show("It's not a patient account")
+            }
             }
             else {
                 Toast.show("patient doesn't exist")
@@ -91,10 +98,6 @@ export default class PrescriptionScreen extends Component {
                             autoCapitalize="none"
                             onChangeText={patientEmail => this.setState({ patientEmail })}
 
-
-                        //multiline={true} SOURCE OF RETURN BUG
-                        //onChangeText={description => this.setState({ description })}
-                        //value={this.state.description}
                         />
 
                     </View>

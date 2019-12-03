@@ -35,7 +35,7 @@ class MedicalHomepage extends Component {
 
     componentDidMount() {
         this.getUserData()
-
+    
     }
 
     handleSignOut = () => {
@@ -139,7 +139,8 @@ class MedicalHomepage extends Component {
                     }
                     var app = { id: id, data: dataToString }
                     console.log("data:::" + dataToString)
-                    new_array.push(app);
+                    new_array.push(app)
+                    
                 }
             })
 
