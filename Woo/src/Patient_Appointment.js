@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet,ScrollView, Modal, Text, View, Button, Picker, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
+import { StyleSheet, ScrollView, Modal, Text, View, Button, Picker, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 import * as firebase from "firebase";
 const { width, height } = Dimensions.get('window')
 import { initialEmail } from './Loading.js';
@@ -36,14 +36,14 @@ export default class Patient_AppointmentScreen extends Component {
     getHospitalList = () => {
         depart_set = new Set([]);
         new_array = [];
-        this.docRef.get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
+        this.docRef.get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.id
                 depart_set.add(doc.id);
 
             });
-            depart_set.forEach(function (val) {
+            depart_set.forEach(function(val) {
                 new_array.push({ value: val })
                 //new_array["value"] = val;
             })
@@ -60,15 +60,15 @@ export default class Patient_AppointmentScreen extends Component {
         }
         depart_set = new Set([]);
         new_array = [];
-        firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
+        firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.id
                 depart_set.add(doc.id);
 
             });
 
-            depart_set.forEach(function (val) {
+            depart_set.forEach(function(val) {
                 new_array.push({ value: val })
             })
         });
@@ -87,13 +87,13 @@ export default class Patient_AppointmentScreen extends Component {
         }
         depart_set = new Set([]);
         new_array = [];
-        firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").doc(selected).collection("Doctors").get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
+        firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").doc(selected).collection("Doctors").get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
                 // doc.data() is never undefined for query doc snapshots
                 let data = doc.id
                 depart_set.add(doc.id);
             });
-            depart_set.forEach(function (val) {
+            depart_set.forEach(function(val) {
                 new_array.push({ value: val })
                 //new_array["value"] = val;
             })
@@ -106,13 +106,13 @@ export default class Patient_AppointmentScreen extends Component {
         all_time = new Set(["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00"]);
         unavailable_time = new Set([])
         new_array = [];
-        firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(this.state.selectedDate).collection("Time").get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
+        firebase.firestore().collection("hospital").doc(this.state.selectedHospital).collection("Departments").doc(this.state.selectedDepartment).collection("Doctors").doc(this.state.selectedDoctor).collection("Appointments").doc(this.state.selectedDate).collection("Time").get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
                 unavailable_time.add(doc.id);
 
             });
             var available_time = new Set([...all_time].filter(x => !unavailable_time.has(x)));
-            available_time.forEach(function (val) {
+            available_time.forEach(function(val) {
                 new_array.push({ value: val });
             });
 
@@ -144,7 +144,7 @@ export default class Patient_AppointmentScreen extends Component {
                 //ParentClass.prototype.this.getAvailableTimeListCal().call();
             } else {
                 // doc.data() will be undefined in this case
-                all_time.forEach(function (val) {
+                all_time.forEach(function(val) {
                     new_array.push({ value: val });
                 });
                 this.setState({ availableTimeList: new_array })
@@ -167,8 +167,7 @@ export default class Patient_AppointmentScreen extends Component {
         this.setState({ doctor: '' })
         this.setState({ description: '' })
     }
-    logSetElements(value1, value2, set) {
-    }
+    logSetElements(value1, value2, set) {}
 
     // sleep = (milliseconds) => {
     //     return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -206,7 +205,7 @@ export default class Patient_AppointmentScreen extends Component {
         })
         const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests").doc(this.state.date + '_' + this.state.time + '_' + initialEmail);
         userRef.get()
-            .then(function (querySnapshot) {
+            .then(function(querySnapshot) {
                 if (querySnapshot.exists) {
                     accepted = false;
                 }
@@ -235,9 +234,7 @@ export default class Patient_AppointmentScreen extends Component {
             accepted = true;
             Toast.show('Request Denied');
             const eventref = firebase.firestore().collection("users").doc(initialEmail).collection("requests");
-            eventref.doc(this.state.date + '_' + this.state.time + '_' + initialEmail).delete().then(function () {
-            }).catch(function (error) {
-            });
+            eventref.doc(this.state.date + '_' + this.state.time + '_' + initialEmail).delete().then(function() {}).catch(function(error) {});
 
 
         }
@@ -252,8 +249,8 @@ export default class Patient_AppointmentScreen extends Component {
         const hospitalQuery = staffRef.where("hospital", "==", this.state.hospital)
             .where("accountType", "==", "2")
             .get()
-            .then(function (querySnapshot) {
-                querySnapshot.forEach(function (doc) {
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
                     let response = fetch('https://exp.host/--/api/v2/push/send', {
                         method: 'POST',
                         headers: {
@@ -271,23 +268,22 @@ export default class Patient_AppointmentScreen extends Component {
 
                 });
             })
-            .catch(function (error) {
-            });
-                if (this.state.date == '') {
-                    Toast.show('Please enter appointment date');
-                    return;
-                }
-        
-                if (this.state.time == '') {
-                    Toast.show('Please enter appointment time');
-                    return;
-                }
-        
-                if (this.state.hospital == '') {
-                    Toast.show('Please enter hospital');
-                    return;
-                }
-               
+            .catch(function(error) {});
+        if (this.state.date == '') {
+            Toast.show('Please enter appointment date');
+            return;
+        }
+
+        if (this.state.time == '') {
+            Toast.show('Please enter appointment time');
+            return;
+        }
+
+        if (this.state.hospital == '') {
+            Toast.show('Please enter hospital');
+            return;
+        }
+
         const userRef = firebase.firestore().collection("hospital").doc(this.state.hospital).collection("requests").doc(this.state.date + '_' + this.state.time + '_' + initialEmail);
         userRef.get()
             .then((querySnapshot) => {
@@ -498,7 +494,7 @@ const styles = StyleSheet.create({
         // height: 40,
         // alignItems: 'stretch',
         backgroundColor: 'white',
-        marginTop:50,
+        marginTop: 50,
         width: "75%",
         // borderColor: 'black',
         // borderBottomWidth: 2.5,

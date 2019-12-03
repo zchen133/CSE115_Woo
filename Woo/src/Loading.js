@@ -32,7 +32,7 @@ export default class Loading extends Component {
 
     readUserData = () => {
         var docRef = firebase.firestore().collection("users").doc(initialEmail);
-        return docRef.get().then(function (doc) {
+        return docRef.get().then(function(doc) {
             if (doc.exists) {
                 hospital = doc.get("hospital")
                 first = doc.get("first")
@@ -49,10 +49,9 @@ export default class Loading extends Component {
                         //test = 0,
                         this.props.navigation.navigate('Login'));
 
-                
+
             }
-        }).catch(function (error) {
-        });
+        }).catch(function(error) {});
 
     }
 
@@ -68,21 +67,20 @@ export default class Loading extends Component {
 
                         if (result == 1) {
                             let that = this;
-                            setTimeout(function () { that.props.navigation.navigate('PatientHomepage') }, 3000);
+                            setTimeout(function() { that.props.navigation.navigate('PatientHomepage') }, 3000);
 
                         } else if (result == 5) {
                             let that = this;
-                            setTimeout(function () { that.props.navigation.navigate('AdminHomepage') }, 3000);
+                            setTimeout(function() { that.props.navigation.navigate('AdminHomepage') }, 3000);
                         } else if (result == 2 || result == 3 || result == 4) {
                             let that = this;
-                            setTimeout(function () { that.props.navigation.navigate('MedicalHomepage') }, 3000);
+                            setTimeout(function() { that.props.navigation.navigate('MedicalHomepage') }, 3000);
                         }
                     })
 
 
             } else {
-                if (test > 0) {
-                } else {
+                if (test > 0) {} else {
                     this.props.navigation.navigate('Login')
                 }
             }

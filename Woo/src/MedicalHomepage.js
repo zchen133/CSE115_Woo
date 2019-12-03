@@ -35,7 +35,7 @@ class MedicalHomepage extends Component {
 
     componentDidMount() {
         this.getUserData()
-    
+
     }
 
     handleSignOut = () => {
@@ -43,7 +43,7 @@ class MedicalHomepage extends Component {
             .auth()
             .signOut()
             .then(
-            this.props.navigation.navigate('Login'));
+                this.props.navigation.navigate('Login'));
     }
 
     onPressCalendar = () => {
@@ -56,7 +56,7 @@ class MedicalHomepage extends Component {
             console.log("Date::::" + this.state.nowDate)
             new_array = [];
             firebase.firestore().collection("hospital").doc(this.state.data.hospital).collection("Departments").doc(this.state.data.department).collection(this.state.data.accountTypeString).doc(this.state.data.first + ' ' + this.state.data.last).collection("Appointments").doc(this.state.nowDate).collection("Time").get().then((querySnapshot) => {
-                querySnapshot.forEach(function (doc) {
+                querySnapshot.forEach(function(doc) {
                     console.log("doc id", doc.id)
 
                     var id = doc.id
@@ -77,8 +77,7 @@ class MedicalHomepage extends Component {
                 console.log("doc appointment ", this.state.appointment)
                 if (this.state.appointment.length == 0) {
                     this.setState({ appointmentNotFound: true })
-                }
-                else {
+                } else {
                     this.setState({ appointmentNotFound: false })
                 }
                 console.log("get id" + this.state.appointmentNotFound)
@@ -127,7 +126,7 @@ class MedicalHomepage extends Component {
         var new_array = [];
         firebase.firestore().collection("users").doc(emailAddress).collection("records").get().then((querySnapshot) => {
 
-            querySnapshot.forEach(function (doc) {
+            querySnapshot.forEach(function(doc) {
                 if (doc.exists) {
                     console.log("exist")
 
@@ -140,7 +139,7 @@ class MedicalHomepage extends Component {
                     var app = { id: id, data: dataToString }
                     console.log("data:::" + dataToString)
                     new_array.push(app)
-                    
+
                 }
             })
 

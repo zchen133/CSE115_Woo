@@ -38,7 +38,7 @@ export default class RequestScreen extends Component {
         this.docRefRequests = firebase.firestore().collection("hospital").doc(hospital).collection("requests");
         new_array = [];
         this.docRefRequests.get().then((querySnapshot) => {
-            querySnapshot.forEach(function (doc) {
+            querySnapshot.forEach(function(doc) {
                 // doc.data() is never undefined for query doc snapshots
                 var id = doc.id
                 var date = doc.id.substr(0, 10)
@@ -72,27 +72,26 @@ export default class RequestScreen extends Component {
     }
 
     accept(appointment) {
-    
-          /* Send notification to user of accepted request */
-          const acceptRef = firebase.firestore().collection("users").doc(appointment.userEmail).get()
-          .then(function (doc) {
-                  let response = fetch('https://exp.host/--/api/v2/push/send', {
-                      method: 'POST',
-                      headers: {
-                          Accept: 'application/json',
-                          'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify({
-                          to: doc.get("token"),
-                          sound: 'default',
-                          title: 'Woo App',
-                          body: 'Appointment Request Accepted'
-                      })
-                  })      
-          })
-          .catch(function (error) {
-          });
-          
+
+        /* Send notification to user of accepted request */
+        const acceptRef = firebase.firestore().collection("users").doc(appointment.userEmail).get()
+            .then(function(doc) {
+                let response = fetch('https://exp.host/--/api/v2/push/send', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        to: doc.get("token"),
+                        sound: 'default',
+                        title: 'Woo App',
+                        body: 'Appointment Request Accepted'
+                    })
+                })
+            })
+            .catch(function(error) {});
+
 
 
         firebase.firestore().collection("hospital").doc(hospital).collection("Departments").doc(appointment.department).collection("Doctors").doc(appointment.doctor_name).set({
@@ -129,13 +128,12 @@ export default class RequestScreen extends Component {
             last_name: appointment.last_name,
             email: appointment.userEmail,
             checked: false
-        }).catch(function (error) {
+        }).catch(function(error) {
             alert("error in docRef")
         });
 
         this.docRef = firebase.firestore().collection("hospital").doc(hospital).collection("requests");
-        this.docRef.doc(appointment.id).delete().then(function () {
-        }).catch(function (error) {
+        this.docRef.doc(appointment.id).delete().then(function() {}).catch(function(error) {
             alert("error in docRef")
         });
 
@@ -143,40 +141,39 @@ export default class RequestScreen extends Component {
         this.userRef.doc(appointment.id).delete().then(() => {
             alert("Accepted!")
             this.getAllRequests()
-        }).catch(function (error) {
+        }).catch(function(error) {
             alert("error in userRef")
         });
-        
-      
+
+
 
     }
 
     decline(appointment) {
-       
-            /* Send notification to user of declined request */
-         const acceptRef = firebase.firestore().collection("users").doc(appointment.userEmail).get()
-         .then(function (doc) {
-                 let response = fetch('https://exp.host/--/api/v2/push/send', {
-                     method: 'POST',
-                     headers: {
-                         Accept: 'application/json',
-                         'Content-Type': 'application/json'
-                     },
-                     body: JSON.stringify({
-                         to: doc.get("token"),
-                         sound: 'default',
-                         title: 'Woo App',
-                         body: 'Appointment Request Declined'
-                     })
-                 })      
-         })
-         .catch(function (error) {
-         });
+
+        /* Send notification to user of declined request */
+        const acceptRef = firebase.firestore().collection("users").doc(appointment.userEmail).get()
+            .then(function(doc) {
+                let response = fetch('https://exp.host/--/api/v2/push/send', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        to: doc.get("token"),
+                        sound: 'default',
+                        title: 'Woo App',
+                        body: 'Appointment Request Declined'
+                    })
+                })
+            })
+            .catch(function(error) {});
 
         this.docRef = firebase.firestore().collection("hospital").doc(hospital).collection("requests");
-        this.docRef.doc(appointment.id).delete().then(function () {
+        this.docRef.doc(appointment.id).delete().then(function() {
             //alert("Deleted")
-        }).catch(function (error) {
+        }).catch(function(error) {
             alert("error in docRef")
         });
 
@@ -184,11 +181,11 @@ export default class RequestScreen extends Component {
         this.userRef.doc(appointment.id).delete().then(() => {
             alert("Deleted!")
             this.getAllRequests()
-        }).catch(function (error) {
+        }).catch(function(error) {
             alert("error in userRef")
         });
 
-         
+
 
 
     }

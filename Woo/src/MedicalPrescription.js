@@ -33,17 +33,15 @@ export default class PrescriptionScreen extends Component {
     openModal = () => {
         this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc) => {
             if (doc.exists) {
-                if(doc.get("accountType")==1){
+                if (doc.get("accountType") == 1) {
 
-                
-                this.setState({ patientExist: true })
-                this.setState({ isModalVisible: true })
-            }
-            else{
-                Toast.show("It's not a patient account")
-            }
-            }
-            else {
+
+                    this.setState({ patientExist: true })
+                    this.setState({ isModalVisible: true })
+                } else {
+                    Toast.show("It's not a patient account")
+                }
+            } else {
                 Toast.show("patient doesn't exist")
             }
         })
@@ -69,8 +67,7 @@ export default class PrescriptionScreen extends Component {
                 this.setState({ isModalVisible: false });
                 Toast.show("Added successfully")
             })
-        }
-        else {
+        } else {
             Toast.show("Please enter the medicine name")
         }
 

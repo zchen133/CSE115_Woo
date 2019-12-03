@@ -28,7 +28,30 @@ export default class RecordScreen extends Component {
             quantityList: [{ value: "mg" }, { value: "mL" }, { value: "capsule" }, { value: "tablets" }, { value: "puffs" }],
             timeQuantityList: [{ value: "hours" }, { value: "days" }, { value: "weeks" }],
             selectedQuantity: "null",
-            Patient: 'Patient', MedicalDirectives: 'MedicalDirectives', TreatmentHistory: 'Treatment History', MedicationHistory: 'Medication History', FamilyMedicalHistory: 'Family Medical History', MedicalHistory: 'Medical History', PersonalInformation: 'Personal Information', email: '', name: '', social: '123-456-7890', address: '', allergies: '', previousDiagnoses: '', heartDisease: '', cancers: '', other: '', herbal: '', alternative: '', otc: '', prescriptions: '', therapyWork: '', therapyFail: '', wishes: '', err: null
+            Patient: 'Patient',
+            MedicalDirectives: 'MedicalDirectives',
+            TreatmentHistory: 'Treatment History',
+            MedicationHistory: 'Medication History',
+            FamilyMedicalHistory: 'Family Medical History',
+            MedicalHistory: 'Medical History',
+            PersonalInformation: 'Personal Information',
+            email: '',
+            name: '',
+            social: '123-456-7890',
+            address: '',
+            allergies: '',
+            previousDiagnoses: '',
+            heartDisease: '',
+            cancers: '',
+            other: '',
+            herbal: '',
+            alternative: '',
+            otc: '',
+            prescriptions: '',
+            therapyWork: '',
+            therapyFail: '',
+            wishes: '',
+            err: null
         };
     }
     openModal = () => {
@@ -38,8 +61,7 @@ export default class RecordScreen extends Component {
                 this.setState({ address: doc.get("address") })
                 this.setState({ patientExist: true })
                 this.setState({ isModalVisible: true })
-            }
-            else {
+            } else {
                 Toast.show("patient doesn't exist")
             }
         })
@@ -54,19 +76,17 @@ export default class RecordScreen extends Component {
     openMedicalHistoryModal = () => {
         this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc) => {
             if (doc.exists) {
-                if(doc.get("accountType")==1){
+                if (doc.get("accountType") == 1) {
                     this.setState({ email: this.state.patientEmail })
                     this.setState({ name: doc.get("first") + " " + doc.get("last") })
                     this.setState({ address: doc.get("address") })
                     this.setState({ patientExist: true })
                     this.setState({ isMedicalHistoryModalVisible: true })
-                }
-                else{
+                } else {
                     Toast.show("It's not a patient account")
                 }
-                
-            }
-            else {
+
+            } else {
                 Toast.show("patient doesn't exist")
             }
         })
@@ -78,19 +98,17 @@ export default class RecordScreen extends Component {
     openMedicationHistoryModal = () => {
         this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc) => {
             if (doc.exists) {
-                if(doc.get("accountType")==1){
+                if (doc.get("accountType") == 1) {
                     this.setState({ email: this.state.patientEmail })
                     this.setState({ name: doc.get("first") + " " + doc.get("last") })
                     this.setState({ address: doc.get("address") })
                     this.setState({ patientExist: true })
                     this.setState({ isMedicationHistoryModalVisible: true })
-                }
-                else{
+                } else {
                     Toast.show("It's not a patient account")
                 }
-                
-            }
-            else {
+
+            } else {
                 Toast.show("patient doesn't exist")
             }
         })
@@ -102,19 +120,17 @@ export default class RecordScreen extends Component {
     openTreatmentHistoryModal = () => {
         this.patientRef = firebase.firestore().collection("users").doc(this.state.patientEmail).get().then((doc) => {
             if (doc.exists) {
-                if(doc.get("accountType")==1){
+                if (doc.get("accountType") == 1) {
                     this.setState({ email: this.state.patientEmail })
                     this.setState({ name: doc.get("first") + " " + doc.get("last") })
                     this.setState({ address: doc.get("address") })
                     this.setState({ patientExist: true })
                     this.setState({ isTreatmentHistoryModalVisible: true })
-                }
-                else{
+                } else {
                     Toast.show("It's not a patient account")
                 }
-                
-            }
-            else {
+
+            } else {
                 Toast.show("patient doesn't exist")
             }
         })
@@ -282,7 +298,7 @@ export default class RecordScreen extends Component {
                     var docRef = firebase.firestore().collection("users").doc(initialEmail);
 
 
-                    docRef.get().then(function (doc) {
+                    docRef.get().then(function(doc) {
                         if (doc.exists) {
 
                             const patientRef = firebase.firestore().collection("hospital").doc(doc.get('hospital')).collection("Patients")
@@ -596,7 +612,8 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 2, height: 2 },
         shadowColor: 'black',
         shadowOpacity: 0.2,
-    }, textInput: {
+    },
+    textInput: {
         width: '90%',
         fontSize: 20,
         borderBottomWidth: 1

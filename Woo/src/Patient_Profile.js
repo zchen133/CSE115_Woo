@@ -34,11 +34,11 @@ export default class Patient_ProfileScreen extends Component {
     }
 
     updateAddress(input) {
-        if(input == null) {
+        if (input == null) {
             Toast.show("Please enter your address")
             return
         }
-        if(input.length == 0) {
+        if (input.length == 0) {
             Toast.show("Please enter your address")
             return
         }
@@ -47,11 +47,11 @@ export default class Patient_ProfileScreen extends Component {
     }
 
     updateGender(input) {
-        if(input == null) {
+        if (input == null) {
             Toast.show("Please enter your gender")
             return
         }
-        if(input.length == 0) {
+        if (input.length == 0) {
             Toast.show("Please enter your gender")
             return
         }
@@ -60,11 +60,11 @@ export default class Patient_ProfileScreen extends Component {
     }
 
     updateAge(input) {
-        if(input == null) {
+        if (input == null) {
             Toast.show("Please enter your age")
             return
         }
-        if(input.length == 0) {
+        if (input.length == 0) {
             Toast.show("Please enter your age")
             return
         }
@@ -73,11 +73,11 @@ export default class Patient_ProfileScreen extends Component {
     }
 
     updateFirstName(input) {
-        if(input == null) {
+        if (input == null) {
             Toast.show("Please enter your first name")
             return
         }
-        if(input.length == 0) {
+        if (input.length == 0) {
             Toast.show("Please enter your first name")
             return
         }
@@ -85,11 +85,11 @@ export default class Patient_ProfileScreen extends Component {
         this.getUserData()
     }
     updateLastName(input) {
-        if(input == null) {
+        if (input == null) {
             Toast.show("Please enter your last name")
             return
         }
-        if(input.length == 0) {
+        if (input.length == 0) {
             Toast.show("Please enter your last name")
             return
         }
@@ -102,11 +102,11 @@ export default class Patient_ProfileScreen extends Component {
     }
 
     updateProfilePic(input) {
-        if(input == null) {
+        if (input == null) {
             Toast.show("Please enter an image URL")
             return
         }
-        if(input.length == 0) {
+        if (input.length == 0) {
             Toast.show("Please enter an image URL")
             return
         }
@@ -193,7 +193,7 @@ export default class Patient_ProfileScreen extends Component {
                                     placeholder="select date"
                                     format="MM-DD-YYYY"
                                     minDate="01-01-1900"
-                                    maxDate="01-01-2020"
+                                    maxDate={new Date()}
                                     confirmBtnText="Confirm"
                                     cancelBtnText="Cancel"
                                     showIcon={false}
