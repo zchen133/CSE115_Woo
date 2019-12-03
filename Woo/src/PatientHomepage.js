@@ -178,7 +178,7 @@ class PatientHomepage extends Component {
                 <Block card shadow color="#f6f5f5" style={styles.pageTop}>
                     <Block style={{ paddingHorizontal: 30 }}>
                         <Text style={{ fontSize: 25, fontWeight: 'bold', color: '#40514e' }}>{'Hi, '+ this.state.data.first + ' ' + this.state.data.last} </Text>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#40514e',marginTop:15 }}>{'You have '+this.state.appointment.length + ' upcoming appointment(s)'} </Text>
+                        <Text style={{ fontSize: 20,  color: '#40514e',marginTop:15 }}>{'You have '+this.state.appointment.length + ' upcoming appointments'} </Text>
 
                     </Block>
 
