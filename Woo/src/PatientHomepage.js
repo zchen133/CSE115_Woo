@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Alert, Button, TextInput, Image, Animated, TouchableOpacity, Dimensions, TouchableHighlight, YellowBox } from 'react-native';
 
 import * as firebase from "firebase";
-import { Notifications} from 'expo';
+import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 
 const { width, height } = Dimensions.get('window')
@@ -29,46 +29,44 @@ class PatientHomepage extends Component {
         this.state = {
             notification: {},
             expoPushToken: '',
-            data:{first:"new",last:"user"},
+            data: { first: "new", last: "user" },
             nowDate: new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(),
             appointment: [{ id: "null", time: "00:00", date: "2000-01-01", checked: false, userEmail: "null", first_name: "null", last_name: "null", doctor_name: "null", hospital: "null", department: "null", description: "null" }]
         }
     }
 
 
-    registerForPushNotificationsAsync = async() => {
+    registerForPushNotificationsAsync = async () => {
         const { status: existingStatus } = await Permissions.getAsync(
-          Permissions.NOTIFICATIONS
+            Permissions.NOTIFICATIONS
         );
         let finalStatus = existingStatus;
-      
+
         // only ask if permissions have not already been determined, because
         // iOS won't necessarily prompt the user a second time.
         if (existingStatus !== 'granted') {
-          // Android remote notification permissions are granted during the app
-          // install, so this will only ask on iOS
-          const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-          finalStatus = status;
+            // Android remote notification permissions are granted during the app
+            // install, so this will only ask on iOS
+            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            finalStatus = status;
         }
-      
+
         // Stop here if the user did not grant permissions
         if (finalStatus !== 'granted') {
-          return;
+            return;
         }
-      
+
         // Get the token that uniquely identifies this device
         let token = await Notifications.getExpoPushTokenAsync();
-      
+
         // POST the token to your backend server from where you can retrieve it to send push notifications.
-        
+
         firebase.firestore().collection("users").doc(initialEmail).update({
             token: token
-        }).then(function(){
-        }).catch(function(error){
-        });
-        
-      }
-    
+        }).then(function() {}).catch(function(error) {});
+
+    }
+
     async componentDidMount() {
         this.getUserData()
         await this.registerForPushNotificationsAsync();
@@ -92,7 +90,7 @@ class PatientHomepage extends Component {
 
         new_array = [];
         firebase.firestore().collection("users").doc(this.user.email).collection("events").get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) =>{
+            querySnapshot.forEach((doc) => {
 
                 var id = doc.id
                 var date = doc.get("date")
@@ -107,26 +105,22 @@ class PatientHomepage extends Component {
                 var hospital = doc.get("hospital")
                 var app = { id: id, time: time, date: date, checked: checked, userEmail: userEmail, hospital: hospital, department: department, description: description, doctor_name: doctor_name, first_name: first_name, last_name: last_name }
 
-                if(Number(date.substring(0,4))>Number(this.state.nowDate.substring(0,4))){
+                if (Number(date.substring(0, 4)) > Number(this.state.nowDate.substring(0, 4))) {
                     new_array.push(app);
-                }
-                else if(Number(date.substring(0,4))==Number(this.state.nowDate.substring(0,4))){
+                } else if (Number(date.substring(0, 4)) == Number(this.state.nowDate.substring(0, 4))) {
 
-                    if(Number(date.substring(5,7))>Number(this.state.nowDate.substring(5,7))){
+                    if (Number(date.substring(5, 7)) > Number(this.state.nowDate.substring(5, 7))) {
                         new_array.push(app);
-                    }
-                    else if(Number(date.substring(5,7))==Number(this.state.nowDate.substring(5,7))){
+                    } else if (Number(date.substring(5, 7)) == Number(this.state.nowDate.substring(5, 7))) {
 
-                        if(Number(date.substring(8,10))>=Number(this.state.nowDate.substring(8,10))){
+                        if (Number(date.substring(8, 10)) >= Number(this.state.nowDate.substring(8, 10))) {
                             new_array.push(app);
-                        }
-                        else{
-                        }
+                        } else {}
                     }
-                    
+
                 }
-                
-               
+
+
             });
             this.setState({ appointment: new_array })
         })
@@ -136,7 +130,7 @@ class PatientHomepage extends Component {
         this.docRef.get().then((doc) => {
             if (doc.exists) {
                 let data = doc.data()
-                
+
                 this.setState({ data: data })
                 this.getAppointmentList()
             } else {
@@ -153,9 +147,7 @@ class PatientHomepage extends Component {
             .collection("Doctors").doc(appointment.doctor_name)
             .collection("Appointments").doc(appointment.date)
             .collection("Time").doc(appointment.time);
-        docRef.delete().then(() => {
-        }).catch(function(error) {
-        });
+        docRef.delete().then(() => {}).catch(function(error) {});
 
         userRef = firebase.firestore().collection("users").doc(appointment.userEmail).collection("events");
         userRef.doc(appointment.id).delete().then(() => {
@@ -341,7 +333,7 @@ export default createMaterialBottomTabNavigator({
 
 }, {
     initialRouteName: 'Home',
-    order: ['Home', 'Appointment', 'Prescription', 'Profile',],
+    order: ['Home', 'Appointment', 'Prescription', 'Profile', ],
     activeTinColor: 'white',
     shifting: true,
     barStyle: { backgroundColor: 'white' }

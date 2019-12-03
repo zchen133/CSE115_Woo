@@ -119,8 +119,7 @@ class WooApp extends Component {
             } else {
 
             }
-        }).catch(function(error) {
-        });
+        }).catch(function(error) {});
 
     }
 

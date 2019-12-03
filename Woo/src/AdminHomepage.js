@@ -104,10 +104,8 @@ export default class AdminHomepage extends Component {
                 this.setState({ first_name: first })
                 this.setState({ last_name: last })
                 this.addToHospital("Doctors")
-            } else {
-            }
-        }).catch((err) => {
-        })
+            } else {}
+        }).catch((err) => {})
     }
 
 
@@ -148,10 +146,8 @@ export default class AdminHomepage extends Component {
                 this.setState({ first_name: first })
                 this.setState({ last_name: last })
                 this.addToHospital("Nurses")
-            } else {
-            }
-        }).catch((err) => {
-        })
+            } else {}
+        }).catch((err) => {})
     }
 
     addReceptionist = () => {
@@ -190,10 +186,8 @@ export default class AdminHomepage extends Component {
                 this.setState({ first_name: first })
                 this.setState({ last_name: last })
                 this.addToHospital("Receptionists")
-            } else {
-            }
-        }).catch((err) => {
-        })
+            } else {}
+        }).catch((err) => {})
     }
 
     resetPermission = () => {
@@ -233,10 +227,8 @@ export default class AdminHomepage extends Component {
                 }).catch(function(error) {
                     alert("error in userRef")
                 });
-            } else {
-            }
-        }).catch((err) => {
-        })
+            } else {}
+        }).catch((err) => {})
     }
 
     render() {
