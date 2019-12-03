@@ -117,11 +117,9 @@ class WooApp extends Component {
             if (doc.exists) {
                 return doc.get('accountType');
             } else {
-                console.log("No such document");
 
             }
         }).catch(function(error) {
-            console.log("Error getting document:", error);
         });
 
     }
@@ -131,14 +129,12 @@ class WooApp extends Component {
         if (this.state.email !== "") {
             initialEmail = this.state.email;
         } else {
-            console.log('No email selected');
             Toast.show('Please enter your email');
             return;
         }
 
         this.readUserData()
             .then((result) => {
-                console.log('Sign In Attempt', result);
                 test = result;
 
                 firebase
@@ -146,7 +142,6 @@ class WooApp extends Component {
                     .signInWithEmailAndPassword(this.state.email, this.state.password)
                     .then(() => this.props.navigation.navigate('Loading'))
                     .catch(error => { this.setState({ err: error.message }), Toast.show(error.message); })
-                console.log(this.state.err);
 
             })
     }

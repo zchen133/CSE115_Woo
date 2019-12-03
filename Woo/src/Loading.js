@@ -41,7 +41,6 @@ export default class Loading extends Component {
                 accountTypeString = doc.get("accountTypeString")
                 return doc.get('accountType')
             } else {
-                console.log("No such document ");
                 Toast.show("This account no longer exists")
                 firebase
                     .auth()
@@ -53,7 +52,6 @@ export default class Loading extends Component {
                 
             }
         }).catch(function (error) {
-            console.log("Error getting document:", error);
         });
 
     }
@@ -61,8 +59,6 @@ export default class Loading extends Component {
     componentDidMount() {
 
         firebase.auth().onAuthStateChanged(user => {
-            console.log("newtest after import:" + newtest);
-
 
             if (user) {
 
@@ -82,16 +78,11 @@ export default class Loading extends Component {
                             setTimeout(function () { that.props.navigation.navigate('MedicalHomepage') }, 3000);
                         }
                     })
-                // console.log("test after import:" + test + 'newtest' + newtest + 'email' + user.email);
 
 
             } else {
-                console.log('loginemail' + loginEmail)
                 if (test > 0) {
-                    console.log('user.email = null and user exists')
-                    //this.props.navigation.navigate('Login')
                 } else {
-                    console.log('inside user false' + user + 'user.email' + initialEmail)
                     this.props.navigation.navigate('Login')
                 }
             }

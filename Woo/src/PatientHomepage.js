@@ -60,15 +60,11 @@ class PatientHomepage extends Component {
         let token = await Notifications.getExpoPushTokenAsync();
       
         // POST the token to your backend server from where you can retrieve it to send push notifications.
-        //console.log("current user ", this.user)
         
         firebase.firestore().collection("users").doc(initialEmail).update({
             token: token
         }).then(function(){
-            console.log("Updated Token")
-            console.log(token)
         }).catch(function(error){
-            console.error("Failure getting document")
         });
         
       }
@@ -97,7 +93,6 @@ class PatientHomepage extends Component {
         new_array = [];
         firebase.firestore().collection("users").doc(this.user.email).collection("events").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) =>{
-                //console.log(doc.id)
 
                 var id = doc.id
                 var date = doc.get("date")
@@ -111,10 +106,6 @@ class PatientHomepage extends Component {
                 var checked = doc.get("checked")
                 var hospital = doc.get("hospital")
                 var app = { id: id, time: time, date: date, checked: checked, userEmail: userEmail, hospital: hospital, department: department, description: description, doctor_name: doctor_name, first_name: first_name, last_name: last_name }
-                console.log('nowDate'+this.state.nowDate)
-                console.log('docDate'+date)
-                console.log('nowmonth'+this.state.nowDate.substring(5,7))
-                console.log('docdate'+date.substring(8,10))
 
                 if(Number(date.substring(0,4))>Number(this.state.nowDate.substring(0,4))){
                     new_array.push(app);
@@ -130,7 +121,6 @@ class PatientHomepage extends Component {
                             new_array.push(app);
                         }
                         else{
-                            console.log('Invaild date'+date)
                         }
                     }
                     
@@ -139,7 +129,6 @@ class PatientHomepage extends Component {
                
             });
             this.setState({ appointment: new_array })
-            //console.log(doc.id)
         })
 
     }
@@ -149,19 +138,15 @@ class PatientHomepage extends Component {
                 let data = doc.data()
                 
                 this.setState({ data: data })
-                //console.log("??",this.state.data.first)
                 this.getAppointmentList()
             } else {
                 this.setState({ data: null })
-                console.log('No such document')
             }
         }).catch((err) => {
             this.setState({ data: null })
-            console.log('Error: ', err)
         })
     }
     cancelAppointment(appointment) {
-        console.log(appointment.id)
 
         docRef = firebase.firestore().collection("hospital").doc(appointment.hospital)
             .collection("Departments").doc(appointment.department)
@@ -169,24 +154,16 @@ class PatientHomepage extends Component {
             .collection("Appointments").doc(appointment.date)
             .collection("Time").doc(appointment.time);
         docRef.delete().then(() => {
-            console.log("document deleted");
         }).catch(function(error) {
-            console.log("Error removing document ", error);
-            //alert("error in docRef")
         });
 
         userRef = firebase.firestore().collection("users").doc(appointment.userEmail).collection("events");
         userRef.doc(appointment.id).delete().then(() => {
-            console.log("document deleted");
             alert("Appointment Canceled!")
             this.getAppointmentList()
         }).catch(function(error) {
-            console.log("Error removing document ", error);
             alert("Failed to Cancel Appintment!")
         });
-    }
-    onPressTest() {
-        console.log("get email" + initialEmail)
     }
     renderTop() {
         return (
@@ -239,7 +216,6 @@ class PatientHomepage extends Component {
                                     { text: 'Yes', onPress: (event) => this.cancelAppointment(appointment) },
                                     {
                                         text: 'No',
-                                        onPress: () => console.log('Cancel Pressed'),
                                         style: 'cancel',
                                     },
                                     

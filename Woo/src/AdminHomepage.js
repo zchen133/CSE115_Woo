@@ -40,11 +40,9 @@ export default class AdminHomepage extends Component {
                 this.getDepartmentList()
             } else {
                 this.setState({ hospital: "null" })
-                console.log('No such document')
             }
         }).catch((err) => {
             this.setState({ hospital: "null" })
-            console.log('Error: ', err)
         })
     }
 
@@ -107,10 +105,8 @@ export default class AdminHomepage extends Component {
                 this.setState({ last_name: last })
                 this.addToHospital("Doctors")
             } else {
-                console.log('No such document')
             }
         }).catch((err) => {
-            console.log('Error: ', err)
         })
     }
 
@@ -131,7 +127,6 @@ export default class AdminHomepage extends Component {
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
 
-        console.log(this.state.err);
         docRef.get().then((doc) => {
             if (doc.exists) {
                 let first = doc.get("first")
@@ -154,10 +149,8 @@ export default class AdminHomepage extends Component {
                 this.setState({ last_name: last })
                 this.addToHospital("Nurses")
             } else {
-                console.log('No such document')
             }
         }).catch((err) => {
-            console.log('Error: ', err)
         })
     }
 
@@ -176,7 +169,6 @@ export default class AdminHomepage extends Component {
         }
         var docRef = firebase.firestore().collection('users').doc(initialEmail);
 
-        console.log(this.state.err);
         docRef.get().then((doc) => {
             if (doc.exists) {
                 let first = doc.get("first")
@@ -199,10 +191,8 @@ export default class AdminHomepage extends Component {
                 this.setState({ last_name: last })
                 this.addToHospital("Receptionists")
             } else {
-                console.log('No such document')
             }
         }).catch((err) => {
-            console.log('Error: ', err)
         })
     }
 
@@ -222,8 +212,6 @@ export default class AdminHomepage extends Component {
                 let last = doc.get("last")
                 this.setState({ first_name: first })
                 this.setState({ last_name: last })
-                console.log("type:" + this.type)
-                //this.setState({accountTypeNumber:type})
                 let accountType = '1'
                 if (type == "4") {
                     accountType = "Doctors"
@@ -232,7 +220,6 @@ export default class AdminHomepage extends Component {
                 } else if (type == "2") {
                     accountType = "Receptionists"
                 }
-                console.log("hos:" + this.state.hospital + "dep:" + this.state.selectedDepartment + "accouttype:" + accountType + "first:" + this.state.first_name + "last" + this.state.last_name)
                 firebase.firestore().collection("hospital").doc(this.state.hospital).collection("Departments").doc(this.state.selectedDepartment).collection(accountType).doc(this.state.first_name + " " + this.state.last_name).delete().then(() => {
 
                     docRef.update({
@@ -242,17 +229,13 @@ export default class AdminHomepage extends Component {
                         accountTypeString: "Patients"
 
                     }).catch(error => { this.setState({ err: error.message }), Toast.show(error.message) });
-                    console.log(this.state.err);
 
                 }).catch(function(error) {
-                    console.log("Error removing document ", error);
                     alert("error in userRef")
                 });
             } else {
-                console.log('No such document')
             }
         }).catch((err) => {
-            console.log('Error: ', err)
         })
     }
 
