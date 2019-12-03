@@ -222,7 +222,12 @@ export default class Patient_ProfileScreen extends Component {
                                     textInputProps={(styles.editableText)}
                                 />
                             </View>
-                            <Button title='Change Picture' onPress={() => {this.setState({ visible: true }) } } style={styles.profPic}/>
+                            <TouchableOpacity onPress={() => {this.setState({ visible: true }) } }>
+                            <View style={styles.button}>
+                                <Text style={{ fontSize: 15,fontWeight:"bold" }}>Change Picture</Text>
+                            </View>
+                        </TouchableOpacity>
+                            
                             <Dialog.Container visible={this.state.visible}>
                                 <Dialog.Title>Update your Profile Picture</Dialog.Title>
                                 <Dialog.Description>Paste a new URL for the picture you want to use</Dialog.Description>
@@ -269,6 +274,20 @@ const styles = StyleSheet.create({
     },
     profPic: {
         paddingBottom: 40,
+    },
+    button: {
+        backgroundColor: 'white',
+        height: 50,
+        width:'85%',
+        marginHorizontal: 20,
+        borderRadius: 5,
+        alignSelf:'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 5,
+        shadowOffset: { width: 2, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2
     },
     avatar: {
         width: 130,
