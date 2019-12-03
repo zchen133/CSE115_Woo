@@ -158,15 +158,7 @@ export default class SearchSchedule extends Component {
                             </View>
 
                         </TouchableOpacity>
-                        {/* <Button
-                            style={styles.buttonStyle}
-                            onPress={() => this.onQuery(this.state.email)}
-                            title="Get specfic user appointments"
-                        />
-                        <Button
-                            onPress={() => this.onPressRequests()}
-                            title="Go back"
-                        /> */}
+                        
                         <Text style={styles.titleText}> Appointments found for user:</Text>
                         <View>
                             <Block card shadow color="#f6f5f5" style={styles.pageTop} key={i.toString()}>
@@ -206,15 +198,7 @@ export default class SearchSchedule extends Component {
                             </View>
 
                         </TouchableOpacity>
-                        {/* <Button
-                            style={styles.buttonStyle}
-                            onPress={() => this.onQuery(this.state.email)}
-                            title="Get specfic user appointments"
-                        />
-                        <Button
-                            onPress={() => this.onPressRequests()}
-                            title="Go back"
-                        /> */}
+                        
                         <Text style={styles.titleText}> Appointments found for user:</Text>
                         <View>
                             {events}

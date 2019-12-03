@@ -12,8 +12,7 @@ export default class RequestScreen extends Component {
 
         this.user = firebase.auth().currentUser
         this.docRef = firebase.firestore().collection("users").doc(this.user.email);
-        //this.getUserData()
-        //this.getAllRequests = this.getAllRequests.bind(this)
+        
         this.state = {
             refresh: false,
             requestColor: "#e7eff6",
@@ -29,12 +28,11 @@ export default class RequestScreen extends Component {
         //     this.getUserData()
         this.getUserData()
         this.getAllRequests()
-        //     //this.docRef.set({ birthday: '1-1-2019' }, { merge: true });
+
     }
 
     getAllRequests = () => {
 
-        //depart_set = new Set([]);
         this.docRefRequests = firebase.firestore().collection("hospital").doc(hospital).collection("requests");
         new_array = [];
         this.docRefRequests.get().then((querySnapshot) => {
@@ -203,18 +201,13 @@ export default class RequestScreen extends Component {
                             />
                         </Block>
                         <Block>
-                            {/* <Text style = {{paddingLeft:25}}>{"Time: "+appointment.time+'\n'+"Date: "+appointment.date+'\n'+"Patient Name: "+appointment.hospital+'\n'+"Doctor Name: "}</Text> */}
+                            
                             <Text style={{ paddingLeft: 15 }}>{"Time: " + appointment.time}</Text>
                             <Text style={{ paddingLeft: 15 }}>{"Date: " + appointment.date}</Text>
                             <Text style={{ paddingLeft: 15 }}>{"Patient Name: " + appointment.first_name + " " + appointment.last_name}</Text>
                             <Text style={{ paddingLeft: 15 }}>{"Doctor Name: " + appointment.doctor_name}</Text>
                         </Block>
-                        {/* <Button style = {{}}
-                    title='Accept'
-                     />
-                 <Button style = {{}}
-                    title='Decline'
-                    /> */}
+                        
                     </Block>
                     <View style={{ flexDirection: 'row', flex: 15, marginTop: 10, justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20 }}>
                         <TouchableOpacity onPress={event => { this.accept(appointment) }}>
@@ -228,14 +221,7 @@ export default class RequestScreen extends Component {
                             </View>
                         </TouchableOpacity>
                     </View>
-                    {/* <Block row flex = {0.2} style={styles.buttons}>
-                <Button style = {{}}
-                    title='Accept'
-                     />
-                <Button style = {{}}
-                    title='Decline'
-                    />
-                    </Block> */}
+                    
                 </Block>
             </Block>
         );

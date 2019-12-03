@@ -241,34 +241,13 @@ const styles = StyleSheet.create({
         // marginTop:30
     },
     pickerContainer: {
-        // height: 40,
-        // alignItems: 'stretch',
-        //alignSelf:'flex-end',
         backgroundColor: 'white',
         width: "30%",
         marginRight: 10
-        // borderColor: 'black',
-        // borderBottomWidth: 2.5,
-        //marginBottom: 30,
-        //marginLeft: 50,
-        //marginRight: 50,
-        //paddingVertical:10,
-        // paddingHorizontal: 10,
     },
     pickerContent: {
-        // height: 40,
-
-        // alignItems: 'stretch',
-        //alignSelf:'flex-end',
         backgroundColor: 'white',
         width: "25%",
         marginRight: 10
-        // borderColor: 'black',
-        // borderBottomWidth: 2.5,
-        //marginBottom: 20,
-        //marginLeft: 50,
-        //marginRight: 50,
-        //paddingVertical:10,
-        // paddingHorizontal: 10,
     }
 })

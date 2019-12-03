@@ -31,12 +31,8 @@ export default class AdminHomepage extends Component {
         this.docRef.get().then((doc) => {
             if (doc.exists) {
                 let data = doc.get("hospital")
-                //let first_name = doc.get("first")
-                //let last_name = doc.get("last")
-                this.setState({ hospital: data })
-                //this.setState({first_name:first_name})
-                //this.setState({last_name:last_name})
 
+                this.setState({ hospital: data })
                 this.getDepartmentList()
             } else {
                 this.setState({ hospital: "null" })
@@ -51,7 +47,6 @@ export default class AdminHomepage extends Component {
         new_array = [];
         firebase.firestore().collection("hospital").doc(this.state.hospital).collection("Departments").get().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
-                // doc.data() is never undefined for query doc snapshots
                 depart_set.add(doc.id);
             });
             depart_set.forEach(function(val) {
@@ -71,7 +66,7 @@ export default class AdminHomepage extends Component {
         if (this.state.email !== '' && this.state.selectedDepartment != '') {
             initialEmail = this.state.email;
         } else {
-            Toast.show('Please enter the email and select a department');
+            Toast.show('Please enter the email and select a department')
             return;
         }
         if (this.state.hospitalStaff !== '') {
@@ -97,14 +92,15 @@ export default class AdminHomepage extends Component {
                         hospital: this.state.hospital,
                         department: this.state.selectedDepartment,
                         accountTypeString: "Doctors"
-
+                        
 
                     }).catch(error => { this.setState({ err: error.message }), Toast.show(error.message) });
                 }
                 this.setState({ first_name: first })
                 this.setState({ last_name: last })
                 this.addToHospital("Doctors")
-            } else {}
+                Toast.show('successful')
+            } 
         }).catch((err) => {})
     }
 
@@ -146,7 +142,8 @@ export default class AdminHomepage extends Component {
                 this.setState({ first_name: first })
                 this.setState({ last_name: last })
                 this.addToHospital("Nurses")
-            } else {}
+                Toast.show('successful')
+            } 
         }).catch((err) => {})
     }
 
@@ -186,7 +183,8 @@ export default class AdminHomepage extends Component {
                 this.setState({ first_name: first })
                 this.setState({ last_name: last })
                 this.addToHospital("Receptionists")
-            } else {}
+                Toast.show('successful')
+            } 
         }).catch((err) => {})
     }
 
@@ -227,7 +225,7 @@ export default class AdminHomepage extends Component {
                 }).catch(function(error) {
                     alert("error in userRef")
                 });
-            } else {}
+            }
         }).catch((err) => {})
     }
 
@@ -337,31 +335,15 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(0,0,0,0.2)',
     },
     pickerContainer: {
-        // height: 40,
-        // alignItems: 'stretch',
         backgroundColor: 'white',
         width: "75%",
-        //height: 50,
-        // borderColor: 'black',
-        // borderBottomWidth: 2.5,
-        //marginBottom: 30,
         marginLeft: 50,
         marginRight: 50,
-        //paddingVertical:10,
-        // paddingHorizontal: 10,
     },
     pickerContent: {
-        // height: 40,
-        // alignItems: 'stretch',
         backgroundColor: 'white',
         width: "75%",
-        //height: 30,
-        // borderColor: 'black',
-        // borderBottomWidth: 2.5,
         marginBottom: 20,
-        //marginLeft: 50,
-        //marginRight: 50,
-        //paddingVertical:10,
-        // paddingHorizontal: 10,
+
     }
 });

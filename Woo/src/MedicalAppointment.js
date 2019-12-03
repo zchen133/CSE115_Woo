@@ -67,20 +67,9 @@ const styles = StyleSheet.create({
         paddingLeft: 40,
         paddingRight: 40,
         marginTop: 50,
-        //height: 200
     },
     scrollView: {
         backgroundColor: '#ffffff'
-        // textAlign: 'center',
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        // paddingLeft: 40,
-        // paddingRight: 40,
-        // marginTop: 10,
-        // height: 40
     },
 });
 
-/*
-
-*/

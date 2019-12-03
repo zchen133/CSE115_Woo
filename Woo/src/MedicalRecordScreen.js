@@ -366,9 +366,7 @@ export default class RecordScreen extends Component {
                             onChangeText={patientEmail => this.setState({ patientEmail })}
 
 
-                        //multiline={true} SOURCE OF RETURN BUG
-                        //onChangeText={description => this.setState({ description })}
-                        //value={this.state.description}
+                        
                         />
 
                     </View>
@@ -378,11 +376,7 @@ export default class RecordScreen extends Component {
                             <Text style={{ fontSize: 20 }}>Medical History</Text>
                         </View>
                     </TouchableOpacity>
-                    {/* <TouchableOpacity onPress={this.submitModal}>
-                            <View style={styles.button}>
-                                <Text style={{ fontSize: 20 }}>Family Medical History</Text>
-                            </View>
-                        </TouchableOpacity> */}
+                    
                     <TouchableOpacity onPress={this.openMedicationHistoryModal}>
                         <View style={styles.button}>
                             <Text style={{ fontSize: 20 }}>Medication History</Text>
@@ -393,11 +387,7 @@ export default class RecordScreen extends Component {
                             <Text style={{ fontSize: 20 }}>Treatment History</Text>
                         </View>
                     </TouchableOpacity>
-                    {/* <TouchableOpacity onPress={this.submitModal}>
-                            <View style={styles.button}>
-                                <Text style={{ fontSize: 20 }}>Medical Directives</Text>
-                            </View>
-                        </TouchableOpacity> */}
+                    
                     <TouchableOpacity onPress={this.handleRecordInput}>
                         <View style={styles.button}>
                             <Text style={{ fontSize: 20 }}>Submit</Text>
@@ -621,35 +611,15 @@ const styles = StyleSheet.create({
         // marginTop:30
     },
     pickerContainer: {
-        // height: 40,
-        // alignItems: 'stretch',
-        //alignSelf:'flex-end',
         backgroundColor: 'white',
         width: "30%",
         marginRight: 10
-        // borderColor: 'black',
-        // borderBottomWidth: 2.5,
-        //marginBottom: 30,
-        //marginLeft: 50,
-        //marginRight: 50,
-        //paddingVertical:10,
-        // paddingHorizontal: 10,
     },
     pickerContent: {
-        // height: 40,
-
-        // alignItems: 'stretch',
-        //alignSelf:'flex-end',
         backgroundColor: 'white',
         width: "25%",
         marginRight: 10
-        // borderColor: 'black',
-        // borderBottomWidth: 2.5,
-        //marginBottom: 20,
-        //marginLeft: 50,
-        //marginRight: 50,
-        //paddingVertical:10,
-        // paddingHorizontal: 10,
+        
     }
 
 })
