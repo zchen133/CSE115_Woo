@@ -107,7 +107,7 @@ export default class AdminHomepage extends Component {
             } else {
             }
         }).catch((err) => {
-gi        })
+        })
     }
 
 
