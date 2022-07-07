@@ -18,7 +18,7 @@
     "expo-google-app-auth": "^7.0.0",
     "expo-permissions": "~7.0.0",
     "firebase": "^7.2.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-dom": "16.8.3",
